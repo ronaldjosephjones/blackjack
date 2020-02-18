@@ -11,20 +11,54 @@
     <body>
         <h1>Blackjack</h1>
 
-        <div class="dealer-hand">
-            <h2>Dealer Hand: <span id="dealer-hand__total"></span></h2>
+        <div id="dealer__hand-container">
+            <div id="dealer__hand" class="hand">
+                <span id="dealer__count" class="hand__count"></span>
+            </div>
         </div>
-        <div class="player-hand">
-            <h2>Player Hand: <span id="player-hand__total"></span></h2>
-        </div>
+        <div id="player__hands-container"></div>
+<!-- 
+        <div class="hand">
+            <span class="hand__count">11</span>
+            <div class="card">
+                <div class="card__face card__face--front">
+                    <p>ace</p>
+                    <p>spades</p>
+                    <p>11</p>
+                </div>
+                <div class="card__face card__face--back"></div>
+            </div>
+        </div> -->
 
         <button id="deal-btn">Deal</button>
-        <button id="stand-btn">Stand</button>
-        <button id="hit-btn">Hit</button>
+        <button id="stand-btn" class="hidden">Stand</button>
+        <button id="hit-btn" class="hidden">Hit</button>
 
-        <div class="message-overlay">
+        <div id="message-overlay" class="hidden">
             <p id="message-overlay__text"></p>
+            <button id="btn-split--no" class="hidden">No</button>
+            <button id="btn-split--yes" class="hidden">Yes</button>
         </div>
+
+        <div class="chip-container">
+            <div class="chip chip--1"><span class="chip__text">$1</span></div>
+            <div class="chip chip--5"><span class="chip__text">$5</span></div>
+            <div class="chip chip--10"><span class="chip__text">$10</span></div>
+            <div class="chip chip--25"><span class="chip__text">$25</span></div>
+            <div class="chip chip--100"><span class="chip__text">$100</span></div>
+        </div>
+
+        <div id="split-container">
+            <p>Split cards?</p>
+            <button id="split-no">No</button>
+            <button id="split-Yes">Yes</button>
+        </div>
+
+        <!-- <div class="card">
+            <p class="card__name">Ace</p>
+            <p class="card__suit">Spades</p>
+            <p class="card__points">11</p>
+        </div> -->
 
         <script src="app.js"></script>
     </body>
