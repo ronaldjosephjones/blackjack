@@ -1,57 +1,57 @@
 // The deck of all 52 cards
 let deckArray = [
-    { cardName: '2', suit: 'hearts', points: 2},
-    { cardName: '2', suit: 'diamonds', points: 2 },
-    { cardName: '2', suit: 'spades', points: 2 },
-    { cardName: '2', suit: 'clubs', points: 2 },
-    { cardName: '3', suit: 'hearts', points: 3 },
-    { cardName: '3', suit: 'diamonds', points: 3 },
-    { cardName: '3', suit: 'spades', points: 3 },
-    { cardName: '3', suit: 'clubs', points: 3 },
-    { cardName: '4', suit: 'hearts', points: 4 },
-    { cardName: '4', suit: 'diamonds', points: 4 },
-    { cardName: '4', suit: 'spades', points: 4 },
-    { cardName: '4', suit: 'clubs', points: 4 },
-    { cardName: '5', suit: 'hearts', points: 5 },
-    { cardName: '5', suit: 'diamonds', points: 5 },
-    { cardName: '5', suit: 'spades', points: 5 },
-    { cardName: '5', suit: 'clubs', points: 5 },
-    { cardName: '6', suit: 'hearts', points: 6 },
-    { cardName: '6', suit: 'diamonds', points: 6 },
-    { cardName: '6', suit: 'spades', points: 6 },
-    { cardName: '6', suit: 'clubs', points: 6 },
-    { cardName: '7', suit: 'hearts', points: 7 },
-    { cardName: '7', suit: 'diamonds', points: 7 },
-    { cardName: '7', suit: 'spades', points: 7 },
-    { cardName: '7', suit: 'clubs', points: 7 },
-    { cardName: '8', suit: 'hearts', points: 8 },
-    { cardName: '8', suit: 'diamonds', points: 8 },
-    { cardName: '8', suit: 'spades', points: 8 },
-    { cardName: '8', suit: 'clubs', points: 8 },
-    { cardName: '9', suit: 'hearts', points: 9 },
-    { cardName: '9', suit: 'diamonds', points: 9 },
-    { cardName: '9', suit: 'spades', points: 9 },
-    { cardName: '9', suit: 'clubs', points: 9 },
-    { cardName: '10', suit: 'hearts', points: 10 },
-    { cardName: '10', suit: 'diamonds', points: 10 },
-    { cardName: '10', suit: 'spades', points: 10 },
-    { cardName: '10', suit: 'clubs', points: 10 },
-    { cardName: 'jack', suit: 'hearts', points: 10 },
-    { cardName: 'jack', suit: 'diamonds', points: 10 },
-    { cardName: 'jack', suit: 'spades', points: 10 },
-    { cardName: 'jack', suit: 'clubs', points: 10 },
-    { cardName: 'queen', suit: 'hearts', points: 10 },
-    { cardName: 'queen', suit: 'diamonds', points: 10 },
-    { cardName: 'queen', suit: 'spades', points: 10 },
-    { cardName: 'queen', suit: 'clubs', points: 10 },
-    { cardName: 'king', suit: 'hearts', points: 10 },
-    { cardName: 'king', suit: 'diamonds', points: 10 },
-    { cardName: 'king', suit: 'spades', points: 10 },
-    { cardName: 'king', suit: 'clubs', points: 10 },
-    { cardName: 'ace', suit: 'hearts', points: 11 },
-    { cardName: 'ace', suit: 'diamonds', points: 11 },
-    { cardName: 'ace', suit: 'spades', points: 11 },
-    { cardName: 'ace', suit: 'clubs', points: 11 },
+    { name: '2', suit: 'hearts', points: 2},
+    { name: '2', suit: 'diamonds', points: 2 },
+    { name: '2', suit: 'spades', points: 2 },
+    { name: '2', suit: 'clubs', points: 2 },
+    { name: '3', suit: 'hearts', points: 3 },
+    { name: '3', suit: 'diamonds', points: 3 },
+    { name: '3', suit: 'spades', points: 3 },
+    { name: '3', suit: 'clubs', points: 3 },
+    { name: '4', suit: 'hearts', points: 4 },
+    { name: '4', suit: 'diamonds', points: 4 },
+    { name: '4', suit: 'spades', points: 4 },
+    { name: '4', suit: 'clubs', points: 4 },
+    { name: '5', suit: 'hearts', points: 5 },
+    { name: '5', suit: 'diamonds', points: 5 },
+    { name: '5', suit: 'spades', points: 5 },
+    { name: '5', suit: 'clubs', points: 5 },
+    { name: '6', suit: 'hearts', points: 6 },
+    { name: '6', suit: 'diamonds', points: 6 },
+    { name: '6', suit: 'spades', points: 6 },
+    { name: '6', suit: 'clubs', points: 6 },
+    { name: '7', suit: 'hearts', points: 7 },
+    { name: '7', suit: 'diamonds', points: 7 },
+    { name: '7', suit: 'spades', points: 7 },
+    { name: '7', suit: 'clubs', points: 7 },
+    { name: '8', suit: 'hearts', points: 8 },
+    { name: '8', suit: 'diamonds', points: 8 },
+    { name: '8', suit: 'spades', points: 8 },
+    { name: '8', suit: 'clubs', points: 8 },
+    { name: '9', suit: 'hearts', points: 9 },
+    { name: '9', suit: 'diamonds', points: 9 },
+    { name: '9', suit: 'spades', points: 9 },
+    { name: '9', suit: 'clubs', points: 9 },
+    { name: '10', suit: 'hearts', points: 10 },
+    { name: '10', suit: 'diamonds', points: 10 },
+    { name: '10', suit: 'spades', points: 10 },
+    { name: '10', suit: 'clubs', points: 10 },
+    { name: 'jack', suit: 'hearts', points: 10 },
+    { name: 'jack', suit: 'diamonds', points: 10 },
+    { name: 'jack', suit: 'spades', points: 10 },
+    { name: 'jack', suit: 'clubs', points: 10 },
+    { name: 'queen', suit: 'hearts', points: 10 },
+    { name: 'queen', suit: 'diamonds', points: 10 },
+    { name: 'queen', suit: 'spades', points: 10 },
+    { name: 'queen', suit: 'clubs', points: 10 },
+    { name: 'king', suit: 'hearts', points: 10 },
+    { name: 'king', suit: 'diamonds', points: 10 },
+    { name: 'king', suit: 'spades', points: 10 },
+    { name: 'king', suit: 'clubs', points: 10 },
+    { name: 'ace', suit: 'hearts', points: 11 },
+    { name: 'ace', suit: 'diamonds', points: 11 },
+    { name: 'ace', suit: 'spades', points: 11 },
+    { name: 'ace', suit: 'clubs', points: 11 },
 ];
 
 let discardedCardsArray = [];
@@ -65,8 +65,6 @@ const splitNoBtn = document.getElementById('btn-split--no');
 const splitContainer = document.getElementById('split-container');
 const playerHandsContainerDiv = document.getElementById('player__hands-container');
 const dealerHandContainerDiv = document.getElementById('dealer__hand-container');
-const dealerHandDiv = document.getElementById('dealer__hand');
-const dealerCountSpan = document.getElementById('dealer__count');
 let dealerSecondCardDiv;
 const messageOverlayDiv = document.getElementById('message-overlay');
 const messageOverlaySpan = document.getElementById('message-overlay__text');
@@ -75,59 +73,25 @@ const messageOverlaySpan = document.getElementById('message-overlay__text');
 
 const player = {
     bank: 1000,
-    handsArray: [],
-    playHands: function() {
-
-        // Determines if each hand beats dealer
-
-        for(i = 0; i < this.handsArray.length; i++) {
-
-            // If a hand only has one card because it was split, add new card,
-            // check for splits, and exit the check hands loop 
-
-            if(this.handsArray[i].length < 2) {
-                dealCard(this.handsArray[i]);
-                checkForSplit(this.handsArray[i]);
-                break;
-            }
-
-            else {
-
-                // Grab first two cards
-
-                let card1 = this.handsArray[i].cardsArray[0];
-                let card2 = this.handsArray[i].cardsArray[1];
-
-                // Check for 21, player wins immediately
-
-                if (this.handsArray[i].countTotal === 21) {
-                    displayMessageOverlay('Blackjack! You win!');
-                    discardCards(this.handsArray[i]);
-                    this.handsArray[i].shift();
-                }
-
-                else {
-                    standBtn.classList.remove('hidden');
-                    hitBtn.classList.remove('hidden');
-                }
-            }
-
-        }
-    }
+    handsArray: []
 }
 
 // Dealer object
 
 const dealer = {
     cardsArray: [],
-    countTotal: 0
+    count1: 0,
+    count2: 0,
+    div: document.getElementById('dealer__hand'),
+    countSpan: document.getElementById('dealer__count')
     }
 
 // Hand constructor
 
-function Hand(cards) {
-    this.cardsArray = cards;
-    this.countTotal = calcCountTotal(this.cardsArray);
+function Hand() {
+    this.cardsArray = [],
+    this.count1 = 0,
+    this.count2 = 0
 
     // Put this hand into the beginning of the player hand array
 
@@ -135,66 +99,63 @@ function Hand(cards) {
 
     // Create new div to hold the cards
 
-    this.handDiv = document.createElement('div');
-    this.handDiv.setAttribute('class', 'hand');
-    playerHandsContainerDiv.appendChild(this.handDiv);
+    this.div = document.createElement('div');
+    this.div.setAttribute('class', 'hand');
+    playerHandsContainerDiv.appendChild(this.div);
 
-    let handCountSpan = document.createElement('span');
-    handCountSpan.setAttribute('class', 'hand__count');
-    handCountSpan.innerText = `${this.countTotal}`;
-    this.handDiv.appendChild(handCountSpan);
+    this.countSpan = document.createElement('span');
+    this.countSpan.setAttribute('class', 'hand__count');
+    this.div.appendChild(this.countSpan);
 
 }
 
-let cardsForSplit = [];
-
-// Load event listeners
-loadEventListeners();
+let handBeingSplit;
 
 // Load all event listeners
+
+loadEventListeners();
 function loadEventListeners() {
+
     // Deal initial cards event
+
     dealBtn.addEventListener('click', dealInitialCards);
-    splitNoBtn.addEventListener('click', dontSplitCards);
+    splitNoBtn.addEventListener('click', dontsplitHand);
     splitYesBtn.addEventListener('click', function() {
-        splitCards(cardsForSplit);
+        splitHand(handBeingSplit);
     });
+
     // Hit event
-    // hitBtn.addEventListener('click', hit);
+
+    hitBtn.addEventListener('click', hit);
+
     // Stand event
+
     // standBtn.addEventListener('click', stand);
 
 };
 
-// Inital deal
+// Initial deal
 
 function dealInitialCards(e) {
 
-    // Temporary array to hold player's first two cards
+    // Create player's first hand
 
-    let tempArr = [];
+    new Hand();
+    forceCard(player.handsArray[0], 'ace', 'spades', 0);
+    forceCard(player.handsArray[0], 'ace', 'hearts', 0);
 
     // Deal first two cards to player and dealer
 
-    dealCard(tempArr);
-    dealCard(dealer.cardsArray);
-    dealCard(tempArr);
-    dealCard(dealer.cardsArray);
-
-    // Create first hand for player
-
-    new Hand(tempArr);
-
-    console.log(player);
-    console.log(dealer);
+    forceCard(dealer, 'five', 'spades', 5);
+    forceCard(dealer, 'three', 'spades', 3);
 
     // Display cards
-    displayCards(dealer.cardsArray, dealerHandDiv);
-    displayCards(player.handsArray[0].cardsArray, player.handsArray[0].handDiv);
+    // displayCards(dealer.cardsArray, dealer);
+    // displayCards(player.handsArray[0].cardsArray, player.handsArray[0]);
 
     // Display count of dealer's first card
 
-    dealerCountSpan.innerText = dealer.cardsArray[0].points;
+    dealer.countSpan.innerText = dealer.cardsArray[0].points;
 
     // Put dealer's second card face down
 
@@ -205,183 +166,65 @@ function dealInitialCards(e) {
 
     dealBtn.classList.add('hidden');
 
-    // if (playerHandTotal === 21) {
-    //     messageOverlaySpan.innerText = '21! You win!';
-    //     setTimeout(function () {
-    //         messageOverlaySpan.innerText = '';
-    //     }, 2500);
-    // }
+    // Check for 21 / blackjack immediately
 
-    // Check for split
+    if (player.handsArray[0].count1 === 21 ) {
+        dealerSecondCardDiv.classList.remove('card--facedown');
+        dealer.count1 = calccount1(dealer.cardsArray);
+        dealer.countSpan.innerText = dealer.count1;
 
-    let isSplittable = checkForSplit(player.handsArray[0]);
+        if (dealer.count1 === 21) {
+            displayMessageOverlay('Push!');
+        }
 
-    if(isSplittable) {
-        messageOverlayDiv.classList.remove('hidden');
-        splitNoBtn.classList.remove('hidden');
-        splitYesBtn.classList.remove('hidden');
+        else {
+            displayMessageOverlay('Blackjack! You Win!')
+        }
+
+        discardCards(player.handsArray[0]);
+        discardCards(dealer);
+        discardHand(player.handsArray[0]);
+        player.handsArray.shift();
+        dealBtn.classList.remove('hidden');
     }
 
     else {
-        player.playHands();
+
+        // Check for split
+
+        let isSplittable = checkForSplit(player.handsArray[0]);
+
+        if (isSplittable) {
+            messageOverlayDiv.classList.remove('hidden');
+            splitNoBtn.classList.remove('hidden');
+            splitYesBtn.classList.remove('hidden');
+        }
+
+        else {
+            standBtn.classList.remove('hidden');
+            hitBtn.classList.remove('hidden');
+        }
     }
 
     e.preventDefault();
 };
 
 // Hit
-// function hit(e) {
-//     // Deal one card to the player
-//     dealCard(player.handsArray);
+function hit(e) {
 
-//     // Calculate two totals: the player's hand and the dealer's
-//     playerHandTotal = calcHandTotal(player.handsArray);
-//     dealerHandTotal = calcHandTotal(dealerHandArray);
+    // Grab the player's most recently created hand
 
-//     // Display the totals in <span> elements
-//     playerHandTotalSpan.innerText = playerHandTotal;
+    let hand = player.handsArray[0];
 
-//     // Blackjack / player wins
-//     if (playerHandTotal === 21) {
-//         messageOverlaySpan.innerText = '21! You win!';
-//         setTimeout(function () {
-//             messageOverlaySpan.innerText = '';
-//         }, 2500);
-//         // Put all cards into discard pile
-//         discardCards(player.handsArray);
-//         discardCards(dealerHandArray);
-        
-//         // Reset player and dealer hand totals
-//         playerHandTotal = 0;
-//         dealerHandTotal = 0;
+    // Deal one card to this hand
 
-//         // Display empty hand totals
-//         playerHandTotalSpan.innerText = '';
-//         dealerHandTotalSpan.innerText = '';
+    dealCard(hand);
 
-//         // Disable stand and hit buttons
-//         standBtn.disabled = true;
-//         hitBtn.disabled = true;
-
-//     }
-
-//     // // Option to hit again
-//     // else if (playerHandTotal < 21) {
-//     //     messageOverlaySpan.innerText = 'Wanna hit again?';
-//     //     setTimeout(function () {
-//     //         messageOverlaySpan.innerText = '';
-//     //     }, 2500);
-//     // }
-
-//     // Player busts and loses
-//     else if (playerHandTotal > 21) {
-//         messageOverlaySpan.innerText = 'You busted! You lose!';
-//         setTimeout(function () {
-//             messageOverlaySpan.innerText = '';
-//         }, 2500);
-
-//         // Put all cards into discard pile
-//         discardCards(player.handsArray);
-//         discardCards(dealerHandArray);
-
-//         // Reset player and dealer hand totals
-//         playerHandTotal = 0;
-//         dealerHandTotal = 0;
-
-//         // Display empty hand totals
-//         playerHandTotalSpan.innerText = '';
-//         dealerHandTotalSpan.innerText = '';
-
-//         // Disable stand and hit buttons
-//         standBtn.disabled = true;
-//         hitBtn.disabled = true;
-//     }
-
-//     // Enable dealing again
-//     dealBtn.disabled = false;
-
-//     e.preventDefault();
-// };
+    e.preventDefault();
+};
 
 // Stand
 // function stand(e) {
-//     standBtn.disabled = true;
-//     hitBtn.disabled = true;
-
-//     // Check outcomes to decide if player or dealer wins
-//     checkDealerOutcome();
-
-//     e.preventDefault();
-// };
-
-// // Checks the dealer's total and determines whether the player wins, loses, or draws
-// function checkDealerOutcome() {
-//     // Calculate total of dealer's cards and display it
-//     dealerHandTotal = calcHandTotal(dealerHandArray);
-//     dealerHandTotalSpan.innerText = dealerHandTotal;
-
-//     // Dealer hits again
-//     if (dealerHandTotal < 17 && dealerHandTotal < playerHandTotal) {
-//         dealCard(dealerHandArray);
-//         checkDealerOutcome();
-//     }
-
-//     // Dealer has blackjack
-//     else if (dealerHandTotal === 21) {
-//         messageOverlaySpan.innerText = 'Dealer has blackjack. You lose!';
-//         setTimeout(function () {
-//             messageOverlaySpan.innerText = '';
-//         }, 2500);
-
-//     }
-
-//     // Dealer has lower hand, player wins
-//     else if (dealerHandTotal > 16 && dealerHandTotal < playerHandTotal) {
-//         messageOverlaySpan.innerText = 'You've got a higher hand. You win';
-//         setTimeout(function () {
-//             messageOverlaySpan.innerText = '';
-//         }, 2500);
-//     }
-
-//     // Dealer has higher hand, player loses
-//     else if (dealerHandTotal < 22  && dealerHandTotal > playerHandTotal) {
-//         messageOverlaySpan.innerText = 'Dealer has a higher hand. You lose';
-//         setTimeout(function () {
-//             messageOverlaySpan.innerText = '';
-//         }, 2500);
-//     }
-
-//     // Dealer and player tie
-//     else if (dealerHandTotal < 22 && dealerHandTotal === playerHandTotal) {
-//         messageOverlaySpan.innerText = 'Push! You and the dealer tied!';
-//         setTimeout(function () {
-//             messageOverlaySpan.innerText = '';
-//         }, 2500);
-//     }
-
-//     // Dealer busts, player wins
-//     else if (dealerHandTotal > 22) {
-//         messageOverlaySpan.innerText = 'Dealer busted. You win!';
-//         setTimeout(function () {
-//             messageOverlaySpan.innerText = '';
-//         }, 2500);
-//     }
-
-//     // Put all cards into discard pile
-//     discardCards(player.handsArray);
-//     discardCards(dealerHandArray);
-
-//     // Reset player and dealer hand totals
-//     playerHandTotal = 0;
-//     dealerHandTotal = 0;
-
-//     // Display empty hand totals
-//     playerHandTotalSpan.innerText = '';
-//     dealerHandTotalSpan.innerText = '';
-
-//     // Enable buttons again
-//     dealBtn.disabled = false;
-
 // }
 
 // Shuffle the deck of cards
@@ -400,87 +243,76 @@ function shuffleDeck(deck) {
     return deck;
 }
 
-// Removes first card from deck and puts it in array of passed hand
-function dealCard(cardsArray) {
-    let card = deckArray.shift();
-    cardsArray.push(card);
-}
-
 // Create and display the cards of a hand inside a container div
 
-function displayCards(cardsArray, cardContainer) {
-    for (let i = 0; i < cardsArray.length; i++) {
-        cardContainer.insertAdjacentHTML('beforeend', `
-            <div class="card">
-                <div class="card__face card__face--front">
-                    <p>${cardsArray[i].cardName}</p>
-                    <p>${cardsArray[i].suit}</p>
-                    <p>${cardsArray[i].points}</p>
-                </div>
-                <div class="card__face card__face--back"></div>
-            </div>
-        `)
-    }
-}
-
-
-// Puts cards from a hand into the discard pile
-function discardCards(handArray) {
-
-    // Store the length of the hand array before removing any cards
-    let initialHandArrayLength = handArray.length;
-
-    // Loop through the cards in a hand and put them in the discard pile
-    for(let i = 0; i < initialHandArrayLength; i++) {
-        let card = handArray.shift();
-        discardedCardsArray.push(card);
-    }
-}
-
-// Calculate the sum / total of the cards from the passed hand
-// function calcHandTotal(handArray) {
-//     let isAceInHand;
-
-//     for(i = 0; i < handArray.length - 1; i++) {
-//         if (handArray[i].card === 'ace') {
-//             isAceInHand = true;         
-//         }
+// function displayCards(cards, hand) {
+//     for (let i = 0; i < cards.length; i++) {
+//         hand.div.insertAdjacentHTML('beforeend', `
+//             <div class="card">
+//                 <div class="card__face card__face--front">
+//                     <p>${hand.cardsArray[i].name}</p>
+//                     <p>${hand.cardsArray[i].suit}</p>
+//                     <p>${hand.cardsArray[i].points}</p>
+//                 </div>
+//                 <div class="card__face card__face--back"></div>
+//             </div>
+//         `)
 //     }
-
-//     if (isAceInHand) {
-//         console.log('there IS an ace');
-//         let firstTotal = handArray.reduce((total, card) => total + card.points, 0) + 1;
-//         let secondTotal = handArray.reduce((total, card) => total + card.points, 0) + 11;
-//         return `${firstTotal} / ${secondTotal}`;
-//     }
-
-//     else {
-//         console.log('there IS NOT an ace');
-//     }
-
-//     if (isAceInHand === true) {
-//         let firstTotal = handArray.reduce((total, card) => total + card.points, 0) + 1;
-//         let secondTotal = handArray.reduce((total, card) => total + card.points, 0) + 11;
-//         return `${firstTotal} / ${secondTotal}`;
-//     }
-
-//     // else {
-//     //     return handArray.reduce((total, card) => total + card.points, 0);
-//     // }
-    
-//     return handArray.reduce((total, card) => total + card.points, 0);
 // }
 
-// Calculate total count of passed array of cards
 
-function calcHandCount(cardsArray) {
-    return cardsArray.reduce((total, card) => total + card.points, 0);
+// Puts cards from a hand into the discard pile and animates off the page
+
+function discardCards(hand) {
+
+    // Store the length of the hand array before removing any cards
+
+    let initialHandArrayLength = hand.cardsArray.length;
+
+    // Loop through the cards in a hand and put them in the discard pile array
+
+    for(let i = 0; i < initialHandArrayLength; i++) {
+        let card = hand.cardsArray.shift();
+        discardedCardsArray.push(card);
+    }
+
+    // Remove the count display / span from DOM
+
+    hand.div.firstElementChild.remove();
+
+    // Grab the card elements and amount of cards
+
+    let cardElements = hand.div.children;
+    let i = cardElements.length;
+
+    // Add 'discard' class to each card so they transition off page
+    // For loop isn't used because of setTimeout
+
+    function discardTransition () {
+        setTimeout( function () {
+            if (i > 0) {
+                cardElements[i - 1].classList.add('discard');
+                discardTransition();
+                i = i - 1;
+            }
+        }, 50)
+    }
+
+    discardTransition();
+}
+
+// Remove a hand div from the DOM
+
+function discardHand(hand) {
+    setTimeout(function() {
+        hand.div.remove();
+    }, 3000)
 }
 
 // Check for split
 
 function checkForSplit(hand) {
-    cardsForSplit = hand;
+    handBeingSplit = hand;
     let card1 = hand.cardsArray[0];
     let card2 = hand.cardsArray[1];
 
@@ -493,25 +325,34 @@ function checkForSplit(hand) {
     }
 }
 
-function splitCards(originalHand) {
+function splitHand(originalHand) {
 
-    // Take card from original hand, put it into new hand
-
-    let newHandCards = [];
+    // Take card from original hand, put it into new hand array
+    let newHand = new Hand();
     let card = originalHand.cardsArray.shift();
-    newHandCards.push(card);
-    let newHand = new Hand(newHandCards);
+    newHand.cardsArray.push(card);
 
-    // Move split card to new hand's div
+    // Move split card div to new hand's div in the DOM
+    newHand.div.appendChild(originalHand.div.children[1]);
+    updateCountSpan(newHand);
 
-    newHand.handDiv.appendChild(originalHand.handDiv.children[1]);
+    // Update original hand's count1
 
-    // Deal new card to original hand and display it
+    // NOTE: Only count1 must be updated because this only runs if you're
+    // splitting aces. If you've been dealt two aces updateCountSpan()
+    // will not set count2 to 22 because that's a bust, and keeps it at 11,
+    // removing a need to update it here. 
+    if (originalHand.cardsArray[0].name === 'ace') {
+        originalHand.count1 = 1;
+    }
 
-    dealCard(originalHand.cardsArray);
-    let tempArr = [originalHand.cardsArray[1]];
-    displayCards(tempArr, originalHand.handDiv);
-    originalHand.handDiv.children[0].innerText = calcCountTotal(originalHand.cardsArray);
+    else {
+        originalHand.count1 = originalHand.count1 - originalHand.cardsArray[0].points;
+        originalHand.count2 = originalHand.count2 - originalHand.cardsArray[0].points;
+    }
+
+    // Deal new card to original hand
+    dealCard(originalHand);
 
     let isSplittable = checkForSplit(originalHand);
 
@@ -522,29 +363,26 @@ function splitCards(originalHand) {
     }
 
     else {
-
-        // Hide split buttons
-
+        // Hide split buttons, show hit / stand buttons
         messageOverlayDiv.classList.add('hidden');
         splitNoBtn.classList.add('hidden');
         splitYesBtn.classList.add('hidden');
-
-        player.playHands();
+        standBtn.classList.remove('hidden');
+        hitBtn.classList.remove('hidden');
     }
+
 }
 
-function dontSplitCards() {
-    cardsForSplit = [];
+function dontsplitHand() {
+    handBeingSplit = {};
 
     // Hide the overlay and buttons
 
     messageOverlayDiv.classList.add('hidden');
     splitNoBtn.classList.add('hidden');
     splitYesBtn.classList.add('hidden');
-
-    // Play the rest of the hands against the dealer
-
-    player.playHands();
+    standBtn.classList.remove('hidden');
+    hitBtn.classList.remove('hidden');
 }
 
 function closeMessageOverlay() {
@@ -560,6 +398,172 @@ function displayMessageOverlay(message) {
     }, 2500);
 }
 
-function calcCountTotal(cardsArray) {
+// Calculates sum of an array of cards point values
+
+function calccount1(cardsArray) {
     return cardsArray.reduce((total, card) => total + card.points, 0);
+}
+
+// Force hands for testing purposes
+
+function dealBlackjack(cardsArray) {
+    let card1 = { name: 'ace', suit: 'clubs', points: 11 };
+    let card2 = { name: 'jack', suit: 'clubs', points: 10 };
+    cardsArray.push(card1);
+    cardsArray.push(card2);
+}
+
+function dealSplit(hand) {
+    let card1 = { name: 'ten', suit: 'clubs', points: 10 };
+    let card2 = { name: 'queen', suit: 'hearts', points: 10 };
+    hand.cardsArray.push(card1);
+    hand.cardsArray.push(card2);
+
+    let count = hand.cardsArray.reduce((total, card) => total + card.points, 0);
+    hand.countSpan.innerText = count;
+
+    hand.div.insertAdjacentHTML('beforeend', `
+            <div class="card">
+                <div class="card__face card__face--front">
+                    <p>${card1.name}</p>
+                    <p>${card1.suit}</p>
+                    <p>${card1.points}</p>
+                </div>
+                <div class="card__face card__face--back"></div>
+            </div>
+        `);
+    hand.div.insertAdjacentHTML('beforeend', `
+            <div class="card">
+                <div class="card__face card__face--front">
+                    <p>${card2.name}</p>
+                    <p>${card2.suit}</p>
+                    <p>${card2.points}</p>
+                </div>
+                <div class="card__face card__face--back"></div>
+            </div>
+        `);
+}
+
+// Removes first card from deck and puts it in array of passed hand
+function dealCard(hand) {
+    let card = deckArray.shift();
+    hand.cardsArray.push(card);
+
+    hand.div.insertAdjacentHTML('beforeend', `
+            <div class="card">
+                <div class="card__face card__face--front">
+                    <p>${hand.cardsArray[hand.cardsArray.length - 1].name}</p>
+                    <p>${hand.cardsArray[hand.cardsArray.length - 1].suit}</p>
+                    <p>${hand.cardsArray[hand.cardsArray.length - 1].points}</p>
+                </div>
+                <div class="card__face card__face--back"></div>
+            </div>
+        `);
+
+    updateCountSpan(hand);
+}
+
+// force a card
+
+function forceCard(hand, cardName, cardSuit, cardPoints) {
+    let card = { name: cardName, suit: cardSuit, points: cardPoints };
+    hand.cardsArray.push(card);
+
+    hand.div.insertAdjacentHTML('beforeend', `
+            <div class="card">
+                <div class="card__face card__face--front">
+                    <p>${hand.cardsArray[hand.cardsArray.length - 1].name}</p>
+                    <p>${hand.cardsArray[hand.cardsArray.length - 1].suit}</p>
+                    <p>${hand.cardsArray[hand.cardsArray.length - 1].points}</p>
+                </div>
+                <div class="card__face card__face--back"></div>
+            </div>
+        `);
+
+    updateCountSpan(hand);
+
+}
+
+// Update count span
+function updateCountSpan(hand) {
+
+    let card = hand.cardsArray[hand.cardsArray.length - 1];
+
+    // Check if card dealt is an ace
+    if (card.name === 'ace') {
+        
+        // If ace will make hand a blackjack
+        if (hand.count1 === 10) {
+            hand.count1 = hand.count1 + 11;
+            hand.countSpan.innerText = hand.count1;
+        }
+
+        // If ace can be used as 1 or 11
+        else if (hand.count1 < 10) {
+            hand.count1 = hand.count1 + 1;
+
+            // If the the first card is not an ace
+            if(hand.count2 + 11 < 21) {
+                hand.count2 = hand.count2 + 11;
+                hand.countSpan.innerText = `${hand.count1} / ${hand.count2}`;
+            }
+
+            // If the first card is also an ace
+            else {
+                hand.countSpan.innerText = `${hand.count1}`;
+            }
+        }
+
+        // If ace has to be used as 1
+        else if (hand.count1 > 10) {
+            hand.count1 = hand.count1 + 1;
+            hand.countSpan.innerText = hand.count1;
+        }
+    }
+
+    // If card dealt is not an ace
+    else {
+
+        // Update the counts
+        hand.count1 = hand.count1 + card.points;
+        hand.count2 = hand.count2 + card.points;
+
+        // Check if any aces are already in the hand
+        let handContainsAce;
+        for (i = 0; i < hand.cardsArray.length; i++) {
+            if (hand.cardsArray[i].name === 'ace') {
+                handContainsAce = true;
+            }
+        }
+
+        // If there is an ace already in the hand
+        if (handContainsAce) {
+
+            if (hand.count2 === 21) {
+                hand.countSpan.innerText = hand.count2;
+            }
+
+            else if (hand.count2 < 21) {
+                hand.countSpan.innerText = `${hand.count1} / ${hand.count2}`;
+            }
+
+            else if (hand.count2 > 21) {
+                hand.countSpan.innerText = hand.count1;
+            }
+
+            else if (hand.count1 === 21) {
+                hand.countSpan.innerText = hand.count1;
+            }
+
+            else if (hand.count1 > 21) {
+                hand.countSpan.innerText = hand.count1;
+            }
+
+        }
+
+        // If no ace is already in the hand
+        else {
+            hand.countSpan.innerText = hand.count1;
+        }
+    }
 }

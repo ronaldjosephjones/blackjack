@@ -1,5 +1,7 @@
-* {
-    box-sizing: border-box;
+@import "base/base";
+
+body {
+    overflow: hidden;
 }
 
 .chip-container {
@@ -40,7 +42,6 @@
         height: 175px;
         position: relative;
         transform-style: preserve-3d;
-        transition: 1s;
         width: 122.5px;
 
         .card__face {
@@ -69,4 +70,9 @@
 
 .hidden {
     display: none;
+}
+
+.discard {
+    transition: all 2s;
+    transform: translateX(100vw) translateY(100vh);
 }
