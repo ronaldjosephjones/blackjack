@@ -21,15 +21,16 @@ body {
 }
 
 #split-container {
-    display: none;
+
 }
 
 .hand {
     display: inline-block;
     height: 200px;
     margin-right: 20px;
+    perspective: 1000px;
 
-    &__count {
+    &__count, &__bet {
         display: block;
         text-align: center;
     }
@@ -41,6 +42,7 @@ body {
         display: inline-block;
         height: 175px;
         position: relative;
+        transform-origin: center center center;
         transform-style: preserve-3d;
         width: 122.5px;
 
@@ -68,11 +70,157 @@ body {
     }
 }
 
+.hand-2 {
+    display: inline-block;
+    height: 200px;
+    margin-right: 20px;
+    perspective: 1000px;
+
+    &__count, &__bet {
+        display: block;
+        text-align: center;
+    }
+
+    .card {
+        // animation-name: spin;
+        animation-duration: 2s;
+        animation-fill-mode: forwards;
+        border: 1px solid black;
+        border-radius: 5px;
+        box-shadow: 0 1px #FFFFFF inset, 0 1px 3px rgba(34, 25, 25, 0.4);
+        display: inline-block;
+        height: 175px;
+        position: relative;
+        transform-origin: center;
+        transform-style: preserve-3d;
+        width: 122.5px;
+
+        .card__face {
+            backface-visibility: hidden;
+            border-radius: 5px;
+            height: 100%;
+            position: absolute;
+            width: 100%;
+        }
+
+        .card__face--front {
+            background-color: white;
+            text-align: center;
+        }
+
+        .card__face--back {
+            background-color: red;
+            transform: rotateY(180deg);
+        }
+    }
+
+    .card--facedown {
+        transform: rotateY(180deg);
+    }
+}
+
+.card--being-dealt {
+    animation-name: deal-card;
+    animation-duration: 2s;
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: forwards;
+    transform: translateX(-100vw) translateY(-100vh) translateZ(0) rotateZ(540deg);
+}
+
 .hidden {
     display: none;
 }
 
-.discard {
+.offscreen--deal {
+    transition: all 2s;
+    transform: translateX(100vw) translateY(-100vh);
+}
+
+.offscreen--discard {
     transition: all 2s;
     transform: translateX(100vw) translateY(100vh);
+}
+
+#bank-container {
+    margin-bottom: 50px;
+
+    p {
+        text-align: center;
+        font-size: 30px;
+    }
+
+}
+
+@keyframes spin {
+    0% {
+        transform: translateZ(0) ;
+    }
+    50% {
+        transform: translateZ(100px);
+    }
+    100% {
+        transform: translateZ(0);
+    }
+}
+
+@keyframes discard {
+    0% {
+        transform: translateX(100vw) translateY(100vh);
+    }
+    100% {
+        transform: translateX(100vw) translateY(100vh);
+    }
+}
+
+@keyframes deal-card {
+    0% {
+        transform-origin: center center center;
+        transform: rotateY(180deg) translateX(-100vw) translateY(-100vh) translateZ(100px) rotateZ(540deg);
+    }
+    25% {
+        transform-origin: center center center;
+        transform: rotateY(180deg) translateX(0) translateY(0) translateZ(100px) rotateZ(0);
+    }
+    50% {
+        transform-origin: center center 100px;
+        transform: rotateY(180deg) translateX(0) translateY(0) translateZ(100px);
+    }
+    75% {
+        transform-origin: center center 100px;
+        transform: rotateY(0) translateX(0) translateY(0) translateZ(100px);
+    }
+    100% {
+        transform-origin: center center center;
+        transform: rotateY(0) translateX(0) translateY(0) translateZ(0);
+    }
+}
+
+@keyframes deal-card--facedown {
+    0% {
+        transform-origin: center center center;
+        transform: rotateY(180deg) translateX(-100vw) translateY(-100vh) rotateZ(540deg);
+    }
+    100% {
+        transform-origin: center center center;
+        transform: rotateY(180deg) translateX(0) translateY(0) rotateZ(0);
+    }
+}
+
+@keyframes reveal-card {
+    0% {
+        transform-origin: center center center;
+        transform: rotateY(180deg) translateX(0) translateY(0) translateZ(100px) rotateZ(0);
+    }
+    33% {
+        transform-origin: center center 100px;
+        transform: rotateY(180deg) translateX(0) translateY(0) translateZ(100px);
+    }
+    66% {
+        transform-origin: center center 100px;
+        transform: rotateY(0) translateX(0) translateY(0) translateZ(100px);
+    }
+    100% {
+        transform-origin: center center center;
+        transform: rotateY(0) translateX(0) translateY(0) translateZ(0);
+    }
 }
