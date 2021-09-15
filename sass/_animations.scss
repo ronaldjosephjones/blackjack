@@ -1,0 +1,94 @@
+.bet-chip-animation {
+    transition: all .4s ease;
+}
+@keyframes spin {
+    0% {
+        transform: translateZ(0) ;
+    }
+    50% {
+        transform: translateZ(100px);
+    }
+    100% {
+        transform: translateZ(0);
+    }
+}
+
+@keyframes discard {
+    0% {
+        transform: translateX(100vw) translateY(100vh);
+    }
+    100% {
+        transform: translateX(100vw) translateY(100vh);
+    }
+}
+
+@keyframes deal-card {
+    0% {
+        transform-origin: center center center;
+        transform: rotateY(180deg) translateX(-100vw) translateY(-100vh) translateZ(100px) rotateZ(540deg);
+    }
+    25% {
+        transform-origin: center center center;
+        transform: rotateY(180deg) translateX(0) translateY(0) translateZ(100px) rotateZ(0);
+    }
+    50% {
+        transform-origin: center center 100px;
+        transform: rotateY(180deg) translateX(0) translateY(0) translateZ(100px);
+    }
+    75% {
+        transform-origin: center center 100px;
+        transform: rotateY(0) translateX(0) translateY(0) translateZ(100px);
+    }
+    100% {
+        transform-origin: center center center;
+        transform: rotateY(0) translateX(0) translateY(0) translateZ(0);
+    }
+}
+
+@keyframes deal-card--facedown {
+    0% {
+        transform-origin: center center center;
+        transform: rotateY(180deg) translateX(-100vw) translateY(-100vh) rotateZ(540deg);
+    }
+    100% {
+        transform-origin: center center center;
+        transform: rotateY(180deg) translateX(0) translateY(0) rotateZ(0);
+    }
+}
+
+@keyframes reveal-card {
+    0% {
+        transform-origin: center center center;
+        transform: rotateY(180deg) translateX(0) translateY(0) translateZ(100px) rotateZ(0);
+    }
+    33% {
+        transform-origin: center center 100px;
+        transform: rotateY(180deg) translateX(0) translateY(0) translateZ(100px);
+    }
+    66% {
+        transform-origin: center center 100px;
+        transform: rotateY(0) translateX(0) translateY(0) translateZ(100px);
+    }
+    100% {
+        transform-origin: center center center;
+        transform: rotateY(0) translateX(0) translateY(0) translateZ(0);
+    }
+}
+
+@keyframes bet-chip-wrapper-expanding {
+    0% {
+        width: 0;
+    }
+    100% {
+        width: 100px;
+    }
+}
+
+@keyframes bet-chip-wrapper-shrinking {
+    0% {
+        width: 100px;
+    }
+    100% {
+        width: 0;
+    }
+}

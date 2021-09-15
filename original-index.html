@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html class="no-js">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Blackjack</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="css/style.css">
+    </head>
+    <body>
+        <h1>Blackjack</h1>
+
+        <div id="dealer__hand-container">
+            <!-- <div id="dealer__hand" class="hand">
+                <span id="dealer__count" class="hand__count"></span>
+            </div> -->
+        </div>
+        <div id="player__hands-container"></div>
+<!-- 
+        <div class="hand">
+            <span class="hand__count">11</span>
+            <div class="card">
+                <div class="card__face card__face--front">
+                    <p>ace</p>
+                    <p>spades</p>
+                    <p>11</p>
+                </div>
+                <div class="card__face card__face--back"></div>
+            </div>
+        </div> -->
+
+        <div id="buttons-container">
+            <button id="deal-btn">Deal</button>
+            <button id="stand-btn" class="hidden">Stand</button>
+            <button id="hit-btn" class="hidden">Hit</button>
+        </div>
+
+        <div id="message-overlay" class="hidden">
+            <div id="split-container" class="hidden">
+                <span id="split__text">Split?</span>
+                <button id="btn-split--no">No</button>
+                <button id="btn-split--yes">Yes</button>
+            </div>
+        </div>
+
+        <div id="bank-container">
+            <p id="bank">Bank: $<span id="bank__span">1000</span></p>
+        </div>
+
+        <div class="chip-container">
+            <div class="chip" id= "chip1"><span class="chip__text">$1</span></div>
+            <div class="chip" id="chip5"><span class="chip__text">$5</span></div>
+            <div class="chip" id="chip10"><span class="chip__text">$10</span></div>
+            <div class="chip" id="chip25"><span class="chip__text">$25</span></div>
+            <div class="chip" id="chip100"><span class="chip__text">$100</span></div>
+        </div>
+
+        <!-- <div class="hand">
+            <div class="card" id="test-card">
+                <div class="card__face card__face--front">
+                    <p>Jack</p>
+                    <p>Spades</p>
+                    <p>10</p>
+                </div>
+                <div class="card__face card__face--back"></div>
+            </div>
+        </div> -->
+
+        <div class="hand-2">
+            <div class="card">
+                <div class="card__face card__face--front">
+                    <p>five</p>
+                    <p>hearts</p>
+                    <p>5</p>
+                </div>
+                <div class="card__face card__face--back"></div>
+            </div>
+        </div>
+
+
+        <script src="app.js"></script>
+    </body>
+</html>

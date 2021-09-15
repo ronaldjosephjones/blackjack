@@ -1,123 +1,249 @@
-@import "base/base";
+@import "animations";
 
-body {
-    overflow: hidden;
+html {
+    font-size: 62.5%;
 }
 
-.chip-container {
-    display: flex;
+* {
+    box-sizing: border-box;
+    font-family: 'Open Sans', sans-serif;
+    margin: 0;
+    padding: 0;
+}
 
-    .chip {
-        align-items: center;
-        justify-content: center;
-        background-color: darkgreen;
-        border: 5px dashed black;
-        border-radius: 50%;
-        color: white;
-        display: flex;
-        height: 100px;
-        width: 100px;
-    }
+body {
+    background: linear-gradient(135deg, rgba(76,171,90,1) 0%, rgba(23,135,76,1) 100%);
+    height: 100vh;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.disable-clicks {
+    pointer-events: none;
 }
 
 #split-container {
+    align-items: center;
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    position: absolute;
+    width: 100%;
 
-}
+    #split-content {
+        width: 100%;
 
-.hand {
-    display: inline-block;
-    height: 200px;
-    margin-right: 20px;
-    perspective: 1000px;
-
-    &__count, &__bet {
-        display: block;
-        text-align: center;
-    }
-
-    .card {
-        border: 1px solid black;
-        border-radius: 5px;
-        box-shadow: 0 1px #FFFFFF inset, 0 1px 3px rgba(34, 25, 25, 0.4);
-        display: inline-block;
-        height: 175px;
-        position: relative;
-        transform-origin: center center center;
-        transform-style: preserve-3d;
-        width: 122.5px;
-
-        .card__face {
-            backface-visibility: hidden;
-            border-radius: 5px;
-            height: 100%;
-            position: absolute;
-            width: 100%;
-        }
-
-        .card__face--front {
-            background-color: white;
+        > p {
+            color: #fff;
+            font-size: 2rem;
+            margin-bottom: 1rem;
             text-align: center;
         }
 
-        .card__face--back {
-            background-color: red;
-            transform: rotateY(180deg);
+        #split-btns {
+            display: flex;
+            justify-content: center;
+
+            .btn {
+                height: 5rem;
+                max-width: 30rem;
+                width: 100%;
+            }
         }
     }
 
-    .card--facedown {
+}
+
+#table-container {
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100vh;
+
+    #footer {
+        text-align: center;
+        width: 100%;
+    
+        .chip-bet {
+            align-items: center;
+            background: #fff;
+            border-radius: 50%;
+            color: #212121;
+            display: flex;
+            height: 100px;
+            justify-content: center;
+            position: absolute;
+            user-select: none;
+            width: 100px;
+        }
+    
+        #chip--1, .chip-bet--1 {
+            border: 1rem dashed #b0b0b0;
+        }
+    
+        #chip--5, .chip-bet--5 {
+            border: 1rem dashed #c93030;
+        }
+    
+        #chip--10, .chip-bet--10 {
+            border: 1rem dashed #3048c7;
+        }
+    
+        #chip--25, .chip-bet--25 {
+            border: 1rem dashed #239c1f;
+        }
+    
+        #chip--100, .chip-bet--100 {
+            border: 1rem dashed #3d3d3d;
+        }
+    
+        #bet-container {
+    
+            #bet-chips {
+                display: flex;
+                height: 100px;
+                justify-content: center;
+    
+                .bet-chip-wrapper {
+                    max-width: 100px;
+                    width: 100%;
+                    transition: all .3s ease;
+                }
+    
+                .bet-chip-wrapper-expanding {
+                    animation-name: bet-chip-wrapper-expanding;
+                    animation-duration: .3s;
+                    animation-timing-function: ease;
+                }
+    
+                .bet-chip-wrapper-shrinking {
+                    animation-name: bet-chip-wrapper-shrinking;
+                    animation-duration: .3s;
+                    animation-timing-function: ease;
+                }
+            }
+    
+            #bet {
+                color: #fff;
+                font-size: 3rem;
+                user-select: none;
+            }
+        }
+    
+        #bank {
+            color: #fff;
+            font-size: 5rem;
+            user-select: none;
+    
+            #bank-amount {
+                
+            }
+        }
+    
+        #bottom-bar {
+            background: #6b4141;
+            padding: 2rem 0;
+    
+            #chips-container {
+                background: #583636;
+                width: 90%;
+                margin: 0 auto 1rem;
+                padding: 1rem;
+                border-radius: 50px;
+                user-select: none;
+    
+                .chip-wrapper {
+                    display: inline-block;
+                    position: relative;
+    
+                    .chip {
+                        border: none;
+                        border-radius: 50%;
+                        color: #212121;
+                        height: 10rem;
+                        width: 10rem;
+                        user-select: none;
+                    }
+                    
+                    .chip:focus {
+                        outline: none;
+                    }
+    
+                    .chip-discard {
+                        position: absolute;
+                        top: 0;
+                    }
+    
+                }
+            }
+        
+            #btns-container {
+                
+                #dbl-stand-hit, #deal {
+                    display: flex;
+                    justify-content: center;
+                }
+    
+                .btn-wrapper {
+                    max-width: 30rem;
+                    width: 33.333%;
+    
+                    .btn {
+                        height: 5rem;
+                        max-width: 30rem;
+                        width: 100%;
+                        user-select: none;
+                    }
+                }
+            }
+        }
+    }
+
+}
+
+
+
+.card {
+    // animation-name: spin;
+    animation-duration: 2s;
+    animation-fill-mode: forwards;
+    border: 1px solid black;
+    border-radius: 5px;
+    box-shadow: 0 1px #FFFFFF inset, 0 1px 3px rgba(34, 25, 25, 0.4);
+    display: inline-block;
+    height: 175px;
+    position: relative;
+    transform-origin: center;
+    transform-style: preserve-3d;
+    width: 122.5px;
+
+    .card__face {
+        backface-visibility: hidden;
+        border-radius: 5px;
+        height: 100%;
+        position: absolute;
+        width: 100%;
+    }
+
+    .card__face--front {
+        background-color: white;
+        text-align: center;
+    }
+
+    .card__face--back {
+        background-color: red;
         transform: rotateY(180deg);
     }
 }
 
-.hand-2 {
-    display: inline-block;
-    height: 200px;
-    margin-right: 20px;
-    perspective: 1000px;
-
-    &__count, &__bet {
-        display: block;
-        text-align: center;
-    }
-
-    .card {
-        // animation-name: spin;
-        animation-duration: 2s;
-        animation-fill-mode: forwards;
-        border: 1px solid black;
-        border-radius: 5px;
-        box-shadow: 0 1px #FFFFFF inset, 0 1px 3px rgba(34, 25, 25, 0.4);
-        display: inline-block;
-        height: 175px;
-        position: relative;
-        transform-origin: center;
-        transform-style: preserve-3d;
-        width: 122.5px;
-
-        .card__face {
-            backface-visibility: hidden;
-            border-radius: 5px;
-            height: 100%;
-            position: absolute;
-            width: 100%;
-        }
-
-        .card__face--front {
-            background-color: white;
-            text-align: center;
-        }
-
-        .card__face--back {
-            background-color: red;
-            transform: rotateY(180deg);
-        }
-    }
-
-    .card--facedown {
-        transform: rotateY(180deg);
-    }
+.card--facedown {
+    transform: rotateY(180deg);
 }
+
+
 
 .card--being-dealt {
     animation-name: deal-card;
@@ -125,10 +251,6 @@ body {
     animation-timing-function: ease-in-out;
     animation-fill-mode: forwards;
     transform: translateX(-100vw) translateY(-100vh) translateZ(0) rotateZ(540deg);
-}
-
-.hidden {
-    display: none;
 }
 
 .offscreen--deal {
@@ -139,88 +261,4 @@ body {
 .offscreen--discard {
     transition: all 2s;
     transform: translateX(100vw) translateY(100vh);
-}
-
-#bank-container {
-    margin-bottom: 50px;
-
-    p {
-        text-align: center;
-        font-size: 30px;
-    }
-
-}
-
-@keyframes spin {
-    0% {
-        transform: translateZ(0) ;
-    }
-    50% {
-        transform: translateZ(100px);
-    }
-    100% {
-        transform: translateZ(0);
-    }
-}
-
-@keyframes discard {
-    0% {
-        transform: translateX(100vw) translateY(100vh);
-    }
-    100% {
-        transform: translateX(100vw) translateY(100vh);
-    }
-}
-
-@keyframes deal-card {
-    0% {
-        transform-origin: center center center;
-        transform: rotateY(180deg) translateX(-100vw) translateY(-100vh) translateZ(100px) rotateZ(540deg);
-    }
-    25% {
-        transform-origin: center center center;
-        transform: rotateY(180deg) translateX(0) translateY(0) translateZ(100px) rotateZ(0);
-    }
-    50% {
-        transform-origin: center center 100px;
-        transform: rotateY(180deg) translateX(0) translateY(0) translateZ(100px);
-    }
-    75% {
-        transform-origin: center center 100px;
-        transform: rotateY(0) translateX(0) translateY(0) translateZ(100px);
-    }
-    100% {
-        transform-origin: center center center;
-        transform: rotateY(0) translateX(0) translateY(0) translateZ(0);
-    }
-}
-
-@keyframes deal-card--facedown {
-    0% {
-        transform-origin: center center center;
-        transform: rotateY(180deg) translateX(-100vw) translateY(-100vh) rotateZ(540deg);
-    }
-    100% {
-        transform-origin: center center center;
-        transform: rotateY(180deg) translateX(0) translateY(0) rotateZ(0);
-    }
-}
-
-@keyframes reveal-card {
-    0% {
-        transform-origin: center center center;
-        transform: rotateY(180deg) translateX(0) translateY(0) translateZ(100px) rotateZ(0);
-    }
-    33% {
-        transform-origin: center center 100px;
-        transform: rotateY(180deg) translateX(0) translateY(0) translateZ(100px);
-    }
-    66% {
-        transform-origin: center center 100px;
-        transform: rotateY(0) translateX(0) translateY(0) translateZ(100px);
-    }
-    100% {
-        transform-origin: center center center;
-        transform: rotateY(0) translateX(0) translateY(0) translateZ(0);
-    }
 }
