@@ -1,8 +1,5 @@
 .bet-chip-animation {
-  transition: transform .3s ease; }
-
-.transform-none {
-  transform: none; }
+  transition: all .4s ease; }
 
 @keyframes spin {
   0% {
@@ -35,7 +32,7 @@
     transform-origin: center center center;
     transform: rotateY(0) translateX(0) translateY(0) translateZ(0); } }
 
-@keyframes deal-card-facedown {
+@keyframes deal-card--facedown {
   0% {
     transform-origin: center center center;
     transform: rotateY(180deg) translateX(-100vw) translateY(-100vh) rotateZ(540deg); }
@@ -61,11 +58,11 @@
   0% {
     width: 0; }
   100% {
-    width: 50px; } }
+    width: 100px; } }
 
 @keyframes bet-chip-wrapper-shrinking {
   0% {
-    width: 50px; }
+    width: 100px; }
   100% {
     width: 0; } }
 
@@ -79,9 +76,8 @@ html {
   padding: 0; }
 
 body {
-  background: linear-gradient(135deg, #4ca2ab 0%, #17874c 100%);
-  height: 100vh;
-  overflow: hidden; }
+  background: linear-gradient(135deg, #4cab5a 0%, #17874c 100%);
+  height: 100vh; }
 
 .hidden {
   display: none !important; }
@@ -116,27 +112,6 @@ body {
   flex-direction: column;
   justify-content: space-between;
   height: 100vh; }
-  #table-container #dealer-container {
-    margin-top: 2rem; }
-    #table-container #dealer-container #dealer-hand .hand-cards {
-      display: flex;
-      justify-content: center;
-      align-items: center; }
-      #table-container #dealer-container #dealer-hand .hand-cards .hand-cards-inner {
-        min-width: 10rem;
-        position: relative;
-        height: 14rem; }
-        #table-container #dealer-container #dealer-hand .hand-cards .hand-cards-inner .card:first-child {
-          z-index: 1; }
-      #table-container #dealer-container #dealer-hand .hand-cards .hand-card-count {
-        color: #fff;
-        font-size: 2rem;
-        margin: 0 0 0 4rem;
-        padding: .5rem 1rem;
-        background: #fff;
-        color: #000;
-        border-radius: .75rem;
-        font-weight: bold; }
   #table-container #player-footer-container #player-container #player-hands .hand .hand-bet-amount {
     text-align: center;
     color: #fff;
@@ -150,23 +125,18 @@ body {
   #table-container #player-footer-container #player-container #player-hands .hand .hand-cards {
     margin-bottom: 2rem;
     display: flex;
-    justify-content: center;
-    align-items: center; }
+    justify-content: center; }
     #table-container #player-footer-container #player-container #player-hands .hand .hand-cards .hand-cards-inner {
-      min-width: 10rem;
+      width: 10rem;
       position: relative;
       height: 14rem; }
       #table-container #player-footer-container #player-container #player-hands .hand .hand-cards .hand-cards-inner .card {
         position: absolute; }
-    #table-container #player-footer-container #player-container #player-hands .hand .hand-cards .hand-card-count {
-      color: #fff;
-      font-size: 2rem;
-      margin: 0 0 0 4rem;
-      padding: .5rem 1rem;
-      background: #fff;
-      color: #000;
-      border-radius: .75rem;
-      font-weight: bold; }
+  #table-container #player-footer-container #player-container #player-hands .hand .hand-card-count {
+    text-align: center;
+    color: #fff;
+    font-size: 2rem;
+    margin-bottom: 1rem; }
   #table-container #player-footer-container #player-container #player-hands .hand .hand-indicator.active::before {
     content: '';
     display: block;
@@ -200,8 +170,7 @@ body {
     #table-container #player-footer-container #footer #bet-container #bet {
       color: #fff;
       font-size: 2rem;
-      user-select: none;
-      margin-bottom: 1rem; }
+      user-select: none; }
     #table-container #player-footer-container #footer #bank {
       color: #fff;
       font-size: 5rem;
@@ -220,6 +189,7 @@ body {
           display: inline-block;
           position: relative; }
           #table-container #player-footer-container #footer #bottom-bar #chips-container .chip-wrapper .chip {
+            border: none;
             border-radius: 50%;
             color: #212121;
             height: 5rem;
@@ -270,7 +240,7 @@ body {
   border-radius: 5px;
   box-shadow: 0 1px #FFFFFF inset, 0 1px 3px rgba(34, 25, 25, 0.4);
   height: 14rem;
-  position: absolute;
+  position: relative;
   transform-origin: center;
   transform-style: preserve-3d;
   width: 10rem; }
@@ -283,25 +253,9 @@ body {
   .card .card__face--front {
     background-color: white;
     text-align: center;
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: repeat(3, auto); }
-    .card .card__face--front .card-info--top,
-    .card .card__face--front .card-info--bottom {
-      display: flex;
-      justify-content: space-between;
-      padding: .5rem .5rem 0; }
-      .card .card__face--front .card-info--top .card-name-suit,
-      .card .card__face--front .card-info--bottom .card-name-suit {
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        align-items: center; }
-        .card .card__face--front .card-info--top .card-name-suit .card-name,
-        .card .card__face--front .card-info--bottom .card-name-suit .card-name {
-          font-size: 1.6rem; }
-    .card .card__face--front .card-info--bottom {
-      transform: rotate(180deg); }
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly; }
   .card .card__face--back {
     background-color: red;
     transform: rotateY(180deg); }
@@ -311,14 +265,7 @@ body {
 
 .card--being-dealt {
   animation-name: deal-card;
-  animation-duration: 1s;
-  animation-timing-function: ease-in-out;
-  animation-fill-mode: forwards;
-  transform: translateX(-100vw) translateY(-100vh) translateZ(0) rotateZ(540deg); }
-
-.card--being-dealt-facedown {
-  animation-name: deal-card-facedown;
-  animation-duration: .25s;
+  animation-duration: 2s;
   animation-timing-function: ease-in-out;
   animation-fill-mode: forwards;
   transform: translateX(-100vw) translateY(-100vh) translateZ(0) rotateZ(540deg); }
@@ -333,31 +280,3 @@ body {
 
 .bet-chip--moving-to-hand {
   transition: all .3s; }
-
-.test-wrap-1,
-.test-wrap-2 {
-  height: 100px;
-  width: 100px;
-  border: 1px solid black; }
-
-.test {
-  height: 100%;
-  background: red; }
-
-#div_one {
-  width: 50px;
-  height: 50px;
-  border: 10px solid red; }
-
-#div_two {
-  width: 50px;
-  height: 50px;
-  border: 10px solid blue; }
-
-@keyframes move {
-  100% {
-    transform: translateX(300px); } }
-
-@keyframes down {
-  100% {
-    transform: translateY(300px); } }

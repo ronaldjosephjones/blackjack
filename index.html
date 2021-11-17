@@ -18,12 +18,28 @@
         <div id="table-container">
 
             <div id="dealer-container">
-                <div id="dealer-hand"></div>
+                <div id="dealer-hand">
+                    <div class="hand">
+                        <div class="hand-cards">
+                            <div class="hand-cards-inner"></div>
+                            <p class="hand-card-count hidden"></p>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div id="player-footer-container">
+
+                <!-- <div id="div_one"></div>
+                <div id="div_two"></div> -->
+
+                <!-- <div class="test-wrap-1">
+                    <div class="test"></div>
+                </div>
+                <div class="test-wrap-2"></div>
+                <button class="test-btn">move</button> -->
         
-                <!-- <div id="split-container" class="hidden">
+                <div id="split-container" class="hidden">
                     <div id="split-content">
                         <p>Split hand?</p>
                         <div id="split-btns">
@@ -31,7 +47,7 @@
                             <button class="btn" id="btn--split-yes">Yes</button>
                         </div>
                     </div>
-                </div> -->
+                </div>
         
                 <!-- <div class="card" id="test-card">
                     <div class="card__face card__face--front">
@@ -43,11 +59,42 @@
                 </div> -->
 
                 <div id="player-container">
-                    <div id="player-hands"></div>
+                    <div id="player-hands">
+                        <!-- <div class="hand">
+                            <p class="hand-bet-amount">$10</p>
+                            <div class="hand-chips">
+                                <div class="chip-bet chip-bet--1">1</div>
+                                <div class="chip-bet chip-bet--5">5</div>
+                            </div>
+                            <div class="hand-cards">
+                                <div class="hand-cards-inner">
+                                    <div class="card" id="test-card">
+                                        <div class="card__face card__face--front">
+                                            <p>Jack</p>
+                                            <p>Spades</p>
+                                            <p>10</p>
+                                        </div>
+                                        <div class="card__face card__face--back"></div>
+                                    </div>
+                                    <div class="card" id="test-card">
+                                        <div class="card__face card__face--front">
+                                            <p>5</p>
+                                            <p>Hearts</p>
+                                            <p>5</p>
+                                        </div>
+                                        <div class="card__face card__face--back"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="hand-card-count">15</p>
+                            <div class="hand-indicator active"></div>
+                        </div> -->
+                    </div>
                 </div>
         
                 <div id="footer">
                     <div id="bet-container">
+                        <p id="bet">Your bet: $<span id="bet-amount">0</span></p>
                         <div id="bet-chips">
                             <!-- <div class="chip-bet chip-bet--1">1</div> -->
                             <!-- <div class="bet-chip-wrapper" id="bet-chip--1-wrapper"></div>
@@ -56,7 +103,6 @@
                             <div class="bet-chip-wrapper" id="bet-chip--25-wrapper"></div>
                             <div class="bet-chip-wrapper" id="bet-chip--100-wrapper"></div> -->
                         </div>
-                        <p id="bet">Your bet: $<span id="bet-amount">0</span></p>
                     </div>
         
                     <p id="bank">$<span id="bank-amount">1000</span></p>

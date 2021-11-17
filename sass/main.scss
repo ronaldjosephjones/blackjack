@@ -12,8 +12,9 @@ html {
 }
 
 body {
-    background: linear-gradient(135deg, rgba(76,171,90,1) 0%, rgba(23,135,76,1) 100%);
+    background: linear-gradient(135deg, #4ca2ab 0%, #17874c 100%);
     height: 100vh;
+    overflow: hidden;
 }
 
 .hidden {
@@ -57,149 +58,264 @@ body {
 }
 
 #table-container {
-
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     height: 100vh;
 
-    #footer {
-        text-align: center;
-        width: 100%;
-    
+    #dealer-container {
+        margin-top: 2rem;
+
+        #dealer-hand {
+
+            .hand-cards{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                .hand-cards-inner {
+
+                    min-width: 10rem;
+                    position: relative;
+                    height: 14rem;
+
+                    .card:first-child {
+                        z-index: 1;
+                    }
+                }
+
+                .hand-card-count {
+                    color: #fff;
+                    font-size: 2rem;
+                    margin: 0 0 0 4rem;
+                    padding: .5rem 1rem;
+                    background: #fff;
+                    color: #000;
+                    border-radius: .75rem;
+                    font-weight: bold;
+                }
+            }
+        }
+    }
+
+    #player-footer-container {
+
+        #player-container {
+
+            #player-hands {
+
+                .hand {
+
+                    .hand-bet-amount {
+                        text-align: center;
+                        color: #fff;
+                        font-size: 2rem;
+                        margin-bottom: 2rem;
+                    }
+
+                    .hand-chips {
+                        position: relative;
+                        height: 5rem;
+                        width: 5rem;
+                        margin: 0 auto 2rem;
+
+                        .chip-bet {
+
+                        }
+                    }
+
+                    .hand-cards {
+                        margin-bottom: 2rem;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+
+                        .hand-cards-inner {
+                            min-width: 10rem;
+                            position: relative;
+                            height: 14rem;
+
+                            .card {
+                                position: absolute;
+                            }
+                        }
+
+                        .hand-card-count {
+                            color: #fff;
+                            font-size: 2rem;
+                            margin: 0 0 0 4rem;
+                            padding: .5rem 1rem;
+                            background: #fff;
+                            color: #000;
+                            border-radius: .75rem;
+                            font-weight: bold;
+                        }
+
+                    }
+
+                    .hand-indicator {
+
+                    }
+
+                    .hand-indicator.active::before {
+                        content: '';
+                        display: block;
+                        width: 0; 
+                        height: 0; 
+                        border-left: 15px solid transparent;
+                        border-right: 15px solid transparent;
+                        border-bottom: 15px solid #a51111;
+                        margin: 0 auto;
+                    }
+                }
+
+            }
+
+        }
+
+        #footer {
+            text-align: center;
+            width: 100%;
+        
+            #bet-container {
+        
+                #bet-chips {
+                    display: flex;
+                    height: 5rem;
+                    justify-content: center;
+        
+                    .bet-chip-wrapper {
+                        max-width: 5rem;
+                        width: 100%;
+                        transition: all .3s ease;
+                    }
+        
+                    .bet-chip-wrapper-expanding {
+                        animation-name: bet-chip-wrapper-expanding;
+                        animation-duration: .3s;
+                        animation-timing-function: ease;
+                    }
+        
+                    .bet-chip-wrapper-shrinking {
+                        animation-name: bet-chip-wrapper-shrinking;
+                        animation-duration: .3s;
+                        animation-timing-function: ease;
+                    }
+                }
+
+                #bet-chips.collapsed {
+                    height: 0;
+                }
+        
+                #bet {
+                    color: #fff;
+                    font-size: 2rem;
+                    user-select: none;
+                    margin-bottom: 1rem;
+                }
+            }
+        
+            #bank {
+                color: #fff;
+                font-size: 5rem;
+                user-select: none;
+        
+                #bank-amount {
+                    
+                }
+            }
+        
+            #bottom-bar {
+                background: #6b4141;
+                padding: 2rem 0;
+        
+                #chips-container {
+                    background: #583636;
+                    width: 90%;
+                    margin: 0 auto 1rem;
+                    padding: 1rem;
+                    border-radius: 50px;
+                    user-select: none;
+        
+                    .chip-wrapper {
+                        display: inline-block;
+                        position: relative;
+        
+                        .chip {
+                            border-radius: 50%;
+                            color: #212121;
+                            height: 5rem;
+                            width: 5rem;
+                            user-select: none;
+                        }
+                        
+                        .chip:focus {
+                            outline: none;
+                        }
+        
+                        .chip-discard {
+                            position: absolute;
+                            top: 0;
+                        }
+        
+                    }
+                }
+            
+                #btns-container {
+                    
+                    #dbl-stand-hit, #deal {
+                        display: flex;
+                        justify-content: center;
+                    }
+        
+                    .btn-wrapper {
+                        max-width: 30rem;
+                        width: 33.333%;
+        
+                        .btn {
+                            height: 5rem;
+                            max-width: 30rem;
+                            width: 100%;
+                            user-select: none;
+                        }
+                    }
+                }
+            }
+        }
+
         .chip-bet {
             align-items: center;
             background: #fff;
             border-radius: 50%;
             color: #212121;
             display: flex;
-            height: 100px;
+            height: 5rem;
             justify-content: center;
             position: absolute;
             user-select: none;
-            width: 100px;
+            width: 5rem;
         }
     
         #chip--1, .chip-bet--1 {
-            border: 1rem dashed #b0b0b0;
+            border: .6rem dashed #b0b0b0;
         }
     
         #chip--5, .chip-bet--5 {
-            border: 1rem dashed #c93030;
+            border: .6rem dashed #c93030;
         }
     
         #chip--10, .chip-bet--10 {
-            border: 1rem dashed #3048c7;
+            border: .6rem dashed #3048c7;
         }
     
         #chip--25, .chip-bet--25 {
-            border: 1rem dashed #239c1f;
+            border: .6rem dashed #239c1f;
         }
     
         #chip--100, .chip-bet--100 {
-            border: 1rem dashed #3d3d3d;
+            border: .6rem dashed #3d3d3d;
         }
-    
-        #bet-container {
-    
-            #bet-chips {
-                display: flex;
-                height: 100px;
-                justify-content: center;
-    
-                .bet-chip-wrapper {
-                    max-width: 100px;
-                    width: 100%;
-                    transition: all .3s ease;
-                }
-    
-                .bet-chip-wrapper-expanding {
-                    animation-name: bet-chip-wrapper-expanding;
-                    animation-duration: .3s;
-                    animation-timing-function: ease;
-                }
-    
-                .bet-chip-wrapper-shrinking {
-                    animation-name: bet-chip-wrapper-shrinking;
-                    animation-duration: .3s;
-                    animation-timing-function: ease;
-                }
-            }
-    
-            #bet {
-                color: #fff;
-                font-size: 3rem;
-                user-select: none;
-            }
-        }
-    
-        #bank {
-            color: #fff;
-            font-size: 5rem;
-            user-select: none;
-    
-            #bank-amount {
-                
-            }
-        }
-    
-        #bottom-bar {
-            background: #6b4141;
-            padding: 2rem 0;
-    
-            #chips-container {
-                background: #583636;
-                width: 90%;
-                margin: 0 auto 1rem;
-                padding: 1rem;
-                border-radius: 50px;
-                user-select: none;
-    
-                .chip-wrapper {
-                    display: inline-block;
-                    position: relative;
-    
-                    .chip {
-                        border: none;
-                        border-radius: 50%;
-                        color: #212121;
-                        height: 10rem;
-                        width: 10rem;
-                        user-select: none;
-                    }
-                    
-                    .chip:focus {
-                        outline: none;
-                    }
-    
-                    .chip-discard {
-                        position: absolute;
-                        top: 0;
-                    }
-    
-                }
-            }
-        
-            #btns-container {
-                
-                #dbl-stand-hit, #deal {
-                    display: flex;
-                    justify-content: center;
-                }
-    
-                .btn-wrapper {
-                    max-width: 30rem;
-                    width: 33.333%;
-    
-                    .btn {
-                        height: 5rem;
-                        max-width: 30rem;
-                        width: 100%;
-                        user-select: none;
-                    }
-                }
-            }
-        }
+
     }
 
 }
@@ -213,12 +329,11 @@ body {
     border: 1px solid black;
     border-radius: 5px;
     box-shadow: 0 1px #FFFFFF inset, 0 1px 3px rgba(34, 25, 25, 0.4);
-    display: inline-block;
-    height: 175px;
-    position: relative;
+    height: 14rem;
+    position: absolute;
     transform-origin: center;
     transform-style: preserve-3d;
-    width: 122.5px;
+    width: 10rem;
 
     .card__face {
         backface-visibility: hidden;
@@ -231,6 +346,33 @@ body {
     .card__face--front {
         background-color: white;
         text-align: center;
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(3, auto);
+
+        .card-info--top,
+        .card-info--bottom {
+            display: flex;
+            justify-content: space-between;
+            padding: .5rem .5rem 0;
+
+            .card-name-suit {
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
+                align-items: center;
+
+                .card-name {
+                    font-size: 1.6rem;
+                }
+            }
+        }
+
+        .card-info--bottom {
+            transform: rotate(180deg);
+        }
+
+
     }
 
     .card__face--back {
@@ -243,11 +385,17 @@ body {
     transform: rotateY(180deg);
 }
 
-
-
 .card--being-dealt {
     animation-name: deal-card;
-    animation-duration: 2s;
+    animation-duration: 1s;
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: forwards;
+    transform: translateX(-100vw) translateY(-100vh) translateZ(0) rotateZ(540deg);
+}
+
+.card--being-dealt-facedown {
+    animation-name: deal-card-facedown;
+    animation-duration: .25s;
     animation-timing-function: ease-in-out;
     animation-fill-mode: forwards;
     transform: translateX(-100vw) translateY(-100vh) translateZ(0) rotateZ(540deg);
@@ -262,3 +410,44 @@ body {
     transition: all 2s;
     transform: translateX(100vw) translateY(100vh);
 }
+
+.bet-chip--moving-to-hand {
+    transition: all .3s;
+}
+
+.test-wrap-1,
+.test-wrap-2 {
+	height: 100px;
+	width: 100px;
+	border: 1px solid black;
+}
+
+.test {
+	height: 100%;
+	background: red;
+}
+
+#div_one {
+    width: 50px;
+    height: 50px;
+    border: 10px solid red;
+  }
+  
+  #div_two {
+    width: 50px;
+    height: 50px;
+    border: 10px solid blue;
+  }
+  
+  @keyframes move {
+    100% {
+      transform: translateX(300px);
+    }
+  }
+  
+  @keyframes down {
+    100% {
+      transform: translateY(300px);
+    }
+  }
+  

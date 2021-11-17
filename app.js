@@ -2,15 +2,65 @@
 
 const Player = {
     bank: 1000,
-    container: document.getElementById('player-hands'),
-    currentHand: -1,
+    handIndex: -1,
     hands: [],
-    bet: 0
+    handsDiv: document.getElementById('player-hands'),
+    bet: 0,
+    createHand: (bet) => {
+        let hand = {
+            ui: {
+                div: document.createElement('div'),
+                bet: document.createElement('p'),
+                chips: document.createElement('div'),
+                cards: document.createElement('div'),
+                cardsInner: document.createElement('div'),
+                count: document.createElement('p'),
+                indicator: document.createElement('div')
+            },
+            bet,
+            cards: [],
+            count: {
+                acesAreOne: 0,
+                acesAreEleven: 0
+            }
+        }
+
+        Player.hands.push(hand)
+
+        hand.ui.div.classList.add('hand')
+        hand.ui.bet.classList.add('hand-bet-amount')
+        hand.ui.chips.classList.add('hand-chips')
+        hand.ui.cards.classList.add('hand-cards')
+        hand.ui.cardsInner.classList.add('hand-cards-inner')
+        hand.ui.count.classList.add('hand-card-count', 'hidden')
+        hand.ui.indicator.classList.add('hand-indicator')
+
+        hand.ui.div.appendChild(hand.ui.bet)
+        hand.ui.div.appendChild(hand.ui.chips)
+        hand.ui.div.appendChild(hand.ui.cards)
+        hand.ui.cards.appendChild(hand.ui.cardsInner)
+        hand.ui.cards.appendChild(hand.ui.count)
+        hand.ui.div.appendChild(hand.ui.indicator)
+        Player.handsDiv.appendChild(hand.ui.div)
+
+        Player.handIndex++
+    }
 }
 
 const Dealer = {
     container: document.getElementById('dealer-hand'),
-    hands: [],
+    hands: [
+        {
+            ui: {
+                div: document.querySelector('#dealer-hand .hand'),
+                cards: document.querySelector('#dealer-hand .hand-cards'),
+                cardsInner: document.querySelector('#dealer-hand .hand-cards-inner'),
+                count: document.querySelector('#dealer-hand .hand-card-count'),
+            },
+            cards: [],
+            count: 0
+        }
+    ],
     secondCard: null
 }
 
@@ -25,7 +75,11 @@ const UI = {
         chip10: document.getElementById('chip--10'),
         chip25: document.getElementById('chip--25'),
         chip100: document.getElementById('chip--100'),
-        deal: document.getElementById('btn--deal')
+        deal: document.getElementById('btn--deal'),
+        doubleStandHit: document.getElementById('dbl-stand-hit'),
+        double: document.getElementById('btn--dbl'),
+        hit: document.getElementById('btn--hit'),
+        stand: document.getElementById('btn--stand')
     },
     chipBtns: document.querySelectorAll('.chip'),
     chipsBet: document.getElementById('bet-chips'),
@@ -39,6 +93,7 @@ const UI = {
     chip25Discard: document.getElementById('chip--25-discard'),
     chip100Wrapper: document.getElementById('chip--100-wrapper'),
     chip100Discard: document.getElementById('chip--100-discard'),
+    splitContainer: document.getElementById('split-container'),
     betChip: function(chipVal, chipWrapper, chipDiscard) {
 
         UI.disableBtns(UI.chipBtns, true)
@@ -105,7 +160,7 @@ const UI = {
 
                 UI.disableBtns(UI.chipBtns, false)
                 UI.enableBetChips()
-                if (Player.bet > 0) { 
+                if (Player.bet > 0) {
                     UI.disableDealBtn(false)
                 }
                 // remove chip
@@ -113,6 +168,9 @@ const UI = {
             })
         })
 
+    },
+    collapseChipsBet: () => {
+        UI.chipsBet.classList.toggle('collapsed')
     },
     disableBtns: (btns, bool) => {
         btns.forEach(btn => {
@@ -150,7 +208,22 @@ const UI = {
             betChipWrapper100.lastElementChild.classList.remove('disable-clicks')
         }
     },
-    moveElement: function(el, container, className, callback) {
+    hideDealBtn: () => {
+        UI.btn.deal.classList.add('hidden')
+    },
+    hideDoubleBtn: () => {
+        UI.btn.double.classList.add('hidden')
+    },
+    hideSplitContainer: () => {
+        UI.splitContainer.classList.add('hidden')
+    },
+    showDoubleStandHitBtns: () => {
+        UI.btn.doubleStandHit.classList.remove('hidden')
+    },
+    showSplitContainer: () => {
+        UI.splitContainer.classList.remove('hidden')
+    },
+    moveElement: (el, container, className, callback) => {
 
         let firstPos = el.getBoundingClientRect()
         container.appendChild(el)
@@ -160,15 +233,17 @@ const UI = {
 
         el.style.transform = `translate(${invertX}px, ${invertY}px)`
 
+
         el.addEventListener('transitionend', () => {
             el.classList.remove(className)
             callback()
         }, { once: true })
 
-        requestAnimationFrame(() => {
+        setTimeout(() => {
             el.classList.add(className)
-            el.style.transform = ''
-        })
+            el.style.transform = 'none'
+        }, 1)
+
     },
     updateBank: function() {
         this.bankAmount.innerText = `${Player.bank}`
@@ -183,81 +258,471 @@ const UI = {
 
 const Game = {
     deck: [
-        { name: '2', suit: 'hearts', val: 2},
-        { name: '2', suit: 'diamonds', val: 2 },
-        { name: '2', suit: 'spades', val: 2 },
-        { name: '2', suit: 'clubs', val: 2 },
-        { name: '3', suit: 'hearts', val: 3 },
-        { name: '3', suit: 'diamonds', val: 3 },
-        { name: '3', suit: 'spades', val: 3 },
-        { name: '3', suit: 'clubs', val: 3 },
-        { name: '4', suit: 'hearts', val: 4 },
-        { name: '4', suit: 'diamonds', val: 4 },
-        { name: '4', suit: 'spades', val: 4 },
-        { name: '4', suit: 'clubs', val: 4 },
-        { name: '5', suit: 'hearts', val: 5 },
-        { name: '5', suit: 'diamonds', val: 5 },
-        { name: '5', suit: 'spades', val: 5 },
-        { name: '5', suit: 'clubs', val: 5 },
-        { name: '6', suit: 'hearts', val: 6 },
-        { name: '6', suit: 'diamonds', val: 6 },
-        { name: '6', suit: 'spades', val: 6 },
-        { name: '6', suit: 'clubs', val: 6 },
-        { name: '7', suit: 'hearts', val: 7 },
-        { name: '7', suit: 'diamonds', val: 7 },
-        { name: '7', suit: 'spades', val: 7 },
-        { name: '7', suit: 'clubs', val: 7 },
-        { name: '8', suit: 'hearts', val: 8 },
-        { name: '8', suit: 'diamonds', val: 8 },
-        { name: '8', suit: 'spades', val: 8 },
-        { name: '8', suit: 'clubs', val: 8 },
-        { name: '9', suit: 'hearts', val: 9 },
-        { name: '9', suit: 'diamonds', val: 9 },
-        { name: '9', suit: 'spades', val: 9 },
-        { name: '9', suit: 'clubs', val: 9 },
-        { name: '10', suit: 'hearts', val: 10 },
-        { name: '10', suit: 'diamonds', val: 10 },
-        { name: '10', suit: 'spades', val: 10 },
-        { name: '10', suit: 'clubs', val: 10 },
-        { name: 'jack', suit: 'hearts', val: 10 },
-        { name: 'jack', suit: 'diamonds', val: 10 },
-        { name: 'jack', suit: 'spades', val: 10 },
-        { name: 'jack', suit: 'clubs', val: 10 },
-        { name: 'queen', suit: 'hearts', val: 10 },
-        { name: 'queen', suit: 'diamonds', val: 10 },
-        { name: 'queen', suit: 'spades', val: 10 },
-        { name: 'queen', suit: 'clubs', val: 10 },
-        { name: 'king', suit: 'hearts', val: 10 },
-        { name: 'king', suit: 'diamonds', val: 10 },
-        { name: 'king', suit: 'spades', val: 10 },
-        { name: 'king', suit: 'clubs', val: 10 },
-        { name: 'ace', suit: 'hearts', val: 0 },
-        { name: 'ace', suit: 'diamonds', val: 0 },
-        { name: 'ace', suit: 'spades', val: 0 },
-        { name: 'ace', suit: 'clubs', val: 0 }
+        { name: '2', suit: 'hearts', graphic: '', value: 2, value1: 2, value2: 2, isAce: false },
+        { name: '2', suit: 'diamonds', graphic: '', value: 2, value1: 2, value2: 2, isAce: false },
+        { name: '2', suit: 'spades', graphic: '', value: 2, value1: 2, value2: 2, isAce: false },
+        { name: '2', suit: 'clubs', graphic: '', value: 2, value1: 2, value2: 2, isAce: false },
+        { name: '3', suit: 'hearts', graphic: '', value: 3, value1: 3, value2: 3, isAce: false },
+        { name: '3', suit: 'diamonds', graphic: '', value: 3, value1: 3, value2: 3, isAce: false },
+        { name: '3', suit: 'spades', graphic: '', value: 3, value1: 3, value2: 3, isAce: false },
+        { name: '3', suit: 'clubs', graphic: '', value: 3, value1: 3, value2: 3, isAce: false },
+        { name: '4', suit: 'hearts', graphic: '', value: 4, value1: 4, value2: 4, isAce: false },
+        { name: '4', suit: 'diamonds', graphic: '', value: 4, value1: 4, value2: 4, isAce: false },
+        { name: '4', suit: 'spades', graphic: '', value: 4, value1: 4, value2: 4, isAce: false },
+        { name: '4', suit: 'clubs', graphic: '', value: 4, value1: 4, value2: 4, isAce: false },
+        { name: '5', suit: 'hearts', graphic: '', value: 5, value1: 5, value2: 5, isAce: false },
+        { name: '5', suit: 'diamonds', graphic: '', value: 5, value1: 5, value2: 5, isAce: false },
+        { name: '5', suit: 'spades', graphic: '', value: 5, value1: 5, value2: 5, isAce: false },
+        { name: '5', suit: 'clubs', graphic: '', value: 5, value1: 5, value2: 5, isAce: false },
+        { name: '6', suit: 'hearts', graphic: '', value: 6, value1: 6, value2: 6, isAce: false },
+        { name: '6', suit: 'diamonds', graphic: '', value: 6, value1: 6, value2: 6, isAce: false },
+        { name: '6', suit: 'spades', graphic: '', value: 6, value1: 6, value2: 6, isAce: false },
+        { name: '6', suit: 'clubs', graphic: '', value: 6, value1: 6, value2: 6, isAce: false },
+        { name: '7', suit: 'hearts', graphic: '', value: 7, value1: 7, value2: 7, isAce: false },
+        { name: '7', suit: 'diamonds', graphic: '', value: 7, value1: 7, value2: 7, isAce: false },
+        { name: '7', suit: 'spades', graphic: '', value: 7, value1: 7, value2: 7, isAce: false },
+        { name: '7', suit: 'clubs', graphic: '', value: 7, value1: 7, value2: 7, isAce: false },
+        { name: '8', suit: 'hearts', graphic: '', value: 8, value1: 8, value2: 8, isAce: false },
+        { name: '8', suit: 'diamonds', graphic: '', value: 8, value1: 8, value2: 8, isAce: false },
+        { name: '8', suit: 'spades', graphic: '', value: 8, value1: 8, value2: 8, isAce: false },
+        { name: '8', suit: 'clubs', graphic: '', value: 8, value1: 8, value2: 8, isAce: false },
+        { name: '9', suit: 'hearts', graphic: '', value: 9, value1: 9, value2: 9, isAce: false },
+        { name: '9', suit: 'diamonds', graphic: '', value: 9, value1: 9, value2: 9, isAce: false },
+        { name: '9', suit: 'spades', graphic: '', value: 9, value1: 9, value2: 9, isAce: false },
+        { name: '9', suit: 'clubs', graphic: '', value: 9, value1: 9, value2: 9, isAce: false },
+        { name: '10', suit: 'hearts', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        { name: '10', suit: 'diamonds', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        { name: '10', suit: 'spades', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        { name: '10', suit: 'clubs', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        { name: 'J', suit: 'hearts', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        { name: 'J', suit: 'diamonds', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        { name: 'J', suit: 'spades', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        { name: 'J', suit: 'clubs', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        { name: 'Q', suit: 'hearts', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        { name: 'Q', suit: 'diamonds', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        { name: 'Q', suit: 'spades', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        { name: 'Q', suit: 'clubs', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        { name: 'K', suit: 'hearts', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        { name: 'K', suit: 'diamonds', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        { name: 'K', suit: 'spades', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        { name: 'K', suit: 'clubs', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        { name: 'A', suit: 'hearts', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true },
+        { name: 'A', suit: 'diamonds', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true },
+        { name: 'A', suit: 'spades', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true },
+        { name: 'A', suit: 'clubs', graphic: '', value: 11, value1: 1, value2: 11, isAce: true }
     ],
-    deal: (hand) => {
-        
+    deal: (hand, isCardFacedown) => {
+
+        // move card logic from dealer to hand
+        let dealtCard = Game.deck.pop()
+        hand.cards.push(dealtCard)
+
+        // generate card in DOM
+        let card = document.createElement('div')
+
+        let suitIcon = ''
+
+        switch (dealtCard.suit) {
+            case 'hearts':
+                suitIcon = `<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                width="15px" height="15px" viewBox="0 0 15 15" style="enable-background:new 0 0 15 15;" xml:space="preserve">
+           <path style="fill:#ff0000;fill-opacity:1;stroke:none;" d="M13.91,6.75c-1.17,2.25-4.3,5.31-6.07,6.94c-0.1903,0.1718-0.4797,0.1718-0.67,0C5.39,12.06,2.26,9,1.09,6.75
+               C-1.48,1.8,5-1.5,7.5,3.45C10-1.5,16.48,1.8,13.91,6.75z"/>
+           </svg>`
+                break
+            case 'diamonds':
+                suitIcon = `<svg width="11px" height="15px" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" width="127" height="175" viewBox="0 0 127 175" id="svg2" version="1.1" inkscape:version="0.91 r13725" sodipodi:docname="card diamond.svg">
+                <g inkscape:label="Layer 1" inkscape:groupmode="layer" id="layer1" transform="translate(0,-877.36216)">
+                  <path style="fill:#ff0000;fill-opacity:1;stroke:none" d="M 59.617823,1026.4045 C 54.076551,1017.027 35.802458,991.8393 22.320951,974.99722 15.544428,966.53149 10,959.28947 10,958.90385 c 0,-0.38562 2.498012,-3.68932 5.551138,-7.34155 14.779126,-17.67921 34.688967,-44.7342 42.813135,-58.17773 2.491067,-4.12211 4.836029,-7.13807 5.211026,-6.70213 0.374997,0.43594 3.911379,5.74741 7.858624,11.80326 8.617724,13.22128 27.37269,38.4164 38.049687,51.11535 l 7.73836,9.2038 -7.73836,9.2038 c -14.035208,16.69312 -34.03523,44.26125 -44.489713,61.32495 l -1.855601,3.0286 -3.520473,-5.9577 z" id="path5878" inkscape:connector-curvature="0"/>
+                </g>
+              <style xmlns="http://www.w3.org/1999/xhtml" type="text/css"></style></svg>`
+                break
+            case 'spades':
+                suitIcon = `<svg xmlns="http://www.w3.org/2000/svg" version="1.1" baseProfile="full" viewBox="68.547241 122.68109 537.42297 635.16461" height="15px" width="12px">
+                <path d="m213.23 502.9c-195.31 199.54-5.3525 344.87 149.07 249.6.84137 49.146-37.692 95.028-61.394 138.9h166.73c-24.41-42.64-65.17-89.61-66.66-138.9 157.66 90.57 325.33-67.37 150.39-249.6-91.22-100.08-148.24-177.95-169.73-204.42-19.602 25.809-71.82 101.7-168.41 204.42z" fill-rule="evenodd" stroke="#000" stroke-width="1.3691pt" transform="translate(-40.697 -154.41)"/>
+                </svg>`
+                break
+            case 'clubs':
+                suitIcon = `<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" viewBox="0 0 167 175" id="svg2" version="1.1" inkscape:version="0.91 r13725" sodipodi:docname="card club.svg" height="15px" width="13px">
+                <g inkscape:label="Layer 1" inkscape:groupmode="layer" id="layer1" transform="translate(0,-877.36216)">
+                  <path style="fill:#000;fill-opacity:1;stroke:none" d="m 33.57277,1031.6441 c 0.0435,-2.1326 2.41976,-3.3889 10.49989,-5.5512 12.14507,-3.2503 16.36065,-5.2676 21.9679,-10.5125 9.82494,-9.1901 15.25562,-21.22154 15.97824,-35.39913 0.36906,-7.24076 0.24246,-8.32449 -0.79266,-6.78544 -0.67753,1.00737 -2.97792,4.45418 -5.11199,7.65957 -7.97032,11.97146 -22.45213,19.5535 -35.36758,18.51676 -11.83058,-0.9496 -22.13911,-8.0757 -27.153181,-18.7705 C 11.408457,976.14131 9.9993832,974.1371 10,966.29829 c 5.75e-4,-7.29956 1.467962,-9.97978 3.127761,-13.57245 2.811689,-6.08595 9.305249,-12.90321 15.075899,-15.82742 4.21005,-2.1334 5.63196,-2.36479 12.00652,-1.95387 4.40788,0.28415 9.05935,1.27178 11.91429,2.52974 2.57586,1.13499 4.86604,1.88096 5.08928,1.65771 0.22325,-0.22324 -1.01801,-3.14232 -2.75836,-6.48683 -2.89215,-5.55798 -3.613547,-9.70494 -3.17439,-14.69794 0.715189,-8.13136 3.33033,-17.06576 9.26858,-22.66644 6.210544,-5.8575 13.15934,-8.70278 24.23193,-8.29118 10.30158,0.38295 16.28183,3.51796 21.8449,9.11271 5.44231,5.4733 8.15044,13.72926 8.79339,21.42097 0.42932,5.136 -0.30242,8.80285 -3.41548,15.07978 -1.87851,3.78769 -3.11542,6.88671 -2.74868,6.88671 0.36674,0 3.19626,-1.17617 6.28782,-2.61372 14.45758,-6.72263 31.03576,-0.21065 38.04272,14.94333 1.68146,3.63649 3.04501,6.21845 3.03882,14.4789 -0.007,8.74854 -1.3142,10.67446 -3.37074,14.84042 -6.50325,13.17365 -21.57941,20.77499 -35.34793,17.82215 -11.72207,-2.5139 -21.58027,-9.5882 -28.79683,-20.66458 -2.24081,-3.43932 -4.2733,-6.25331 -4.51666,-6.25331 -0.70681,0 0.71696,12.36855 2.17672,18.90959 2.84299,12.73914 11.304859,24.30404 22.0274,30.10484 4.10231,2.2193 12.45749,4.8896 21.58822,6.8996 1.4227,0.3132 2.73765,1.3922 3.02207,2.4798 0.49967,1.9108 0.12309,1.9254 -49.67283,1.9254 -27.59697,0 -50.16972,-0.3231 -50.16165,-0.7181 z" id="path5891" inkscape:connector-curvature="0" sodipodi:nodetypes="ccssssssssssscsaasaasssscssssssscsc"/>
+                </g>
+              </svg>`
+                break
+        }
+
+        let cardContent = `
+            <div class="card__face card__face--front">
+                <div class="card-info--top">
+                    <div class="card-name-suit">
+                        <div class="card-name">${dealtCard.name}</div>
+                        <div>${suitIcon}</div>
+                    </div>
+                    <div class="card-name-suit">
+                        <div class="card-name">${dealtCard.name}</div>
+                        <div>${suitIcon}</div>
+                    </div>
+                </div>
+                <div class="card-graphic">
+                    <p>${dealtCard.name}</p>
+                    <p>${dealtCard.suit}</p>
+                </div>
+                <div class="card-info--bottom">
+                    <div class="card-name-suit">
+                        <div class="card-name">${dealtCard.name}</div>
+                        <div>${suitIcon}</div>
+                    </div>
+                    <div class="card-name-suit">
+                        <div class="card-name">${dealtCard.name}</div>
+                        <div>${suitIcon}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="card__face card__face--back"></div>
+        `
+
+        card.insertAdjacentHTML('beforeend', cardContent)
+        card.classList.add('card')
+        hand.ui.cardsInner.appendChild(card)
+
+        // return promise so card animations can run synchronously
+        return new Promise(resolve => {
+            const onAnimationEndCb = () => {
+                card.removeEventListener('animationend', onAnimationEndCb)
+
+                if (isCardFacedown) {
+                    card.classList.remove('card--being-dealt-facedown')
+                } else {
+                    card.classList.remove('card--being-dealt')
+                }
+
+                let cardIndex = hand.ui.cardsInner.children.length - 1
+
+                // if there's more than 1 card
+                if (hand.ui.cardsInner.children.length > 1) {
+                    for (const card of hand.ui.cardsInner.children) {
+                        // offset nonitial cards
+                        if (cardIndex !== 0) {
+                            card.style.left = `${cardIndex * -2}rem`
+                            cardIndex--
+                        }
+                    }
+
+                    // recenter cardsInner wrapper
+                    hand.ui.cardsInner.style.left = `${(hand.ui.cardsInner.children.length - 1) * 1}rem`
+                }
+
+                resolve()
+            }
+
+            card.addEventListener('animationend', onAnimationEndCb)
+
+            if (isCardFacedown) {
+                card.classList.add('card--being-dealt-facedown', 'card--facedown')   
+            } else  {
+                card.classList.add('card--being-dealt')   
+            }
+
+            
+            
+        })
+    },
+    forceCard: (hand, isCardFacedown, forcedCard) => {
+
+        // move card logic from dealer to hand
+        let dealtCard = forcedCard
+        hand.cards.push(dealtCard)
+
+        // generate card in DOM
+        let card = document.createElement('div')
+
+        let suitIcon = ''
+
+        switch (dealtCard.suit) {
+            case 'hearts':
+                suitIcon = `<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                width="15px" height="15px" viewBox="0 0 15 15" style="enable-background:new 0 0 15 15;" xml:space="preserve">
+           <path style="fill:#ff0000;fill-opacity:1;stroke:none;" d="M13.91,6.75c-1.17,2.25-4.3,5.31-6.07,6.94c-0.1903,0.1718-0.4797,0.1718-0.67,0C5.39,12.06,2.26,9,1.09,6.75
+               C-1.48,1.8,5-1.5,7.5,3.45C10-1.5,16.48,1.8,13.91,6.75z"/>
+           </svg>`
+                break
+            case 'diamonds':
+                suitIcon = `<svg width="11px" height="15px" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" width="127" height="175" viewBox="0 0 127 175" id="svg2" version="1.1" inkscape:version="0.91 r13725" sodipodi:docname="card diamond.svg">
+                <g inkscape:label="Layer 1" inkscape:groupmode="layer" id="layer1" transform="translate(0,-877.36216)">
+                  <path style="fill:#ff0000;fill-opacity:1;stroke:none" d="M 59.617823,1026.4045 C 54.076551,1017.027 35.802458,991.8393 22.320951,974.99722 15.544428,966.53149 10,959.28947 10,958.90385 c 0,-0.38562 2.498012,-3.68932 5.551138,-7.34155 14.779126,-17.67921 34.688967,-44.7342 42.813135,-58.17773 2.491067,-4.12211 4.836029,-7.13807 5.211026,-6.70213 0.374997,0.43594 3.911379,5.74741 7.858624,11.80326 8.617724,13.22128 27.37269,38.4164 38.049687,51.11535 l 7.73836,9.2038 -7.73836,9.2038 c -14.035208,16.69312 -34.03523,44.26125 -44.489713,61.32495 l -1.855601,3.0286 -3.520473,-5.9577 z" id="path5878" inkscape:connector-curvature="0"/>
+                </g>
+              <style xmlns="http://www.w3.org/1999/xhtml" type="text/css"></style></svg>`
+                break
+            case 'spades':
+                suitIcon = `<svg xmlns="http://www.w3.org/2000/svg" version="1.1" baseProfile="full" viewBox="68.547241 122.68109 537.42297 635.16461" height="15px" width="12px">
+                <path d="m213.23 502.9c-195.31 199.54-5.3525 344.87 149.07 249.6.84137 49.146-37.692 95.028-61.394 138.9h166.73c-24.41-42.64-65.17-89.61-66.66-138.9 157.66 90.57 325.33-67.37 150.39-249.6-91.22-100.08-148.24-177.95-169.73-204.42-19.602 25.809-71.82 101.7-168.41 204.42z" fill-rule="evenodd" stroke="#000" stroke-width="1.3691pt" transform="translate(-40.697 -154.41)"/>
+                </svg>`
+                break
+            case 'clubs':
+                suitIcon = `<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" viewBox="0 0 167 175" id="svg2" version="1.1" inkscape:version="0.91 r13725" sodipodi:docname="card club.svg" height="15px" width="13px">
+                <g inkscape:label="Layer 1" inkscape:groupmode="layer" id="layer1" transform="translate(0,-877.36216)">
+                  <path style="fill:#000;fill-opacity:1;stroke:none" d="m 33.57277,1031.6441 c 0.0435,-2.1326 2.41976,-3.3889 10.49989,-5.5512 12.14507,-3.2503 16.36065,-5.2676 21.9679,-10.5125 9.82494,-9.1901 15.25562,-21.22154 15.97824,-35.39913 0.36906,-7.24076 0.24246,-8.32449 -0.79266,-6.78544 -0.67753,1.00737 -2.97792,4.45418 -5.11199,7.65957 -7.97032,11.97146 -22.45213,19.5535 -35.36758,18.51676 -11.83058,-0.9496 -22.13911,-8.0757 -27.153181,-18.7705 C 11.408457,976.14131 9.9993832,974.1371 10,966.29829 c 5.75e-4,-7.29956 1.467962,-9.97978 3.127761,-13.57245 2.811689,-6.08595 9.305249,-12.90321 15.075899,-15.82742 4.21005,-2.1334 5.63196,-2.36479 12.00652,-1.95387 4.40788,0.28415 9.05935,1.27178 11.91429,2.52974 2.57586,1.13499 4.86604,1.88096 5.08928,1.65771 0.22325,-0.22324 -1.01801,-3.14232 -2.75836,-6.48683 -2.89215,-5.55798 -3.613547,-9.70494 -3.17439,-14.69794 0.715189,-8.13136 3.33033,-17.06576 9.26858,-22.66644 6.210544,-5.8575 13.15934,-8.70278 24.23193,-8.29118 10.30158,0.38295 16.28183,3.51796 21.8449,9.11271 5.44231,5.4733 8.15044,13.72926 8.79339,21.42097 0.42932,5.136 -0.30242,8.80285 -3.41548,15.07978 -1.87851,3.78769 -3.11542,6.88671 -2.74868,6.88671 0.36674,0 3.19626,-1.17617 6.28782,-2.61372 14.45758,-6.72263 31.03576,-0.21065 38.04272,14.94333 1.68146,3.63649 3.04501,6.21845 3.03882,14.4789 -0.007,8.74854 -1.3142,10.67446 -3.37074,14.84042 -6.50325,13.17365 -21.57941,20.77499 -35.34793,17.82215 -11.72207,-2.5139 -21.58027,-9.5882 -28.79683,-20.66458 -2.24081,-3.43932 -4.2733,-6.25331 -4.51666,-6.25331 -0.70681,0 0.71696,12.36855 2.17672,18.90959 2.84299,12.73914 11.304859,24.30404 22.0274,30.10484 4.10231,2.2193 12.45749,4.8896 21.58822,6.8996 1.4227,0.3132 2.73765,1.3922 3.02207,2.4798 0.49967,1.9108 0.12309,1.9254 -49.67283,1.9254 -27.59697,0 -50.16972,-0.3231 -50.16165,-0.7181 z" id="path5891" inkscape:connector-curvature="0" sodipodi:nodetypes="ccssssssssssscsaasaasssscssssssscsc"/>
+                </g>
+              </svg>`
+                break
+        }
+
+        let cardContent = `
+            <div class="card__face card__face--front">
+                <div class="card-info--top">
+                    <div class="card-name-suit">
+                        <div class="card-name">${dealtCard.name}</div>
+                        <div>${suitIcon}</div>
+                    </div>
+                    <div class="card-name-suit">
+                        <div class="card-name">${dealtCard.name}</div>
+                        <div>${suitIcon}</div>
+                    </div>
+                </div>
+                <div class="card-graphic">
+                    <p>${dealtCard.name}</p>
+                    <p>${dealtCard.suit}</p>
+                </div>
+                <div class="card-info--bottom">
+                    <div class="card-name-suit">
+                        <div class="card-name">${dealtCard.name}</div>
+                        <div>${suitIcon}</div>
+                    </div>
+                    <div class="card-name-suit">
+                        <div class="card-name">${dealtCard.name}</div>
+                        <div>${suitIcon}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="card__face card__face--back"></div>
+        `
+
+        card.insertAdjacentHTML('beforeend', cardContent)
+        card.classList.add('card')
+        hand.ui.cardsInner.appendChild(card)
+
+        // return promise so card animations can run synchronously
+        return new Promise(resolve => {
+            const onAnimationEndCb = () => {
+                card.removeEventListener('animationend', onAnimationEndCb)
+
+                if (isCardFacedown) {
+                    card.classList.remove('card--being-dealt-facedown')
+                } else {
+                    card.classList.remove('card--being-dealt')
+                }
+
+                let cardIndex = hand.ui.cardsInner.children.length - 1
+
+                // if there's more than 1 card
+                if (hand.ui.cardsInner.children.length > 1) {
+                    for (const card of hand.ui.cardsInner.children) {
+                        // offset nonitial cards
+                        if (cardIndex !== 0) {
+                            card.style.left = `${cardIndex * -2}rem`
+                            cardIndex--
+                        }
+                    }
+
+                    // recenter cardsInner wrapper
+                    hand.ui.cardsInner.style.left = `${(hand.ui.cardsInner.children.length - 1) * 1}rem`
+                }
+
+                resolve()
+            }
+
+            card.addEventListener('animationend', onAnimationEndCb)
+
+            if (isCardFacedown) {
+                card.classList.add('card--being-dealt-facedown', 'card--facedown')   
+            } else  {
+                card.classList.add('card--being-dealt')   
+            }
+
+            
+            
+        })
+    },
+    dealFirstCards: async () => {
+        // ace + random
+        // await Game.forceCard(Player.hands[0], false, { name: 'A', suit: 'spades', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true })
+        // await Game.deal(Dealer.hands[0], false)
+        // await Game.deal(Player.hands[0], false)
+        // await Game.deal(Dealer.hands[0], true)
+        // ace + ace
+        // await Game.forceCard(Player.hands[0], false, { name: 'A', suit: 'spades', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true })
+        // await Game.deal(Dealer.hands[0], false)
+        // await Game.forceCard(Player.hands[0], false, { name: 'A', suit: 'hearts', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true })
+        // await Game.deal(Dealer.hands[0], true)
+        // random + random
+        // await Game.deal(Player.hands[0], false)
+        // await Game.deal(Dealer.hands[0], false)
+        // await Game.deal(Player.hands[0], false)
+        // await Game.deal(Dealer.hands[0], true)
+        // dealer ace first card
+        // await Game.deal(Player.hands[0], false)
+        // await Game.forceCard(Dealer.hands[0], false, { name: 'A', suit: 'spades', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true })
+        // await Game.deal(Player.hands[0], false)
+        // await Game.deal(Dealer.hands[0], true)
+        // dealer ace first card, player 21
+        // await Game.forceCard(Player.hands[0], false, { name: 'A', suit: 'hearts', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true })
+        // await Game.forceCard(Dealer.hands[0], false, { name: 'A', suit: 'spades', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true })
+        // await Game.forceCard(Player.hands[0], false, { name: '10', suit: 'hearts', graphic: '', value: 10, value1: 10, value2: 10,  isAce: false })
+        // await Game.deal(Dealer.hands[0], true)
+        // dealer ace first card, player split
+        await Game.forceCard(Player.hands[0], false, { name: '10', suit: 'spades', graphic: '', value: 10, value1: 10, value2: 10,  isAce: false })
+        await Game.forceCard(Dealer.hands[0], false, { name: 'A', suit: 'spades', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true })
+        await Game.forceCard(Player.hands[0], false, { name: '10', suit: 'hearts', graphic: '', value: 10, value1: 10, value2: 10,  isAce: false })
+        await Game.deal(Dealer.hands[0], true)
+    },
+    countHand: (hand) => {
+
+        let containsAces = false
+
+        // check if hand contains any aces
+        for (const card of hand.cards) {
+            if (card.isAce) {
+                containsAces = true
+                break
+            }
+        }
+
+        if (containsAces) { 
+            let count = 0
+
+            let nonAceCards = hand.cards.filter((card) => {
+                return card.isAce != true
+            })
+            let aceCards =  hand.cards.filter((card) => {
+                return card.isAce == true
+            })
+
+            count = nonAceCards.reduce((total, card) => total + card.value, 0)
+            let oneAceIsEleven = false
+
+            for (const ace of aceCards) {
+                // if counting an ace as 11 busts, count as 1 instead
+                if (count + 11 > 21) {
+                    count += 1
+                } else {
+                    // ace can be 11 or 1 here
+                    count += 11
+                    oneAceIsEleven = true
+                }
+            }
+
+            // set count on hand object
+            hand.count = count
+            console.log(hand.count)
+
+            // one ace is an eleven making blackjack
+            if ((oneAceIsEleven && count === 21) || !oneAceIsEleven) {
+                // only return the count with 21
+                hand.ui.count.innerText = count
+                // return count
+            } else {
+                // -10 = counting the ace as 1 instead of 11
+                let count2 = count - 10
+                hand.ui.count.innerText = `${count2} / ${count}`
+                // return `${count2} / ${count}`
+            }
+
+        } else {
+            let count = hand.cards.reduce((total, card) => total + card.value, 0)
+            hand.count = count
+            hand.ui.count.innerText = count
+            console.log(hand.count)
+            // return count
+        }
     },
     shuffle: (cards) => {
         let newPos;
         let card;
         for (let i = cards.length -1; i > 0; i--) {
-            newPos = Math.floor(Math.random() * (i + 1));
-            card = cards[i];
-            cards[i] = cards[newPos];
-            cards[newPos] = card;
+            newPos = Math.floor(Math.random() * (i + 1))
+            card = cards[i]
+            cards[i] = cards[newPos]
+            cards[newPos] = card
         }
         return cards;
     }
 }
 
 document.body.addEventListener('click', (e) => {
+    e.preventDefault()
+
+    // initial deal
     if (e.target == UI.btn.deal) {
-        // disable chip btn + deal btns
+
+        // disable buttons
         UI.disableBtns(UI.chipBtns, true)
         UI.disableBetChips()
         UI.disableDealBtn(true)
+        UI.collapseChipsBet()
+
+        // hide bet amount
+        UI.bet.classList.add('hidden')
+
+        // create hand
+        Player.createHand(Player.bet)
+
+        // get all bet chips and move to hand
+        let betChips = document.querySelectorAll('.bet-chip-wrapper .chip-bet')
+        betChips.forEach(chip => {
+            UI.moveElement(chip, Player.hands[0].ui.chips, 'bet-chip--moving-to-hand', () => {})
+        })
+
+        // display bet amount
+        Player.hands[0].ui.bet.innerText = `$${Player.hands[0].bet}`
+
+        // deal initial cards
+        Game.dealFirstCards().then(() => {
+
+            // write count of dealer's first card
+            if (Dealer.hands[0].cards[0].name === 'A') {
+                Dealer.hands[0].ui.count.innerText = `1 / 11`
+            } else {
+                Dealer.hands[0].ui.count.innerText = Dealer.hands[0].cards[0].value
+            }
+
+            // count cards in player's hand
+            Game.countHand(Player.hands[0])
+
+            // show count bubbles
+            Dealer.hands[0].ui.count.classList.toggle('hidden')
+            Player.hands[0].ui.count.classList.toggle('hidden')
+
+            // Check state of player's first hand
+            
+            // BLACKJACK
+            if (Player.hands[0].count === 21) {
+                console.log('blackjack!')
+                // reveal dealer's card
+                // draw to 16
+
+            // SPLIT OPTION  
+            } else if ((Player.hands[0].cards[0].name === Player.hands[0].cards[1].name) && (Player.hands[0].cards[0].isAce !== true)) {
+                console.log('split')
+
+                // hide deal btn
+                UI.hideDealBtn()
+
+                // show split buttons
+                UI.showSplitContainer()
+
+            } else {
+                console.log('not 21 or split')
+
+                // hide deal btn
+                UI.hideDealBtn()
+
+
+
+                // show double stand hit btns
+                UI.showDoubleStandHitBtns()
+            }
+
+        })
 
     } else if (e.target == UI.btn.chip1) {
         if (Player.bank >= 1) {
@@ -292,20 +757,88 @@ document.body.addEventListener('click', (e) => {
     }
 })
 
-// Use Fisher-Yates algorithm to shuffle the deck array
-function shuffleDeck(deck) {
-    let newPos;
-    let card;
-    for (let i = deck.length -1; i > 0; i--) {
-        newPos = Math.floor(Math.random() * (i + 1));
-        card = deck[i];
-        deck[i] = deck[newPos];
-        deck[newPos] = card;
-    }
-    return deck;
-}
+// Shuffle deck at first load
+Game.deck = Game.shuffle(Game.deck)
 
-// Calculates sum of an array of cards point values
-function calccount1(cardsArray) {
-    return cardsArray.reduce((total, card) => total + card.points, 0);
-}
+// shuffle the deck array
+// function shuffleDeck(deck) {
+//     let newPos
+//     let card
+//     for (let i = deck.length -1; i > 0; i--) {
+//         newPos = Math.floor(Math.random() * (i + 1))
+//         card = deck[i]
+//         deck[i] = deck[newPos]
+//         deck[newPos] = card
+//     }
+//     return deck;
+// }
+
+// calculates sum of an array of cards point values
+// function calccount1(cardsArray) {
+//     return cardsArray.reduce((total, card) => total + card.points, 0)
+// }
+
+// const testBtn = document.querySelector('.test-btn')
+// const testWrap1 = document.querySelector('.test-wrap-1')
+// const testWrap2 = document.querySelector('.test-wrap-2')
+// const test = document.querySelector('.test')
+
+// testBtn.addEventListener('click', () => {
+//     UI.moveElement(test, testWrap2, 'bet-chip-animation', () => {
+//         console.log('moved element')
+//     })
+// })
+
+
+// let onceTransitionEnd = (el, transition) => {
+//     return new Promise(resolve => {
+//       const onTransitionEndCb = () => {
+//         el.removeEventListener('transitionend', onTransitionEndCb);
+//         resolve();
+//       }
+//       el.addEventListener('transitionend', onTransitionEndCb)
+//       el.style.transition = transition;
+//     });
+//   }
+  
+//   let move_box_one = async () => {
+//     const el = document.getElementById('div_one');
+//     await onceTransitionEnd(el, 'move 3s forwards');
+//   }
+//   let move_box_two = async () => {
+//     const el = document.getElementById('div_two');
+//     await onceTransitionEnd(el, 'move 3s forwards');
+//   }
+  
+//   let move_boxes = async () => {
+//     await move_box_one();
+//     await move_box_two();
+//   }
+//   move_boxes().then(() => console.log('boxes moved'));
+
+// // We can declare a generic helper method for one-time animationend listening
+// let onceAnimationEnd = (el, animation) => {
+//     return new Promise(resolve => {
+//       const onAnimationEndCb = () => {
+//         el.removeEventListener('animationend', onAnimationEndCb);
+//         resolve();
+//       }
+//       el.addEventListener('animationend', onAnimationEndCb)
+//       el.style.animation = animation;
+//     });
+//   }
+  
+//   let move_box_one = async () => {
+//     const el = document.getElementById('div_one');
+//     await onceAnimationEnd(el, 'move 3s forwards');
+//   }
+//   let move_box_two = async () => {
+//     const el = document.getElementById('div_two');
+//     await onceAnimationEnd(el, 'move 3s forwards');
+//   }
+  
+//   let move_boxes = async () => {
+//     await move_box_one();
+//     await move_box_two();
+//   }
+//   move_boxes().then(() => console.log('boxes moved'));

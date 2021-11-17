@@ -1,5 +1,8 @@
 .bet-chip-animation {
-    transition: all .4s ease;
+    transition: transform .3s ease;
+}
+.transform-none {
+    transform: none;
 }
 @keyframes spin {
     0% {
@@ -45,7 +48,7 @@
     }
 }
 
-@keyframes deal-card--facedown {
+@keyframes deal-card-facedown {
     0% {
         transform-origin: center center center;
         transform: rotateY(180deg) translateX(-100vw) translateY(-100vh) rotateZ(540deg);
@@ -80,13 +83,13 @@
         width: 0;
     }
     100% {
-        width: 100px;
+        width: 50px;
     }
 }
 
 @keyframes bet-chip-wrapper-shrinking {
     0% {
-        width: 100px;
+        width: 50px;
     }
     100% {
         width: 0;
