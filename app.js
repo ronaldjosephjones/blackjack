@@ -569,11 +569,16 @@ const Game = {
         // await Game.forceCard(Dealer.hands[0], false, { name: 'A', suit: 'spades', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true })
         // await Game.forceCard(Player.hands[0], false, { name: '10', suit: 'hearts', graphic: '', value: 10, value1: 10, value2: 10,  isAce: false })
         // await Game.deal(Dealer.hands[0], true)
-        // dealer ace first card, player split
-        await Game.forceCard(Player.hands[0], false, { name: '10', suit: 'spades', graphic: '', value: 10, value1: 10, value2: 10,  isAce: false })
+        // dealer 21, player 21
+        await Game.forceCard(Player.hands[0], false, { name: 'A', suit: 'hearts', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true })
         await Game.forceCard(Dealer.hands[0], false, { name: 'A', suit: 'spades', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true })
         await Game.forceCard(Player.hands[0], false, { name: '10', suit: 'hearts', graphic: '', value: 10, value1: 10, value2: 10,  isAce: false })
-        await Game.deal(Dealer.hands[0], true)
+        await Game.forceCard(Dealer.hands[0], true, { name: '10', suit: 'spades', graphic: '', value: 10, value1: 10, value2: 10,  isAce: false })
+        // dealer ace first card, player split
+        // await Game.forceCard(Player.hands[0], false, { name: '10', suit: 'spades', graphic: '', value: 10, value1: 10, value2: 10,  isAce: false })
+        // await Game.forceCard(Dealer.hands[0], false, { name: 'A', suit: 'spades', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true })
+        // await Game.forceCard(Player.hands[0], false, { name: '10', suit: 'hearts', graphic: '', value: 10, value1: 10, value2: 10,  isAce: false })
+        // await Game.deal(Dealer.hands[0], true)
     },
     countHand: (hand) => {
 
@@ -697,7 +702,30 @@ document.body.addEventListener('click', (e) => {
             // BLACKJACK
             if (Player.hands[0].count === 21) {
                 console.log('blackjack!')
-                // reveal dealer's card
+
+                // add listener to run callback after card is revealed
+                Dealer.hands[0].ui.cardsInner.lastElementChild.addEventListener('animationend', () => {
+
+                    // remove animation classes
+                    Dealer.hands[0].ui.cardsInner.lastElementChild.classList.remove('card--facedown', 'card--being-revealed')
+
+                    // count dealer hand
+                    Game.countHand(Dealer.hands[0])
+
+                    // if dealer also has blackjack immediately
+                    if (Dealer.hands[0].count === 21) {
+                        console.log('dealer has 21 too')
+
+                        // send chips back
+                        // discard all cards
+                        // enable chip buttons
+                    }
+                })
+
+                // play reveal animation
+                Dealer.hands[0].ui.cardsInner.lastElementChild.classList.add('card--being-revealed')
+
+
                 // draw to 16
 
             // SPLIT OPTION  

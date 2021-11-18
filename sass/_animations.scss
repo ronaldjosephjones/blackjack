@@ -60,21 +60,36 @@
 }
 
 @keyframes reveal-card {
+    // 0% {
+    //     transform-origin: center center center;
+    //     transform: rotateY(180deg) translateX(0) translateY(0) translateZ(10rem) rotateZ(0);
+    // }
+    // 33% {
+    //     transform-origin: center center 10rem;
+    //     transform: rotateY(180deg) translateX(0) translateY(0) translateZ(10rem);
+    // }
+    // 66% {
+    //     transform-origin: center center 10rem;
+    //     transform: rotateY(0) translateX(0) translateY(0) translateZ(10rem);
+    // }
+    // 100% {
+    //     transform-origin: center center center;
+    //     transform: rotateY(0) translateX(0) translateY(0) translateZ(0);
+    // }
     0% {
         transform-origin: center center center;
-        transform: rotateY(180deg) translateX(0) translateY(0) translateZ(100px) rotateZ(0);
+        transform: rotateY(180deg) translateX(0) translateY(0) translateZ(10rem) rotateZ(0);
+        z-index: -1;
     }
-    33% {
-        transform-origin: center center 100px;
-        transform: rotateY(180deg) translateX(0) translateY(0) translateZ(100px);
-    }
-    66% {
-        transform-origin: center center 100px;
-        transform: rotateY(0) translateX(0) translateY(0) translateZ(100px);
+    50% {
+        transform-origin: center center center;
+        transform: rotateY(0) translateX(0) translateY(0) translateZ(10rem);
+        z-index: 0;
     }
     100% {
         transform-origin: center center center;
-        transform: rotateY(0) translateX(0) translateY(0) translateZ(0);
+        transform: rotateY(0) translateX(0) translateY(0) translateZ(10rem);
+        z-index: 0;
     }
 }
 

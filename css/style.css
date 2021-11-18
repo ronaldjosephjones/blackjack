@@ -46,16 +46,16 @@
 @keyframes reveal-card {
   0% {
     transform-origin: center center center;
-    transform: rotateY(180deg) translateX(0) translateY(0) translateZ(100px) rotateZ(0); }
-  33% {
-    transform-origin: center center 100px;
-    transform: rotateY(180deg) translateX(0) translateY(0) translateZ(100px); }
-  66% {
-    transform-origin: center center 100px;
-    transform: rotateY(0) translateX(0) translateY(0) translateZ(100px); }
+    transform: rotateY(180deg) translateX(0) translateY(0) translateZ(10rem) rotateZ(0);
+    z-index: -1; }
+  50% {
+    transform-origin: center center center;
+    transform: rotateY(0) translateX(0) translateY(0) translateZ(10rem);
+    z-index: 0; }
   100% {
     transform-origin: center center center;
-    transform: rotateY(0) translateX(0) translateY(0) translateZ(0); } }
+    transform: rotateY(0) translateX(0) translateY(0) translateZ(10rem);
+    z-index: 0; } }
 
 @keyframes bet-chip-wrapper-expanding {
   0% {
@@ -126,8 +126,6 @@ body {
         min-width: 10rem;
         position: relative;
         height: 14rem; }
-        #table-container #dealer-container #dealer-hand .hand-cards .hand-cards-inner .card:first-child {
-          z-index: 1; }
       #table-container #dealer-container #dealer-hand .hand-cards .hand-card-count {
         color: #fff;
         font-size: 2rem;
@@ -230,17 +228,19 @@ body {
           #table-container #player-footer-container #footer #bottom-bar #chips-container .chip-wrapper .chip-discard {
             position: absolute;
             top: 0; }
-      #table-container #player-footer-container #footer #bottom-bar #btns-container #dbl-stand-hit, #table-container #player-footer-container #footer #bottom-bar #btns-container #deal {
-        display: flex;
-        justify-content: center; }
-      #table-container #player-footer-container #footer #bottom-bar #btns-container .btn-wrapper {
-        max-width: 30rem;
-        width: 33.333%; }
-        #table-container #player-footer-container #footer #bottom-bar #btns-container .btn-wrapper .btn {
-          height: 5rem;
+      #table-container #player-footer-container #footer #bottom-bar #btns-container {
+        min-height: 5rem; }
+        #table-container #player-footer-container #footer #bottom-bar #btns-container #dbl-stand-hit, #table-container #player-footer-container #footer #bottom-bar #btns-container #deal {
+          display: flex;
+          justify-content: center; }
+        #table-container #player-footer-container #footer #bottom-bar #btns-container .btn-wrapper {
           max-width: 30rem;
-          width: 100%;
-          user-select: none; }
+          width: 33.333%; }
+          #table-container #player-footer-container #footer #bottom-bar #btns-container .btn-wrapper .btn {
+            height: 5rem;
+            max-width: 30rem;
+            width: 100%;
+            user-select: none; }
   #table-container #player-footer-container .chip-bet {
     align-items: center;
     background: #fff;
@@ -307,7 +307,8 @@ body {
     transform: rotateY(180deg); }
 
 .card--facedown {
-  transform: rotateY(180deg); }
+  transform: rotateY(180deg);
+  z-index: -1; }
 
 .card--being-dealt {
   animation-name: deal-card;
@@ -318,10 +319,17 @@ body {
 
 .card--being-dealt-facedown {
   animation-name: deal-card-facedown;
-  animation-duration: .25s;
+  animation-duration: 1s;
   animation-timing-function: ease-in-out;
   animation-fill-mode: forwards;
   transform: translateX(-100vw) translateY(-100vh) translateZ(0) rotateZ(540deg); }
+
+.card--being-revealed {
+  animation-name: reveal-card;
+  animation-duration: 2s;
+  animation-timing-function: ease-in-out;
+  animation-fill-mode: forwards;
+  animation-delay: 1s; }
 
 .offscreen--deal {
   transition: all 2s;

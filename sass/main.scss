@@ -80,7 +80,7 @@ body {
                     height: 14rem;
 
                     .card:first-child {
-                        z-index: 1;
+                        // z-index: 1;
                     }
                 }
 
@@ -262,6 +262,7 @@ body {
                 }
             
                 #btns-container {
+                    min-height: 5rem;
                     
                     #dbl-stand-hit, #deal {
                         display: flex;
@@ -383,6 +384,7 @@ body {
 
 .card--facedown {
     transform: rotateY(180deg);
+    z-index: -1;
 }
 
 .card--being-dealt {
@@ -395,10 +397,18 @@ body {
 
 .card--being-dealt-facedown {
     animation-name: deal-card-facedown;
-    animation-duration: .25s;
+    animation-duration: 1s;
     animation-timing-function: ease-in-out;
     animation-fill-mode: forwards;
     transform: translateX(-100vw) translateY(-100vh) translateZ(0) rotateZ(540deg);
+}
+
+.card--being-revealed {
+    animation-name: reveal-card;
+    animation-duration: 2s;
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: forwards;
+    animation-delay: 1s;
 }
 
 .offscreen--deal {
