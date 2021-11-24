@@ -105,7 +105,7 @@ const UI = {
         this.updateBet()
 
         // create HTML for bet chip
-        chipWrapper.insertAdjacentHTML('afterbegin', `<div class="chip-bet chip-bet--${chipVal}">${chipVal}</div>`)
+        chipWrapper.insertAdjacentHTML('afterbegin', `<div class="chip-bet chip-bet--${chipVal}" data-chip-value="${chipVal}">${chipVal}</div>`)
         let chip = chipWrapper.firstElementChild
 
         // make container if this type of chip hasn't been bet yet
@@ -717,6 +717,18 @@ document.body.addEventListener('click', (e) => {
                         console.log('dealer has 21 too')
 
                         // send chips back
+                        let chipsArray = Array.from(Player.hands[0].ui.chips.children)
+                        
+                        for (const chip of chipsArray) {
+                            // move to corresponding container then remove
+                            console.log(chip.dataset.chipValue)
+                            UI.moveElement(chip, document.querySelector(`#chip--${chip.dataset.chipValue}-discard`), 'bet-chip-animation', () => {
+                                console.log('moved')
+                                chip.remove()
+                            })
+                        }
+
+
                         // discard all cards
                         // enable chip buttons
                     }
