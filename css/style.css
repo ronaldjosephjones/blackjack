@@ -4,6 +4,21 @@
 .transform-none {
   transform: none; }
 
+.play-message {
+  animation-name: play-message;
+  animation-duration: 2s;
+  animation-timing-function: ease-in-out; }
+
+@keyframes play-message {
+  0% {
+    opacity: 0; }
+  35% {
+    opacity: 1; }
+  65% {
+    opacity: 1; }
+  100% {
+    opacity: 0; } }
+
 @keyframes spin {
   0% {
     transform: translateZ(0); }
@@ -89,6 +104,23 @@ body {
 .disable-clicks {
   pointer-events: none; }
 
+#message-wrapper {
+  height: 50vh;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center; }
+  #message-wrapper .message {
+    position: relative;
+    top: -10rem; }
+    #message-wrapper .message .message-text {
+      font-weight: bold;
+      color: #fff;
+      font-size: 3rem;
+      text-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3); }
+
 #split-container {
   align-items: center;
   display: flex;
@@ -138,8 +170,14 @@ body {
   #table-container #player-footer-container #player-container #player-hands .hand .hand-bet-amount {
     text-align: center;
     color: #fff;
-    font-size: 2rem;
-    margin-bottom: 2rem; }
+    font-size: 1.5rem;
+    background: #000;
+    display: block;
+    margin: 0 auto 2rem;
+    max-width: 7rem;
+    border-radius: .75rem;
+    padding: .5rem 1rem;
+    opacity: 1; }
   #table-container #player-footer-container #player-container #player-hands .hand .hand-chips {
     position: relative;
     height: 5rem;
@@ -341,6 +379,10 @@ body {
 
 .bet-chip--moving-to-hand {
   transition: all .3s; }
+
+.fading-out {
+  transition: opacity .5s ease;
+  opacity: 0 !important; }
 
 .test-wrap-1,
 .test-wrap-2 {

@@ -94,6 +94,8 @@ const UI = {
     chip100Wrapper: document.getElementById('chip--100-wrapper'),
     chip100Discard: document.getElementById('chip--100-discard'),
     splitContainer: document.getElementById('split-container'),
+    messageWrapper: document.getElementById('message-wrapper'),
+    messageText: document.querySelector('#message-wrapper .message-text'),
     betChip: function(chipVal, chipWrapper, chipDiscard) {
 
         UI.disableBtns(UI.chipBtns, true)
@@ -208,6 +210,9 @@ const UI = {
             betChipWrapper100.lastElementChild.classList.remove('disable-clicks')
         }
     },
+    fadeOut: (element) => {
+        element.classList.add('fading-out')
+    },
     hideDealBtn: () => {
         UI.btn.deal.classList.add('hidden')
     },
@@ -244,6 +249,26 @@ const UI = {
             el.style.transform = 'none'
         }, 1)
 
+    },
+    setMessage: (message) => {
+        UI.messageText.innerText = message
+    },
+    onceAnimationEnd: (el, animation) => {
+        return new Promise(resolve => {
+            const onAnimationEndCb = () => {
+            //   el.removeEventListener('animationend', onAnimationEndCb);
+            //   el.classList.remove(animation)
+            //   resolve();
+              setTimeout(() => {
+                el.classList.remove(animation)
+                el.style.animation = 'none'
+                resolve()
+            }, 2000)
+            }
+            el.addEventListener('animationend', onAnimationEndCb)
+            el.classList.add(animation)
+          });
+          
     },
     updateBank: function() {
         this.bankAmount.innerText = `${Player.bank}`
@@ -699,7 +724,7 @@ document.body.addEventListener('click', (e) => {
 
             // Check state of player's first hand
             
-            // BLACKJACK
+            // BLACKJACK **********************************************************************************************
             if (Player.hands[0].count === 21) {
                 console.log('blackjack!')
 
@@ -712,24 +737,54 @@ document.body.addEventListener('click', (e) => {
                     // count dealer hand
                     Game.countHand(Dealer.hands[0])
 
-                    // if dealer also has blackjack immediately
+                    // dealer also has blackjack
                     if (Dealer.hands[0].count === 21) {
                         console.log('dealer has 21 too')
 
-                        // send chips back
-                        let chipsArray = Array.from(Player.hands[0].ui.chips.children)
-                        
-                        for (const chip of chipsArray) {
-                            // move to corresponding container then remove
-                            console.log(chip.dataset.chipValue)
-                            UI.moveElement(chip, document.querySelector(`#chip--${chip.dataset.chipValue}-discard`), 'bet-chip-animation', () => {
-                                console.log('moved')
-                                chip.remove()
-                            })
+                        // play message "Push"
+                        let playMessage1 = async () => {
+                            UI.setMessage('Blackjack!')
+                            const el = UI.messageWrapper;
+                            await UI.onceAnimationEnd(el, 'play-message');
                         }
+
+                        let playMessage2 = async () => {
+                            UI.setMessage('Push!')
+                            const el = UI.messageWrapper;
+                            await UI.onceAnimationEnd(el, 'play-message');
+                        }
+                          
+                        let playMessageWrap = async () => {
+                            await playMessage1()
+                            await playMessage2()
+                        }
+
+                        playMessageWrap().then(() => {
+                            console.log('after messages animation')
+                        });
+
+                        // remove hand bet amount
+                        // UI.fadeOut(Player.hands[0].ui.bet)
+
+                        // // send chips back
+                        // let chipsArray = Array.from(Player.hands[0].ui.chips.children)
+                        
+                        // for (const chip of chipsArray) {
+                        //     // move to corresponding container then remove
+                        //     UI.moveElement(chip, document.querySelector(`#chip--${chip.dataset.chipValue}-discard`), 'bet-chip-animation', () => {
+                        //         console.log('moved')
+                        //         chip.remove()
+                        //     })
+                        // }
+
+                        // // update bank
+                        // Player.bank += Player.hands[0].bet
+                        // UI.updateBank()
 
 
                         // discard all cards
+                        
+
                         // enable chip buttons
                     }
                 })
