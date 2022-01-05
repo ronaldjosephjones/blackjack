@@ -250,25 +250,22 @@ const UI = {
         }, 1)
 
     },
-    setMessage: (message) => {
-        UI.messageText.innerText = message
-    },
-    onceAnimationEnd: (el, animation) => {
+    playMessage: (message, animation) => {
         return new Promise(resolve => {
             const onAnimationEndCb = () => {
-            //   el.removeEventListener('animationend', onAnimationEndCb);
-            //   el.classList.remove(animation)
-            //   resolve();
-              setTimeout(() => {
-                el.classList.remove(animation)
-                el.style.animation = 'none'
-                resolve()
-            }, 2000)
+                UI.messageWrapper.removeEventListener('animationend', onAnimationEndCb)
+                UI.messageWrapper.style.animation = 'none'
+                UI.messageWrapper.classList.add('hidden')
+                UI.messageText.innerText = ''
+                setTimeout(() => {
+                    resolve()
+                }, 1)
             }
-            el.addEventListener('animationend', onAnimationEndCb)
-            el.classList.add(animation)
-          });
-          
+            UI.messageWrapper.classList.remove('hidden')
+            UI.messageWrapper.addEventListener('animationend', onAnimationEndCb)
+            UI.messageText.innerText = message
+            UI.messageWrapper.style.animation = animation
+        })
     },
     updateBank: function() {
         this.bankAmount.innerText = `${Player.bank}`
@@ -742,26 +739,11 @@ document.body.addEventListener('click', (e) => {
                         console.log('dealer has 21 too')
 
                         // play message "Push"
-                        let playMessage1 = async () => {
-                            UI.setMessage('Blackjack!')
-                            const el = UI.messageWrapper;
-                            await UI.onceAnimationEnd(el, 'play-message');
-                        }
-
-                        let playMessage2 = async () => {
-                            UI.setMessage('Push!')
-                            const el = UI.messageWrapper;
-                            await UI.onceAnimationEnd(el, 'play-message');
-                        }
-                          
-                        let playMessageWrap = async () => {
-                            await playMessage1()
-                            await playMessage2()
-                        }
-
-                        playMessageWrap().then(() => {
-                            console.log('after messages animation')
-                        });
+                        
+                        UI.playMessage('Blackjack!', 'show-message 3s forwards')
+                            .then(() => console.log('message done'))
+                            .then(() => UI.playMessage('Push!', 'show-message 3s forwards'))
+                            .then(() => console.log('done again'))
 
                         // remove hand bet amount
                         // UI.fadeOut(Player.hands[0].ui.bet)
