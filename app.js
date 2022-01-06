@@ -101,9 +101,8 @@ const UI = {
         UI.disableBtns(UI.chipBtns, true)
         UI.disableDealBtn(true)
 
-        Player.bank -= chipVal
         Player.bet += chipVal
-        this.updateBank()
+        this.updateBank(-chipVal, 1000)
         this.updateBet()
 
         // create HTML for bet chip
@@ -138,9 +137,8 @@ const UI = {
             UI.disableBetChips()
             UI.disableDealBtn(true)
 
-            Player.bank += chipVal
             Player.bet -= chipVal
-            UI.updateBank()
+            UI.updateBank(chipVal, 1000)
             UI.updateBet()
 
             // if only 1 of this chip remains animate wrapper closed
@@ -267,8 +265,66 @@ const UI = {
             UI.messageWrapper.style.animation = animation
         })
     },
-    updateBank: function() {
-        this.bankAmount.innerText = `${Player.bank}`
+    playAnimation: (el, animation, isAnimationRemoved = true) => {
+        return new Promise(resolve => {
+            const onAnimationEndCb = () => {
+                el.removeEventListener('animationend', onAnimationEndCb)
+                if (isAnimationRemoved) {
+                    el.style.animation = 'none'
+                }
+                setTimeout(() => {
+                    resolve()
+                }, 1)
+            }
+            el.addEventListener('animationend', onAnimationEndCb)
+            el.style.animation = animation
+        })
+    },
+    revealDealerCard: () => {
+        return new Promise(resolve => {
+            const onAnimationEndCb = () => {
+                Dealer.secondCard.removeEventListener('animationend', onAnimationEndCb)
+                Dealer.secondCard.classList.remove('card--facedown')
+                Dealer.secondCard.style.animation = 'none'
+                setTimeout(() => {
+                    resolve()
+                }, 1)
+            }
+            Dealer.secondCard.addEventListener('animationend', onAnimationEndCb)
+            Dealer.secondCard.style.animation = 'reveal-card 2s forwards'
+        })
+    },
+    updateBank: function(amount, duration) {
+        var obj = UI.bankAmount
+        var start = Player.bank
+        var end = start + amount
+        var range = end - start;
+        // no timer shorter than 50ms (not really visible any way)
+        var minTimer = 50;
+        // calc step time to show all interediate values
+        var stepTime = Math.abs(Math.floor(duration / range));
+        
+        // never go below minTimer
+        stepTime = Math.max(stepTime, minTimer);
+        
+        // get current time and calculate desired end time
+        var startTime = new Date().getTime();
+        var endTime = startTime + duration;
+        var timer;
+      
+        function run() {
+            var now = new Date().getTime();
+            var remaining = Math.max((endTime - now) / duration, 0);
+            var value = Math.round(end - (remaining * range));
+            obj.innerHTML = value;
+            if (value == end) {
+                clearInterval(timer);
+            }
+        }
+        
+        timer = setInterval(run, stepTime);
+        run();
+        Player.bank += amount
     },
     updateBet: function() {
         this.betAmount.innerText = `${Player.bet}`
@@ -601,6 +657,18 @@ const Game = {
         // await Game.forceCard(Dealer.hands[0], false, { name: 'A', suit: 'spades', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true })
         // await Game.forceCard(Player.hands[0], false, { name: '10', suit: 'hearts', graphic: '', value: 10, value1: 10, value2: 10,  isAce: false })
         // await Game.deal(Dealer.hands[0], true)
+
+        Dealer.secondCard = Dealer.hands[0].ui.cardsInner.lastElementChild
+    },
+    discardCards: (hand) => {
+        let cards =  Array.from(hand.ui.cardsInner.children)
+
+        for (const card of cards) {
+            card.addEventListener('transitionend', () => {
+                card.remove()
+            })
+            card.classList.add('offscreen--discard')
+        }
     },
     countHand: (hand) => {
 
@@ -723,59 +791,60 @@ document.body.addEventListener('click', (e) => {
             
             // BLACKJACK **********************************************************************************************
             if (Player.hands[0].count === 21) {
-                console.log('blackjack!')
 
-                // add listener to run callback after card is revealed
-                Dealer.hands[0].ui.cardsInner.lastElementChild.addEventListener('animationend', () => {
+                UI.playAnimation(Player.hands[0].ui.count, 'count-blackjack 1s .75s forwards')
+                    .then(() => UI.playMessage('Blackjack!', 'show-message 1.5s forwards'))
+                    .then(() => UI.revealDealerCard())
+                    .then(() => {
 
-                    // remove animation classes
-                    Dealer.hands[0].ui.cardsInner.lastElementChild.classList.remove('card--facedown', 'card--being-revealed')
+                        // count dealer hand
+                        Game.countHand(Dealer.hands[0])
 
-                    // count dealer hand
-                    Game.countHand(Dealer.hands[0])
+                        // dealer also has blackjack
+                        if (Dealer.hands[0].count === 21) {
 
-                    // dealer also has blackjack
-                    if (Dealer.hands[0].count === 21) {
-                        console.log('dealer has 21 too')
+                            UI.playAnimation(Dealer.hands[0].ui.count, 'count-blackjack 1s .75s forwards')
+                                .then(() => UI.playMessage('Push!', 'show-message 1.5s forwards'))                            
+                                .then(() => {
+                                    // fade out hand bet amount & counts
+                                    UI.fadeOut(Player.hands[0].ui.bet)
+                                    UI.fadeOut(Player.hands[0].ui.count)
+                                    UI.playAnimation(Dealer.hands[0].ui.count, 'fading-out .5s forwards', false)
+                                        .then(() => {
+                                            // send chips back
+                                            let chipsArray = Array.from(Player.hands[0].ui.chips.children)
+                                                                                
+                                            for (const chip of chipsArray) {
+                                                // move to corresponding container then remove
+                                                UI.moveElement(chip, document.querySelector(`#chip--${chip.dataset.chipValue}-discard`), 'bet-chip-animation', () => {
+                                                    chip.remove()
+                                                })
+                                            }
 
-                        // play message "Push"
-                        
-                        UI.playMessage('Blackjack!', 'show-message 3s forwards')
-                            .then(() => console.log('message done'))
-                            .then(() => UI.playMessage('Push!', 'show-message 3s forwards'))
-                            .then(() => console.log('done again'))
+                                            // update bank
+                                            UI.updateBank(Player.hands[0].bet, 1000)
 
-                        // remove hand bet amount
-                        // UI.fadeOut(Player.hands[0].ui.bet)
+                                            // discard all cards
+                                            Game.discardCards(Player.hands[0])
+                                            Game.discardCards(Dealer.hands[0])
 
-                        // // send chips back
-                        // let chipsArray = Array.from(Player.hands[0].ui.chips.children)
-                        
-                        // for (const chip of chipsArray) {
-                        //     // move to corresponding container then remove
-                        //     UI.moveElement(chip, document.querySelector(`#chip--${chip.dataset.chipValue}-discard`), 'bet-chip-animation', () => {
-                        //         console.log('moved')
-                        //         chip.remove()
-                        //     })
-                        // }
+                                            // discard player hand
+                                            Player.hands[0].ui.div.remove()
+                                            Player.hands.pop()
 
-                        // // update bank
-                        // Player.bank += Player.hands[0].bet
-                        // UI.updateBank()
+                                            // reset dealer
+                                            Dealer.hands[0].ui.count.innerText = ''
+                                            Dealer.hands[0].ui.cardsInner.removeAttribute('style')
+                                            Dealer.hands[0].ui.count.removeAttribute('style')
+                                            Dealer.hands[0].ui.count.classList.remove('fading-out')
+                                            Dealer.hands[0].ui.count.classList.add('hidden')
 
-
-                        // discard all cards
-                        
-
-                        // enable chip buttons
-                    }
-                })
-
-                // play reveal animation
-                Dealer.hands[0].ui.cardsInner.lastElementChild.classList.add('card--being-revealed')
-
-
-                // draw to 16
+                                            // enable chip buttons                                           
+                                        })
+                                })
+                        }
+                    })
+                    
 
             // SPLIT OPTION  
             } else if ((Player.hands[0].cards[0].name === Player.hands[0].cards[1].name) && (Player.hands[0].cards[0].isAce !== true)) {

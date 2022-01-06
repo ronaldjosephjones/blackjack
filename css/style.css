@@ -9,6 +9,12 @@
   animation-duration: 2s;
   animation-timing-function: ease-in-out; }
 
+@keyframes fading-out {
+  0% {
+    opacity: 1; }
+  100% {
+    opacity: 0; } }
+
 @keyframes show-message {
   0% {
     opacity: 0; }
@@ -72,6 +78,20 @@
     transform: rotateY(0) translateX(0) translateY(0) translateZ(10rem);
     z-index: 0; } }
 
+@keyframes count-blackjack {
+  0% {
+    transform: rotate(0);
+    color: #000; }
+  40% {
+    transform: rotate(7deg);
+    color: #239c1f; }
+  60% {
+    transform: rotate(7deg);
+    color: #239c1f; }
+  100% {
+    transform: rotate(0);
+    color: #000; } }
+
 @keyframes bet-chip-wrapper-expanding {
   0% {
     width: 0; }
@@ -105,7 +125,7 @@ body {
   pointer-events: none; }
 
 #message-wrapper {
-  height: 50vh;
+  height: 100vh;
   position: fixed;
   top: 0;
   width: 100%;
