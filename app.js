@@ -389,6 +389,7 @@ const Game = {
         { name: 'A', suit: 'spades', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true },
         { name: 'A', suit: 'clubs', graphic: '', value: 11, value1: 1, value2: 11, isAce: true }
     ],
+    discardPile: [],
     deal: (hand, isCardFacedown) => {
 
         // move card logic from dealer to hand
@@ -661,13 +662,20 @@ const Game = {
         Dealer.secondCard = Dealer.hands[0].ui.cardsInner.lastElementChild
     },
     discardCards: (hand) => {
-        let cards =  Array.from(hand.ui.cardsInner.children)
+
+        const cards =  Array.from(hand.ui.cardsInner.children)
 
         for (const card of cards) {
             card.addEventListener('transitionend', () => {
                 card.remove()
             })
             card.classList.add('offscreen--discard')
+        }
+
+        for(var i = 0; i < hand.cards.length; i++) {
+            Game.discardPile.push(hand.cards[i])
+            hand.cards.splice(i, 1)
+            i--
         }
     },
     countHand: (hand) => {
@@ -749,6 +757,8 @@ document.body.addEventListener('click', (e) => {
     // initial deal
     if (e.target == UI.btn.deal) {
 
+        UI.hideDealBtn()
+
         // disable buttons
         UI.disableBtns(UI.chipBtns, true)
         UI.disableBetChips()
@@ -771,7 +781,7 @@ document.body.addEventListener('click', (e) => {
         Player.hands[0].ui.bet.innerText = `$${Player.hands[0].bet}`
 
         // deal initial cards
-        Game.dealFirstCards().then(() => {
+        Game.dealFirstCards().then(() => {          
 
             // write count of dealer's first card
             if (Dealer.hands[0].cards[0].name === 'A') {
@@ -828,9 +838,15 @@ document.body.addEventListener('click', (e) => {
                                             Game.discardCards(Player.hands[0])
                                             Game.discardCards(Dealer.hands[0])
 
-                                            // discard player hand
-                                            Player.hands[0].ui.div.remove()
-                                            Player.hands.pop()
+                                            // discard player hand after cards are offscreen & other stuff
+                                            setTimeout(() => {
+                                                Player.hands[0].ui.div.remove()
+                                                Player.hands.pop()
+
+                                                // enable chip buttons
+                                                UI.disableBtns(UI.chipBtns, false)  
+                                                UI.hideDealBtn
+                                            }, 2000)
 
                                             // reset dealer
                                             Dealer.hands[0].ui.count.innerText = ''
@@ -839,7 +855,7 @@ document.body.addEventListener('click', (e) => {
                                             Dealer.hands[0].ui.count.classList.remove('fading-out')
                                             Dealer.hands[0].ui.count.classList.add('hidden')
 
-                                            // enable chip buttons                                           
+                                      
                                         })
                                 })
                         }
