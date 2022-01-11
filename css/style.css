@@ -394,7 +394,7 @@ body {
   transform: translateX(100vw) translateY(-100vh); }
 
 .offscreen--discard {
-  transition: all 2s;
+  transition: all 1.5s;
   transform: translateX(100vw) translateY(100vh); }
 
 .bet-chip--moving-to-hand {

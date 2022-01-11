@@ -169,8 +169,12 @@ const UI = {
         })
 
     },
-    collapseChipsBet: () => {
-        UI.chipsBet.classList.toggle('collapsed')
+    collapseChipsBet: (bool) => {
+        if (bool) {
+            UI.chipsBet.classList.add('collapsed')
+        } else {
+            UI.chipsBet.classList.remove('collapsed')
+        }
     },
     disableBtns: (btns, bool) => {
         btns.forEach(btn => {
@@ -211,20 +215,12 @@ const UI = {
     fadeOut: (element) => {
         element.classList.add('fading-out')
     },
-    hideDealBtn: () => {
-        UI.btn.deal.classList.add('hidden')
-    },
-    hideDoubleBtn: () => {
-        UI.btn.double.classList.add('hidden')
-    },
-    hideSplitContainer: () => {
-        UI.splitContainer.classList.add('hidden')
-    },
-    showDoubleStandHitBtns: () => {
-        UI.btn.doubleStandHit.classList.remove('hidden')
-    },
-    showSplitContainer: () => {
-        UI.splitContainer.classList.remove('hidden')
+    hideElement: (el, bool) => {
+        if (bool) {
+            el.classList.add('hidden')
+        } else {
+            el.classList.remove('hidden')
+        }
     },
     moveElement: (el, container, className, callback) => {
 
@@ -662,7 +658,6 @@ const Game = {
         Dealer.secondCard = Dealer.hands[0].ui.cardsInner.lastElementChild
     },
     discardCards: (hand) => {
-
         const cards =  Array.from(hand.ui.cardsInner.children)
 
         for (const card of cards) {
@@ -676,6 +671,29 @@ const Game = {
             Game.discardPile.push(hand.cards[i])
             hand.cards.splice(i, 1)
             i--
+        }
+    },
+    discardCardsWithListener: (hand) => {
+        const cards =  Array.from(hand.ui.cardsInner.children)
+
+        for (const [i, card] of cards.entries()) {
+            if (i === cards.length - 1) {
+                return new Promise(resolve => {
+                    const onTransitionendCb = () => {
+                        card.removeEventListener('transitionend', onTransitionendCb)
+                        setTimeout(() => {
+                            resolve()
+                        }, 1)
+                    }
+                    card.addEventListener('transitionend', onTransitionendCb)
+                    card.classList.add('offscreen--discard') 
+                })
+            } else {
+                card.addEventListener('transitionend', () => {
+                    card.remove()
+                })
+                card.classList.add('offscreen--discard') 
+            }
         }
     },
     countHand: (hand) => {
@@ -757,16 +775,16 @@ document.body.addEventListener('click', (e) => {
     // initial deal
     if (e.target == UI.btn.deal) {
 
-        UI.hideDealBtn()
+        UI.hideElement(UI.btn.deal, true)
 
         // disable buttons
         UI.disableBtns(UI.chipBtns, true)
         UI.disableBetChips()
         UI.disableDealBtn(true)
-        UI.collapseChipsBet()
+        UI.collapseChipsBet(true)
 
         // hide bet amount
-        UI.bet.classList.add('hidden')
+        UI.hideElement(UI.bet, true)
 
         // create hand
         Player.createHand(Player.bet)
@@ -835,27 +853,34 @@ document.body.addEventListener('click', (e) => {
                                             UI.updateBank(Player.hands[0].bet, 1000)
 
                                             // discard all cards
-                                            Game.discardCards(Player.hands[0])
                                             Game.discardCards(Dealer.hands[0])
+                                            Game.discardCardsWithListener(Player.hands[0])
+                                                .then(() => {
+                                                    // reset player
+                                                    Player.hands[0].ui.div.remove()
+                                                    Player.hands.pop()
+                                                    Player.handIndex -= 1
+                                                    Player.bet = 0
+                                                    UI.updateBet()
 
-                                            // discard player hand after cards are offscreen & other stuff
-                                            setTimeout(() => {
-                                                Player.hands[0].ui.div.remove()
-                                                Player.hands.pop()
+                                                    // enable & show buttons
+                                                    UI.disableBtns(UI.chipBtns, false)  
+                                                    UI.hideElement(UI.btn.deal, false)
 
-                                                // enable chip buttons
-                                                UI.disableBtns(UI.chipBtns, false)  
-                                                UI.hideDealBtn
-                                            }, 2000)
+                                                    for (const betChipWrap of document.querySelectorAll('.bet-chip-wrapper')) {
+                                                        betChipWrap.remove()
+                                                    }
 
-                                            // reset dealer
-                                            Dealer.hands[0].ui.count.innerText = ''
-                                            Dealer.hands[0].ui.cardsInner.removeAttribute('style')
-                                            Dealer.hands[0].ui.count.removeAttribute('style')
-                                            Dealer.hands[0].ui.count.classList.remove('fading-out')
-                                            Dealer.hands[0].ui.count.classList.add('hidden')
+                                                    UI.collapseChipsBet(false)
 
-                                      
+                                                    // reset dealer
+                                                    Dealer.hands[0].ui.count.innerText = ''
+                                                    Dealer.hands[0].ui.cardsInner.removeAttribute('style')
+                                                    Dealer.hands[0].ui.count.removeAttribute('style')
+                                                    Dealer.hands[0].ui.count.classList.remove('fading-out')
+                                                    Dealer.hands[0].ui.count.classList.add('hidden')
+                                                    
+                                                })                                      
                                         })
                                 })
                         }
@@ -867,21 +892,19 @@ document.body.addEventListener('click', (e) => {
                 console.log('split')
 
                 // hide deal btn
-                UI.hideDealBtn()
+                UI.hideElement(UI.btn.deal, true)
 
                 // show split buttons
-                UI.showSplitContainer()
+                UI.hideElement(UI.splitContainer, false)
 
             } else {
                 console.log('not 21 or split')
 
                 // hide deal btn
-                UI.hideDealBtn()
-
-
+                UI.hideDealBtn(UI.btn.deal, true)
 
                 // show double stand hit btns
-                UI.showDoubleStandHitBtns()
+                UI.hideElement(UI.btn.doubleStandHit, false)
             }
 
         })
