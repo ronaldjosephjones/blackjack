@@ -54,9 +54,19 @@ body {
     justify-content: center;
     position: absolute;
     width: 100%;
+    top: 0;
+    background: linear-gradient(90deg, rgba(0, 0, 0, .3) 0%, rgba(0, 0, 0, .3) 100%);
+    z-index: 1;
 
     #split-content {
         width: 100%;
+        max-width: 650px;
+        background: black;
+        padding: 4rem 2rem;
+        border-radius: .5rem;
+        box-shadow: 0 1px 3px rgba(34, 25, 25, 0.4);
+        position: relative;
+        top: -12%;
 
         > p {
             color: #fff;
