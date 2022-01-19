@@ -79,7 +79,9 @@ const UI = {
         doubleStandHit: document.getElementById('dbl-stand-hit'),
         double: document.getElementById('btn--dbl'),
         hit: document.getElementById('btn--hit'),
-        stand: document.getElementById('btn--stand')
+        stand: document.getElementById('btn--stand'),
+        splitYes: document.getElementById('btn--split-yes'),
+        splitNo: document.getElementById('btn--split-no')
     },
     chipBtns: document.querySelectorAll('.chip'),
     chipsBet: document.getElementById('bet-chips'),
@@ -215,11 +217,11 @@ const UI = {
     fadeOut: (element) => {
         element.classList.add('fading-out')
     },
-    hideElement: (el, bool) => {
+    showElement: (el, bool) => {
         if (bool) {
-            el.classList.add('hidden')
-        } else {
             el.classList.remove('hidden')
+        } else {
+            el.classList.add('hidden')
         }
     },
     moveElement: (el, container, className, callback) => {
@@ -775,7 +777,7 @@ document.body.addEventListener('click', (e) => {
     // initial deal
     if (e.target == UI.btn.deal) {
 
-        UI.hideElement(UI.btn.deal, true)
+        UI.showElement(UI.btn.deal, false)
 
         // disable buttons
         UI.disableBtns(UI.chipBtns, true)
@@ -784,7 +786,7 @@ document.body.addEventListener('click', (e) => {
         UI.collapseChipsBet(true)
 
         // hide bet amount
-        UI.hideElement(UI.bet, true)
+        UI.showElement(UI.bet, false)
 
         // create hand
         Player.createHand(Player.bet)
@@ -814,6 +816,13 @@ document.body.addEventListener('click', (e) => {
             // show count bubbles
             Dealer.hands[0].ui.count.classList.toggle('hidden')
             Player.hands[0].ui.count.classList.toggle('hidden')
+
+            // hide double button if player doesn't have enough money
+            if (Player.bank < Player.hands[0].bet) {
+                UI.showElement(UI.btn.double, false)
+            } else {
+                UI.showElement(UI.btn.double, true)
+            }
 
             // Check state of player's first hand
             
@@ -865,7 +874,7 @@ document.body.addEventListener('click', (e) => {
 
                                                     // enable & show buttons
                                                     UI.disableBtns(UI.chipBtns, false)  
-                                                    UI.hideElement(UI.btn.deal, false)
+                                                    UI.showElement(UI.btn.deal, true)
 
                                                     for (const betChipWrap of document.querySelectorAll('.bet-chip-wrapper')) {
                                                         betChipWrap.remove()
@@ -892,10 +901,10 @@ document.body.addEventListener('click', (e) => {
                 console.log('split')
 
                 // hide deal btn
-                UI.hideElement(UI.btn.deal, true)
+                UI.showElement(UI.btn.deal, false)
 
                 // show split buttons
-                UI.hideElement(UI.splitContainer, false)
+                UI.showElement(UI.splitContainer, true)
 
             } else {
                 console.log('not 21 or split')
@@ -904,40 +913,99 @@ document.body.addEventListener('click', (e) => {
                 UI.hideDealBtn(UI.btn.deal, true)
 
                 // show double stand hit btns
-                UI.hideElement(UI.btn.doubleStandHit, false)
+                UI.showElement(UI.btn.doubleStandHit, true)
             }
 
         })
+
+    } else if (e.target == UI.btn.splitYes) {
+        console.log('split yes')
+    } else if (e.target == UI.btn.splitNo) {
+        // hide split container
+        UI.showElement(UI.splitContainer, false)
+        // show double stand hit buttons
+        UI.showElement(UI.btn.doubleStandHit, true)
+    } else if (e.target == UI.btn.double) {
+        // hide double stand hit buttons
+        UI.showElement(UI.btn.doubleStandHit, false)
+
+        // grab current bet chips
+        let betChips = Array.from(Player.hands[Player.handIndex].ui.chips.children)
+
+        // count number of each type of chip
+        let numChip1 = 0,
+            numChip5 = 0,
+            numChip10 = 0,
+            numChip25 = 0,
+            numChip100 = 0
+
+        for (const chip of betChips) {
+            switch (chip.dataset.chipValue) {
+                case '1':
+                    numChip1++
+                    break;
+                case '5':
+                    numChip5++
+                    break;
+                case '10':
+                    numChip10++
+                    break;
+                case '25':
+                    numChip25++
+                    break;
+                case '100':
+                    numChip100++
+                    break;
+
+            }
+        }
+
+        // create each chip and append to their discard wrappers
+
+        const duplicateChips = (numChip, container, value) => {
+            for (let i = 0; i < numChip; i++) {
+                container.insertAdjacentHTML('afterbegin', `<div class="chip-bet chip-bet--${value}" data-chip-value="${value}">$${value}</div>`)
+                let chip = container.firstElementChild
+                UI.moveElement(chip, Player.hands[Player.handIndex].ui.chips, 'bet-chip-animation', () => {})
+            }
+        }
+
+        duplicateChips(numChip1, UI.chip1Discard, 1)
+        duplicateChips(numChip5, UI.chip5Discard, 5)
+        duplicateChips(numChip10, UI.chip10Discard, 10)
+        duplicateChips(numChip25, UI.chip25Discard, 25)
+        duplicateChips(numChip100, UI.chip100Discard, 100)
+        
 
     } else if (e.target == UI.btn.chip1) {
         if (Player.bank >= 1) {
             UI.betChip(1, UI.chip1Wrapper, UI.chip1Discard)
         } else {
-            console.log('You don\'t have $1!')
+            console.log('You dont have $1!')
         }
     } else if (e.target == UI.btn.chip5) {
         if (Player.bank >= 5) {
             UI.betChip(5, UI.chip5Wrapper, UI.chip5Discard)
         } else {
-            console.log('You don\'t have $5!')
+            console.log('You dont have $5!')
         }
     } else if (e.target == UI.btn.chip10) {
         if (Player.bank >= 10) {
             UI.betChip(10, UI.chip10Wrapper, UI.chip10Discard)
         } else {
-            console.log('You don\'t have $10!');
+            console.log('You dont have $10!');
         }
     } else if (e.target == UI.btn.chip25) {
         if (Player.bank >= 25) {
             UI.betChip(25, UI.chip25Wrapper, UI.chip25Discard)
         } else {
-            console.log('You don\'t have $25!');
+            console.log('You dont have $25!');
         }
     } else if (e.target == UI.btn.chip100) {
         if (Player.bank >= 100) {
             UI.betChip(100, UI.chip100Wrapper, UI.chip100Discard)
         } else {
-            console.log('You don\'t have $100!')
+            console.log('You dont have $100!')
         }
     }
 })
