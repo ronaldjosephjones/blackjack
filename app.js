@@ -642,20 +642,20 @@ const Game = {
         // await Game.deal(Player.hands[0], false)
         // await Game.deal(Dealer.hands[0], true)
         // dealer ace first card, player 21
-        // await Game.forceCard(Player.hands[0], false, { name: 'A', suit: 'hearts', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true })
-        // await Game.forceCard(Dealer.hands[0], false, { name: 'A', suit: 'spades', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true })
-        // await Game.forceCard(Player.hands[0], false, { name: '10', suit: 'hearts', graphic: '', value: 10, value1: 10, value2: 10,  isAce: false })
-        // await Game.deal(Dealer.hands[0], true)
+        await Game.forceCard(Player.hands[0], false, { name: 'A', suit: 'hearts', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true })
+        await Game.forceCard(Dealer.hands[0], false, { name: 'A', suit: 'spades', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true })
+        await Game.forceCard(Player.hands[0], false, { name: '10', suit: 'hearts', graphic: '', value: 10, value1: 10, value2: 10,  isAce: false })
+        await Game.deal(Dealer.hands[0], true)
         // dealer 21, player 21
         // await Game.forceCard(Player.hands[0], false, { name: 'A', suit: 'hearts', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true })
         // await Game.forceCard(Dealer.hands[0], false, { name: 'A', suit: 'spades', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true })
         // await Game.forceCard(Player.hands[0], false, { name: '10', suit: 'hearts', graphic: '', value: 10, value1: 10, value2: 10,  isAce: false })
         // await Game.forceCard(Dealer.hands[0], true, { name: '10', suit: 'spades', graphic: '', value: 10, value1: 10, value2: 10,  isAce: false })
         // dealer ace first card, player split
-        await Game.forceCard(Player.hands[0], false, { name: '10', suit: 'spades', graphic: '', value: 10, value1: 10, value2: 10,  isAce: false })
-        await Game.forceCard(Dealer.hands[0], false, { name: 'A', suit: 'spades', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true })
-        await Game.forceCard(Player.hands[0], false, { name: '10', suit: 'hearts', graphic: '', value: 10, value1: 10, value2: 10,  isAce: false })
-        await Game.deal(Dealer.hands[0], true)
+        // await Game.forceCard(Player.hands[0], false, { name: '10', suit: 'spades', graphic: '', value: 10, value1: 10, value2: 10,  isAce: false })
+        // await Game.forceCard(Dealer.hands[0], false, { name: 'A', suit: 'spades', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true })
+        // await Game.forceCard(Player.hands[0], false, { name: '10', suit: 'hearts', graphic: '', value: 10, value1: 10, value2: 10,  isAce: false })
+        // await Game.deal(Dealer.hands[0], true)
 
         Dealer.secondCard = Dealer.hands[0].ui.cardsInner.lastElementChild
     },
@@ -768,6 +768,16 @@ const Game = {
             cards[newPos] = card
         }
         return cards;
+    },
+    processDealer: () => {
+        // hit dealer
+        if (Dealer.hands[0].count < 17) {
+            Game.deal(Dealer.hands[0], false).then(() => {
+                Game.countHand(Dealer.hands[0])
+            })
+        } else {
+            console.log('stand and a bunch of stuff')
+        }
     }
 }
 
@@ -892,6 +902,9 @@ document.body.addEventListener('click', (e) => {
                                                 })                                      
                                         })
                                 })
+                        } else {
+                            // dealer doesn't have blackjack
+                            Game.processDealer()
                         }
                     })
                     
@@ -975,7 +988,19 @@ document.body.addEventListener('click', (e) => {
         duplicateChips(numChip10, UI.chip10Discard, 10)
         duplicateChips(numChip25, UI.chip25Discard, 25)
         duplicateChips(numChip100, UI.chip100Discard, 100)
-        
+
+        // update bank and double bet
+        UI.updateBank(-Player.hands[Player.handIndex].bet, 1000)
+        Player.hands[Player.handIndex].bet *= 2
+        Player.hands[Player.handIndex].ui.bet.innerText = '$' + Player.hands[Player.handIndex].bet
+
+        // Deal one card to player's hand
+        Game.deal(Player.hands[Player.handIndex]).then(() => {
+            // update count
+            Game.countHand(Player.hands[Player.handIndex])
+        }).then(() => {
+
+        })
 
     } else if (e.target == UI.btn.chip1) {
         if (Player.bank >= 1) {
