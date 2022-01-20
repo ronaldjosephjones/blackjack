@@ -834,6 +834,12 @@ document.body.addEventListener('click', (e) => {
                 UI.showElement(UI.btn.double, true)
             }
 
+            // check if dealer's first card ace
+            // offer insurance
+            // insurance bet is half of current bet
+            // if dealer has 21 you get money back unless you have 21
+            // if dealer doesn't have 21 card is not revealed and play normal hand
+
             // Check state of player's first hand
             
             // BLACKJACK **********************************************************************************************
