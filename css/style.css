@@ -141,7 +141,7 @@ body {
       font-size: 3rem;
       text-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3); }
 
-#split-container {
+.prompt-container {
   align-items: center;
   display: flex;
   height: 100vh;
@@ -151,7 +151,7 @@ body {
   top: 0;
   background: linear-gradient(90deg, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.3) 100%);
   z-index: 1; }
-  #split-container #split-content {
+  .prompt-container .prompt-content {
     width: 100%;
     max-width: 650px;
     background: black;
@@ -160,15 +160,15 @@ body {
     box-shadow: 0 1px 3px rgba(34, 25, 25, 0.4);
     position: relative;
     top: -12%; }
-    #split-container #split-content > p {
+    .prompt-container .prompt-content > p {
       color: #fff;
       font-size: 2rem;
       margin-bottom: 1rem;
       text-align: center; }
-    #split-container #split-content #split-btns {
+    .prompt-container .prompt-content .prompt-btns {
       display: flex;
       justify-content: center; }
-      #split-container #split-content #split-btns .btn {
+      .prompt-container .prompt-content .prompt-btns .btn {
         height: 5rem;
         max-width: 30rem;
         width: 100%; }

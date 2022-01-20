@@ -81,7 +81,9 @@ const UI = {
         hit: document.getElementById('btn--hit'),
         stand: document.getElementById('btn--stand'),
         splitYes: document.getElementById('btn--split-yes'),
-        splitNo: document.getElementById('btn--split-no')
+        splitNo: document.getElementById('btn--split-no'),
+        insuranceYes: document.getElementById('btn--insurance-yes'),
+        insuranceNo: document.getElementById('btn--insurance-no')
     },
     chipBtns: document.querySelectorAll('.chip'),
     chipsBet: document.getElementById('bet-chips'),
@@ -96,6 +98,7 @@ const UI = {
     chip100Wrapper: document.getElementById('chip--100-wrapper'),
     chip100Discard: document.getElementById('chip--100-discard'),
     splitContainer: document.getElementById('split-container'),
+    insuranceContainer: document.getElementById('insurance-container'),
     messageWrapper: document.getElementById('message-wrapper'),
     messageText: document.querySelector('#message-wrapper .message-text'),
     betChip: function(chipVal, chipWrapper, chipDiscard) {
@@ -637,15 +640,15 @@ const Game = {
         // await Game.deal(Player.hands[0], false)
         // await Game.deal(Dealer.hands[0], true)
         // dealer ace first card
-        // await Game.deal(Player.hands[0], false)
-        // await Game.forceCard(Dealer.hands[0], false, { name: 'A', suit: 'spades', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true })
-        // await Game.deal(Player.hands[0], false)
-        // await Game.deal(Dealer.hands[0], true)
-        // dealer ace first card, player 21
-        await Game.forceCard(Player.hands[0], false, { name: 'A', suit: 'hearts', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true })
+        await Game.deal(Player.hands[0], false)
         await Game.forceCard(Dealer.hands[0], false, { name: 'A', suit: 'spades', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true })
-        await Game.forceCard(Player.hands[0], false, { name: '10', suit: 'hearts', graphic: '', value: 10, value1: 10, value2: 10,  isAce: false })
+        await Game.deal(Player.hands[0], false)
         await Game.deal(Dealer.hands[0], true)
+        // dealer ace first card, player 21
+        // await Game.forceCard(Player.hands[0], false, { name: 'A', suit: 'hearts', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true })
+        // await Game.forceCard(Dealer.hands[0], false, { name: 'A', suit: 'spades', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true })
+        // await Game.forceCard(Player.hands[0], false, { name: '10', suit: 'hearts', graphic: '', value: 10, value1: 10, value2: 10,  isAce: false })
+        // await Game.deal(Dealer.hands[0], true)
         // dealer 21, player 21
         // await Game.forceCard(Player.hands[0], false, { name: 'A', suit: 'hearts', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true })
         // await Game.forceCard(Dealer.hands[0], false, { name: 'A', suit: 'spades', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true })
@@ -778,6 +781,132 @@ const Game = {
         } else {
             console.log('stand and a bunch of stuff')
         }
+    },
+    playHand: () => {
+        // BLACKJACK **********************************************************************************************
+        if (Player.hands[0].count === 21) {
+
+            UI.playAnimation(Player.hands[0].ui.count, 'count-blackjack 1s .75s forwards')
+                .then(() => UI.playMessage('Blackjack!', 'show-message 1.5s forwards'))
+                .then(() => UI.revealDealerCard())
+                .then(() => {
+
+                    // count dealer hand
+                    Game.countHand(Dealer.hands[0])
+
+                    // dealer also has blackjack
+                    if (Dealer.hands[0].count === 21) {
+
+                        UI.playAnimation(Dealer.hands[0].ui.count, 'count-blackjack 1s .75s forwards')
+                            .then(() => UI.playMessage('Push!', 'show-message 1.5s forwards'))                            
+                            .then(() => {
+                                // fade out hand bet amount & counts
+                                UI.fadeOut(Player.hands[0].ui.bet)
+                                UI.fadeOut(Player.hands[0].ui.count)
+                                UI.playAnimation(Dealer.hands[0].ui.count, 'fading-out .5s forwards', false)
+                                    .then(() => {
+                                        // send chips back
+                                        let chipsArray = Array.from(Player.hands[0].ui.chips.children)
+                                                                            
+                                        for (const chip of chipsArray) {
+                                            // move to corresponding container then remove
+                                            UI.moveElement(chip, document.querySelector(`#chip--${chip.dataset.chipValue}-discard`), 'bet-chip-animation', () => {
+                                                chip.remove()
+                                            })
+                                        }
+
+                                        // update bank
+                                        UI.updateBank(Player.hands[0].bet, 1000)
+
+                                        // discard all cards
+                                        Game.discardCards(Dealer.hands[0])
+                                        Game.discardCardsWithListener(Player.hands[0])
+                                            .then(() => {
+                                                // reset player
+                                                Player.hands[0].ui.div.remove()
+                                                Player.hands.pop()
+                                                Player.handIndex -= 1
+                                                Player.bet = 0
+                                                UI.updateBet()
+
+                                                // enable & show buttons
+                                                UI.disableBtns(UI.chipBtns, false)  
+                                                UI.showElement(UI.btn.deal, true)
+
+                                                for (const betChipWrap of document.querySelectorAll('.bet-chip-wrapper')) {
+                                                    betChipWrap.remove()
+                                                }
+
+                                                UI.collapseChipsBet(false)
+
+                                                // reset dealer
+                                                Dealer.hands[0].ui.count.innerText = ''
+                                                Dealer.hands[0].ui.cardsInner.removeAttribute('style')
+                                                Dealer.hands[0].ui.count.removeAttribute('style')
+                                                Dealer.hands[0].ui.count.classList.remove('fading-out')
+                                                Dealer.hands[0].ui.count.classList.add('hidden')
+                                                
+                                            })                                      
+                                    })
+                            })
+                    } else {
+                        // dealer doesn't have blackjack
+                        Game.processDealer()
+                    }
+                })
+                
+
+        // SPLIT OPTION  
+        } else if ((Player.hands[0].cards[0].name === Player.hands[0].cards[1].name) && (Player.hands[0].cards[0].isAce !== true)) {
+            console.log('split')
+
+            // hide deal btn
+            UI.showElement(UI.btn.deal, false)
+
+            // show split buttons
+            UI.showElement(UI.splitContainer, true)
+
+        } else {
+            console.log('not 21 or split')
+
+            // hide deal btn
+            UI.showElement(UI.btn.deal, false)
+
+            // show double stand hit btns
+            UI.showElement(UI.btn.doubleStandHit, true)
+        }
+    },
+    insure: () => {
+        // insurance bet is half of current bet
+        // if dealer has 21 you get money back unless you have 21
+        // if dealer doesn't have 21 card is not revealed and play normal hand
+        UI.showElement(UI.insuranceContainer, false)
+        
+        let bet = Math.floor(Player.hands[0].bet / 2)
+        console.log(bet)
+        
+        let numChip1 = 0,
+            numChip5 = 0,
+            numChip10 = 0,
+            numChip25 = 0,
+            numChip100 = 0,
+            remainder = bet
+
+        // Determine smallest amount of chips to make up bet
+        if (remainder >= 100) {
+            // how many 100chips can go into remainder?
+            console.log(Math.floor(remainder/100))
+            numChip100 += Math.floor(remainder/100)
+            // how much will be left over
+            console.log(remainder % 100)
+            remainder += remainder % 100
+        } else if (remainder >= 25) {
+            console.log(Math.floor(remainder/25))
+            numChip25 += Math.floor(remainder/25)
+            console.log(remainder % 25)
+            remainder += remainder % 25
+        }
+
     }
 }
 
@@ -834,109 +963,23 @@ document.body.addEventListener('click', (e) => {
                 UI.showElement(UI.btn.double, true)
             }
 
-            // check if dealer's first card ace
-            // offer insurance
-            // insurance bet is half of current bet
-            // if dealer has 21 you get money back unless you have 21
-            // if dealer doesn't have 21 card is not revealed and play normal hand
-
-            // Check state of player's first hand
-            
-            // BLACKJACK **********************************************************************************************
-            if (Player.hands[0].count === 21) {
-
-                UI.playAnimation(Player.hands[0].ui.count, 'count-blackjack 1s .75s forwards')
-                    .then(() => UI.playMessage('Blackjack!', 'show-message 1.5s forwards'))
-                    .then(() => UI.revealDealerCard())
-                    .then(() => {
-
-                        // count dealer hand
-                        Game.countHand(Dealer.hands[0])
-
-                        // dealer also has blackjack
-                        if (Dealer.hands[0].count === 21) {
-
-                            UI.playAnimation(Dealer.hands[0].ui.count, 'count-blackjack 1s .75s forwards')
-                                .then(() => UI.playMessage('Push!', 'show-message 1.5s forwards'))                            
-                                .then(() => {
-                                    // fade out hand bet amount & counts
-                                    UI.fadeOut(Player.hands[0].ui.bet)
-                                    UI.fadeOut(Player.hands[0].ui.count)
-                                    UI.playAnimation(Dealer.hands[0].ui.count, 'fading-out .5s forwards', false)
-                                        .then(() => {
-                                            // send chips back
-                                            let chipsArray = Array.from(Player.hands[0].ui.chips.children)
-                                                                                
-                                            for (const chip of chipsArray) {
-                                                // move to corresponding container then remove
-                                                UI.moveElement(chip, document.querySelector(`#chip--${chip.dataset.chipValue}-discard`), 'bet-chip-animation', () => {
-                                                    chip.remove()
-                                                })
-                                            }
-
-                                            // update bank
-                                            UI.updateBank(Player.hands[0].bet, 1000)
-
-                                            // discard all cards
-                                            Game.discardCards(Dealer.hands[0])
-                                            Game.discardCardsWithListener(Player.hands[0])
-                                                .then(() => {
-                                                    // reset player
-                                                    Player.hands[0].ui.div.remove()
-                                                    Player.hands.pop()
-                                                    Player.handIndex -= 1
-                                                    Player.bet = 0
-                                                    UI.updateBet()
-
-                                                    // enable & show buttons
-                                                    UI.disableBtns(UI.chipBtns, false)  
-                                                    UI.showElement(UI.btn.deal, true)
-
-                                                    for (const betChipWrap of document.querySelectorAll('.bet-chip-wrapper')) {
-                                                        betChipWrap.remove()
-                                                    }
-
-                                                    UI.collapseChipsBet(false)
-
-                                                    // reset dealer
-                                                    Dealer.hands[0].ui.count.innerText = ''
-                                                    Dealer.hands[0].ui.cardsInner.removeAttribute('style')
-                                                    Dealer.hands[0].ui.count.removeAttribute('style')
-                                                    Dealer.hands[0].ui.count.classList.remove('fading-out')
-                                                    Dealer.hands[0].ui.count.classList.add('hidden')
-                                                    
-                                                })                                      
-                                        })
-                                })
-                        } else {
-                            // dealer doesn't have blackjack
-                            Game.processDealer()
-                        }
-                    })
-                    
-
-            // SPLIT OPTION  
-            } else if ((Player.hands[0].cards[0].name === Player.hands[0].cards[1].name) && (Player.hands[0].cards[0].isAce !== true)) {
-                console.log('split')
-
-                // hide deal btn
-                UI.showElement(UI.btn.deal, false)
-
-                // show split buttons
-                UI.showElement(UI.splitContainer, true)
-
+            // Insurance check (dealer's first card is ace + player has enough $)
+            if (Dealer.hands[0].cards[0].name == 'A' && Player.bank >= Math.floor(Player.hands[0].bet / 2)) {
+                // offer insurance
+                UI.showElement(UI.insuranceContainer, true)
             } else {
-                console.log('not 21 or split')
-
-                // hide deal btn
-                UI.hideDealBtn(UI.btn.deal, true)
-
-                // show double stand hit btns
-                UI.showElement(UI.btn.doubleStandHit, true)
+                // Play player's first hand
+                Game.playHand()
             }
-
         })
 
+    } else if (e.target == UI.btn.insuranceYes) {
+        Game.insure()
+    } else if (e.target == UI.btn.insuranceNo) {
+        // hide insurance container
+        UI.showElement(UI.insuranceContainer, false)
+        // play hand
+        Game.playHand()
     } else if (e.target == UI.btn.splitYes) {
         console.log('split yes')
     } else if (e.target == UI.btn.splitNo) {

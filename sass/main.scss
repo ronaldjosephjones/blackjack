@@ -47,7 +47,7 @@ body {
     }
 }
 
-#split-container {
+.prompt-container {
     align-items: center;
     display: flex;
     height: 100vh;
@@ -58,7 +58,7 @@ body {
     background: linear-gradient(90deg, rgba(0, 0, 0, .3) 0%, rgba(0, 0, 0, .3) 100%);
     z-index: 1;
 
-    #split-content {
+    .prompt-content {
         width: 100%;
         max-width: 650px;
         background: black;
@@ -75,7 +75,7 @@ body {
             text-align: center;
         }
 
-        #split-btns {
+        .prompt-btns {
             display: flex;
             justify-content: center;
 
