@@ -99,6 +99,9 @@ const UI = {
     chip100Discard: document.getElementById('chip--100-discard'),
     splitContainer: document.getElementById('split-container'),
     insuranceContainer: document.getElementById('insurance-container'),
+    insurance: document.getElementById('insurance'),
+    insuranceAmount: document.getElementById('insurance-amount'),
+    insuranceChips: document.getElementById('insurance-chips'),
     messageWrapper: document.getElementById('message-wrapper'),
     messageText: document.querySelector('#message-wrapper .message-text'),
     betChip: function(chipVal, chipWrapper, chipDiscard) {
@@ -194,6 +197,13 @@ const UI = {
     },
     disableDealBtn: (bool) => {
         UI.btn.deal.disabled = bool
+    },
+    createAndMoveChips: (numChip, startContainer, endContainer, value) => {
+        for (let i = 0; i < numChip; i++) {
+            startContainer.insertAdjacentHTML('afterbegin', `<div class="chip-bet chip-bet--${value}" data-chip-value="${value}">$${value}</div>`)
+            let chip = startContainer.firstElementChild
+            UI.moveElement(chip, endContainer, 'bet-chip-animation', () => {})
+        }
     },
     enableBetChips: () => {
         let betChipWrapper1 = document.querySelector('#bet-chip--1-wrapper')
@@ -882,8 +892,8 @@ const Game = {
         // if dealer doesn't have 21 card is not revealed and play normal hand
         UI.showElement(UI.insuranceContainer, false)
         
+        // round half bet down
         let bet = Math.floor(Player.hands[0].bet / 2)
-        console.log(bet)
         
         let numChip1 = 0,
             numChip5 = 0,
@@ -893,19 +903,49 @@ const Game = {
             remainder = bet
 
         // Determine smallest amount of chips to make up bet
-        if (remainder >= 100) {
-            // how many 100chips can go into remainder?
-            console.log(Math.floor(remainder/100))
-            numChip100 += Math.floor(remainder/100)
-            // how much will be left over
-            console.log(remainder % 100)
-            remainder += remainder % 100
-        } else if (remainder >= 25) {
-            console.log(Math.floor(remainder/25))
-            numChip25 += Math.floor(remainder/25)
-            console.log(remainder % 25)
-            remainder += remainder % 25
+        const countChipsForBet = () => {
+            if (remainder >= 100) {
+                // how many 100chips can go into remainder?
+                numChip100 += Math.floor(remainder/100)
+                // how much will be left over
+                remainder = remainder % 100
+                countChipsForBet()
+            } else if (remainder >= 25) {
+                numChip25 += Math.floor(remainder/25)
+                remainder = remainder % 25
+                countChipsForBet()
+            } else if (remainder >= 10) {
+                numChip10 += Math.floor(remainder/10)
+                remainder = remainder % 10
+                countChipsForBet()
+            } else if (remainder >= 5) {
+                numChip5 += Math.floor(remainder/5)
+                remainder = remainder % 5
+                countChipsForBet()
+            } else if (remainder >= 1) {
+                numChip1 += Math.floor(remainder/1)
+                remainder = remainder % 1
+                countChipsForBet()
+            }
         }
+
+        countChipsForBet()
+
+        // update insurance amount
+        UI.insuranceAmount.innerText = '$' + bet
+
+        // unhide insurance
+        UI.showElement(UI.insurance, true)
+
+        // create and move chips for insurance bet
+        UI.createAndMoveChips(numChip1, UI.chip1Discard, UI.insuranceChips, 1)
+        UI.createAndMoveChips(numChip5, UI.chip5Discard, UI.insuranceChips, 5)
+        UI.createAndMoveChips(numChip10, UI.chip10Discard, UI.insuranceChips, 10)
+        UI.createAndMoveChips(numChip25, UI.chip25Discard, UI.insuranceChips, 25)
+        UI.createAndMoveChips(numChip100, UI.chip100Discard, UI.insuranceChips, 100)
+
+        // check if dealer's second card makes blackjack
+        
 
     }
 }
@@ -1022,21 +1062,12 @@ document.body.addEventListener('click', (e) => {
             }
         }
 
-        // create each chip and append to their discard wrappers
-
-        const duplicateChips = (numChip, container, value) => {
-            for (let i = 0; i < numChip; i++) {
-                container.insertAdjacentHTML('afterbegin', `<div class="chip-bet chip-bet--${value}" data-chip-value="${value}">$${value}</div>`)
-                let chip = container.firstElementChild
-                UI.moveElement(chip, Player.hands[Player.handIndex].ui.chips, 'bet-chip-animation', () => {})
-            }
-        }
-
-        duplicateChips(numChip1, UI.chip1Discard, 1)
-        duplicateChips(numChip5, UI.chip5Discard, 5)
-        duplicateChips(numChip10, UI.chip10Discard, 10)
-        duplicateChips(numChip25, UI.chip25Discard, 25)
-        duplicateChips(numChip100, UI.chip100Discard, 100)
+        // create chips and move to bet hand chips
+        UI.createAndMoveChips(numChip1, UI.chip1Discard, Player.hands[Player.handIndex].ui.chips, 1)
+        UI.createAndMoveChips(numChip5, UI.chip5Discard, Player.hands[Player.handIndex].ui.chips, 5)
+        UI.createAndMoveChips(numChip10, UI.chip10Discard, Player.hands[Player.handIndex].ui.chips, 10)
+        UI.createAndMoveChips(numChip25, UI.chip25Discard, Player.hands[Player.handIndex].ui.chips, 25)
+        UI.createAndMoveChips(numChip100, UI.chip100Discard, Player.hands[Player.handIndex].ui.chips, 100)
 
         // update bank and double bet
         UI.updateBank(-Player.hands[Player.handIndex].bet, 1000)

@@ -99,6 +99,7 @@ body {
         margin-top: 2rem;
 
         #dealer-hand {
+            margin-bottom: 2rem;
 
             .hand-cards{
                 display: flex;
@@ -117,7 +118,6 @@ body {
                 }
 
                 .hand-card-count {
-                    color: #fff;
                     font-size: 2rem;
                     margin: 0 0 0 4rem;
                     padding: .5rem 1rem;
@@ -125,6 +125,33 @@ body {
                     color: #000;
                     border-radius: .75rem;
                     font-weight: bold;
+                }
+            }
+        }
+
+        #insurance {
+
+            #insurance-inner {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                margin-right: 50rem;
+
+                #insurance-amount {
+                    text-align: center;
+                    color: #fff;
+                    font-size: 1.5rem;
+                    background: #000;
+                    margin: 0 auto 2rem;
+                    max-width: 7rem;
+                    border-radius: .75rem;
+                    padding: .5rem 1rem;
+                    width: 100%;
+                }
+
+                #insurance-chips {
+                    height: 5rem;
+                    width: 5rem;
                 }
             }
         }
@@ -321,6 +348,8 @@ body {
                 }
             }
         }
+    }
+}
 
         .chip-bet {
             align-items: center;
@@ -354,12 +383,6 @@ body {
         #chip--100, .chip-bet--100 {
             border: .6rem dashed #3d3d3d;
         }
-
-    }
-
-}
-
-
 
 .card {
     // animation-name: spin;
