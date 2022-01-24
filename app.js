@@ -650,10 +650,10 @@ const Game = {
         // await Game.deal(Player.hands[0], false)
         // await Game.deal(Dealer.hands[0], true)
         // dealer ace first card
-        await Game.deal(Player.hands[0], false)
-        await Game.forceCard(Dealer.hands[0], false, { name: 'A', suit: 'spades', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true })
-        await Game.deal(Player.hands[0], false)
-        await Game.deal(Dealer.hands[0], true)
+        // await Game.deal(Player.hands[0], false)
+        // await Game.forceCard(Dealer.hands[0], false, { name: 'A', suit: 'spades', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true })
+        // await Game.deal(Player.hands[0], false)
+        // await Game.deal(Dealer.hands[0], true)
         // dealer ace first card, player 21
         // await Game.forceCard(Player.hands[0], false, { name: 'A', suit: 'hearts', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true })
         // await Game.forceCard(Dealer.hands[0], false, { name: 'A', suit: 'spades', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true })
@@ -664,6 +664,11 @@ const Game = {
         // await Game.forceCard(Dealer.hands[0], false, { name: 'A', suit: 'spades', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true })
         // await Game.forceCard(Player.hands[0], false, { name: '10', suit: 'hearts', graphic: '', value: 10, value1: 10, value2: 10,  isAce: false })
         // await Game.forceCard(Dealer.hands[0], true, { name: '10', suit: 'spades', graphic: '', value: 10, value1: 10, value2: 10,  isAce: false })
+        // dealer 21, player random
+        await Game.deal(Player.hands[0], false)
+        await Game.forceCard(Dealer.hands[0], false, { name: 'A', suit: 'spades', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true })
+        await Game.deal(Player.hands[0], false)
+        await Game.forceCard(Dealer.hands[0], true, { name: '10', suit: 'spades', graphic: '', value: 10, value1: 10, value2: 10,  isAce: false })
         // dealer ace first card, player split
         // await Game.forceCard(Player.hands[0], false, { name: '10', suit: 'spades', graphic: '', value: 10, value1: 10, value2: 10,  isAce: false })
         // await Game.forceCard(Dealer.hands[0], false, { name: 'A', suit: 'spades', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true })
@@ -944,8 +949,14 @@ const Game = {
         UI.createAndMoveChips(numChip25, UI.chip25Discard, UI.insuranceChips, 25)
         UI.createAndMoveChips(numChip100, UI.chip100Discard, UI.insuranceChips, 100)
 
+        // update player bank
+
         // check if dealer's second card makes blackjack
-        
+        if (Dealer.hands[0].cards[1].value === 10) {
+            console.log('dealer has blacjack, win insurance bet (insurance be)')
+        } else {
+            console.log('dealer does not have blackjack, lose insurance bet and play normally')
+        }
 
     }
 }
