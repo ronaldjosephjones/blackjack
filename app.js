@@ -291,7 +291,7 @@ const UI = {
             el.style.animation = animation
         })
     },
-    revealDealerCard: () => {
+    revealDealerCard: (delay) => {
         return new Promise(resolve => {
             const onAnimationEndCb = () => {
                 Dealer.secondCard.removeEventListener('animationend', onAnimationEndCb)
@@ -302,7 +302,7 @@ const UI = {
                 }, 1)
             }
             Dealer.secondCard.addEventListener('animationend', onAnimationEndCb)
-            Dealer.secondCard.style.animation = 'reveal-card 2s forwards'
+            Dealer.secondCard.style.animation = `2s ${delay}s forwards reveal-card`
         })
     },
     updateBank: function(amount, duration) {
@@ -650,15 +650,20 @@ const Game = {
         // await Game.deal(Player.hands[0], false)
         // await Game.deal(Dealer.hands[0], true)
         // dealer ace first card
-        await Game.deal(Player.hands[0], false)
-        await Game.forceCard(Dealer.hands[0], false, { name: 'A', suit: 'spades', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true })
-        await Game.deal(Player.hands[0], false)
-        await Game.deal(Dealer.hands[0], true)
+        // await Game.deal(Player.hands[0], false)
+        // await Game.forceCard(Dealer.hands[0], false, { name: 'A', suit: 'spades', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true })
+        // await Game.deal(Player.hands[0], false)
+        // await Game.deal(Dealer.hands[0], true)
         // dealer ace first card, player 21
         // await Game.forceCard(Player.hands[0], false, { name: 'A', suit: 'hearts', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true })
         // await Game.forceCard(Dealer.hands[0], false, { name: 'A', suit: 'spades', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true })
         // await Game.forceCard(Player.hands[0], false, { name: '10', suit: 'hearts', graphic: '', value: 10, value1: 10, value2: 10,  isAce: false })
         // await Game.deal(Dealer.hands[0], true)
+        // dealer 21, player random
+        await Game.deal(Player.hands[0], false)
+        await Game.forceCard(Dealer.hands[0], false, { name: 'A', suit: 'spades', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true })
+        await Game.deal(Player.hands[0], false)
+        await Game.forceCard(Dealer.hands[0], true, { name: '10', suit: 'spades', graphic: '', value: 10, value1: 10, value2: 10,  isAce: false })
         // dealer 21, player 21
         // await Game.forceCard(Player.hands[0], false, { name: 'A', suit: 'hearts', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true })
         // await Game.forceCard(Dealer.hands[0], false, { name: 'A', suit: 'spades', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true })
@@ -798,7 +803,7 @@ const Game = {
 
             UI.playAnimation(Player.hands[0].ui.count, 'count-blackjack 1s .75s forwards')
                 .then(() => UI.playMessage('Blackjack!', 'show-message 1.5s forwards'))
-                .then(() => UI.revealDealerCard())
+                .then(() => UI.revealDealerCard(0))
                 .then(() => {
 
                     // count dealer hand
@@ -931,6 +936,7 @@ const Game = {
 
         countChipsForBet()
 
+        console.log(bet)
         // update insurance amount
         UI.insuranceAmount.innerText = '$' + bet
 
@@ -944,8 +950,23 @@ const Game = {
         UI.createAndMoveChips(numChip25, UI.chip25Discard, UI.insuranceChips, 25)
         UI.createAndMoveChips(numChip100, UI.chip100Discard, UI.insuranceChips, 100)
 
-        // check if dealer's second card makes blackjack
-        
+        // update bank
+        UI.updateBank(-bet, 1000)
+
+        // dealer has blackjack
+        if (Dealer.hands[0].cards[1].value == 10) {
+            // reveal dealer's second card
+            UI.revealDealerCard(1.5).then(() => {
+                Game.countHand(Dealer.hands[0])
+                UI.playAnimation(Dealer.hands[0].ui.count, '1s .75s forwards count-blackjack').then(() => {
+                    UI.playMessage('Blackjack!', 'show-message 1.5s forwards').then(() => {
+                        console.log('then sometin')
+                    })
+                })
+            })
+        } else {
+            console.log('dealer doesnt have blackjack, play normal hand and lose insurance bet')
+        }
 
     }
 }

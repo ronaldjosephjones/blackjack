@@ -422,7 +422,7 @@ body {
   animation-duration: 2s;
   animation-timing-function: ease-in-out;
   animation-fill-mode: forwards;
-  animation-delay: 1s; }
+  animation-delay: 5s; }
 
 .offscreen--deal {
   transition: all 2s;
