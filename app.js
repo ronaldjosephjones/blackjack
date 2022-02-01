@@ -206,24 +206,24 @@ const UI = {
         }
     },
     enableBetChips: () => {
-        let betChipWrapper1 = document.querySelector('#bet-chip--1-wrapper')
-        if (betChipWrapper1) {
+        let betChipWrapper1 = document.querySelector('#bet-chip--1-wrapper') || false
+        if (betChipWrapper1 && betChipWrapper1.children.length > 0) {
             betChipWrapper1.lastElementChild.classList.remove('disable-clicks')
         }
-        let betChipWrapper5 = document.querySelector('#bet-chip--5-wrapper')
-        if (betChipWrapper5) {
+        let betChipWrapper5 = document.querySelector('#bet-chip--5-wrapper') || false
+        if (betChipWrapper5 && betChipWrapper5.children.length > 0) {
             betChipWrapper5.lastElementChild.classList.remove('disable-clicks')
         }
-        let betChipWrapper10 = document.querySelector('#bet-chip--10-wrapper')
-        if (betChipWrapper10) {
+        let betChipWrapper10 = document.querySelector('#bet-chip--10-wrapper') || false
+        if (betChipWrapper10 && betChipWrapper10.children.length > 0) {
             betChipWrapper10.lastElementChild.classList.remove('disable-clicks')
         }
-        let betChipWrapper25 = document.querySelector('#bet-chip--25-wrapper')
-        if (betChipWrapper25) {
+        let betChipWrapper25 = document.querySelector('#bet-chip--25-wrapper') || false
+        if (betChipWrapper25 && betChipWrapper25.children.length > 0) {
             betChipWrapper25.lastElementChild.classList.remove('disable-clicks')
         }
-        let betChipWrapper100 = document.querySelector('#bet-chip--100-wrapper')
-        if (betChipWrapper100) {
+        let betChipWrapper100 = document.querySelector('#bet-chip--100-wrapper') || false
+        if (betChipWrapper100 && betChipWrapper100.children.length > 0) {
             betChipWrapper100.lastElementChild.classList.remove('disable-clicks')
         }
     },
@@ -245,18 +245,18 @@ const UI = {
         let invertX = firstPos.x - lastPos.x
         let invertY = firstPos.y - lastPos.y
 
-        el.style.transform = `translate(${invertX}px, ${invertY}px)`
-
+        el.style.transform = `translate(${invertX}px, ${invertY}px)`            
 
         el.addEventListener('transitionend', () => {
             el.classList.remove(className)
+            el.removeAttribute('style')
             callback()
         }, { once: true })
 
         setTimeout(() => {
             el.classList.add(className)
             el.style.transform = 'none'
-        }, 1)
+        }, 30)
 
     },
     playMessage: (message, animation) => {
@@ -645,25 +645,25 @@ const Game = {
         // await Game.forceCard(Player.hands[0], false, { name: 'A', suit: 'hearts', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true })
         // await Game.deal(Dealer.hands[0], true)
         // random + random
-        // await Game.deal(Player.hands[0], false)
-        // await Game.deal(Dealer.hands[0], false)
-        // await Game.deal(Player.hands[0], false)
-        // await Game.deal(Dealer.hands[0], true)
+        await Game.deal(Player.hands[0], false)
+        await Game.deal(Dealer.hands[0], false)
+        await Game.deal(Player.hands[0], false)
+        await Game.deal(Dealer.hands[0], true)
         // dealer ace first card
         // await Game.deal(Player.hands[0], false)
         // await Game.forceCard(Dealer.hands[0], false, { name: 'A', suit: 'spades', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true })
         // await Game.deal(Player.hands[0], false)
-        // await Game.deal(Dealer.hands[0], true)
+        // await Game.forceCard(Dealer.hands[0], true, { name: '5', suit: 'spades', graphic: '', value: 5, value1: 5, value2: 5,  isAce: false })
         // dealer ace first card, player 21
         // await Game.forceCard(Player.hands[0], false, { name: 'A', suit: 'hearts', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true })
         // await Game.forceCard(Dealer.hands[0], false, { name: 'A', suit: 'spades', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true })
         // await Game.forceCard(Player.hands[0], false, { name: '10', suit: 'hearts', graphic: '', value: 10, value1: 10, value2: 10,  isAce: false })
         // await Game.deal(Dealer.hands[0], true)
         // dealer 21, player random
-        await Game.deal(Player.hands[0], false)
-        await Game.forceCard(Dealer.hands[0], false, { name: 'A', suit: 'spades', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true })
-        await Game.deal(Player.hands[0], false)
-        await Game.forceCard(Dealer.hands[0], true, { name: '10', suit: 'spades', graphic: '', value: 10, value1: 10, value2: 10,  isAce: false })
+        // await Game.deal(Player.hands[0], false)
+        // await Game.forceCard(Dealer.hands[0], false, { name: 'A', suit: 'spades', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true })
+        // await Game.deal(Player.hands[0], false)
+        // await Game.forceCard(Dealer.hands[0], true, { name: '10', suit: 'spades', graphic: '', value: 10, value1: 10, value2: 10,  isAce: false })
         // dealer 21, player 21
         // await Game.forceCard(Player.hands[0], false, { name: 'A', suit: 'hearts', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true })
         // await Game.forceCard(Dealer.hands[0], false, { name: 'A', suit: 'spades', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true })
@@ -713,6 +713,28 @@ const Game = {
                     card.remove()
                 })
                 card.classList.add('offscreen--discard') 
+            }
+        }
+    },
+    discardChipsWithListener: (chips) => {
+        for (const [i, chip] of chips.entries()) {
+            if (i === chips.length - 1) {
+                console.log(i)
+                return new Promise(resolve => {
+                    const onTransitionendCb = () => {
+                        chip.remove()
+                        setTimeout(() => {
+                            resolve()
+                        }, 1)
+                    }
+                    chip.addEventListener('transitionend', onTransitionendCb)
+                    chip.classList.add('offscreen--discard-chip') 
+                })
+            } else {
+                chip.addEventListener('transitionend', () => {
+                    chip.remove()
+                })
+                chip.classList.add('offscreen--discard-chip') 
             }
         }
     },
@@ -898,14 +920,14 @@ const Game = {
         UI.showElement(UI.insuranceContainer, false)
         
         // round half bet down
-        let bet = Math.floor(Player.hands[0].bet / 2)
+        let insuranceBet = Math.floor(Player.hands[0].bet / 2)
         
         let numChip1 = 0,
             numChip5 = 0,
             numChip10 = 0,
             numChip25 = 0,
             numChip100 = 0,
-            remainder = bet
+            remainder = insuranceBet
 
         // Determine smallest amount of chips to make up bet
         const countChipsForBet = () => {
@@ -936,9 +958,8 @@ const Game = {
 
         countChipsForBet()
 
-        console.log(bet)
         // update insurance amount
-        UI.insuranceAmount.innerText = '$' + bet
+        UI.insuranceAmount.innerText = '$' + insuranceBet
 
         // unhide insurance
         UI.showElement(UI.insurance, true)
@@ -951,7 +972,7 @@ const Game = {
         UI.createAndMoveChips(numChip100, UI.chip100Discard, UI.insuranceChips, 100)
 
         // update bank
-        UI.updateBank(-bet, 1000)
+        UI.updateBank(-insuranceBet, 1000)
 
         // dealer has blackjack
         if (Dealer.hands[0].cards[1].value == 10) {
@@ -960,14 +981,133 @@ const Game = {
                 Game.countHand(Dealer.hands[0])
                 UI.playAnimation(Dealer.hands[0].ui.count, '1s .75s forwards count-blackjack').then(() => {
                     UI.playMessage('Blackjack!', 'show-message 1.5s forwards').then(() => {
-                        console.log('then sometin')
+                        UI.playMessage('Insurance won!', 'show-message 1.5s forwards').then(() => {
+                            // fade out hand bet amount & counts
+                            UI.fadeOut(Player.hands[0].ui.bet)
+                            UI.fadeOut(UI.insuranceAmount)
+                            UI.fadeOut(Player.hands[0].ui.count)
+                            UI.playAnimation(Dealer.hands[0].ui.count, 'fading-out .5s forwards', false)
+                                .then(() => {
+                                    // send chips back                                       
+                                    let betChips = Array.from(Player.hands[0].ui.chips.children)
+                                    let insuranceChips = Array.from(UI.insuranceChips.children)
+                                    let chips = betChips.concat(insuranceChips)
+                                    chips.forEach(chip => {
+                                        UI.moveElement(chip, document.querySelector(`#chip--${chip.dataset.chipValue}-discard`), 'bet-chip--moving-to-hand', () => {
+                                            chip.remove()
+                                        })
+                                    })
+    
+                                    // update bank
+                                    UI.updateBank(Player.hands[0].bet + insuranceBet, 1000)
+    
+                                    // discard all cards
+                                    Game.discardCards(Dealer.hands[0])
+                                    Game.discardCardsWithListener(Player.hands[0])
+                                        .then(() => {
+                                            // reset player
+                                            Player.hands[0].ui.div.remove()
+                                            Player.hands.pop()
+                                            Player.handIndex -= 1
+                                            Player.bet = 0
+                                            UI.updateBet()
+    
+                                            // enable & show buttons
+                                            UI.disableBtns(UI.chipBtns, false)  
+                                            UI.showElement(UI.btn.deal, true)
+    
+                                            for (const betChipWrap of document.querySelectorAll('.bet-chip-wrapper')) {
+                                                betChipWrap.remove()
+                                            }
+    
+                                            UI.collapseChipsBet(false)
+    
+                                            // reset dealer
+                                            Dealer.hands[0].ui.count.innerText = ''
+                                            UI.insuranceAmount.innerText = ''
+                                            Dealer.hands[0].ui.cardsInner.removeAttribute('style')
+                                            Dealer.hands[0].ui.count.removeAttribute('style')
+                                            Dealer.hands[0].ui.count.classList.remove('fading-out')
+                                            UI.insuranceAmount.classList.remove('fading-out')
+                                            Dealer.hands[0].ui.count.classList.add('hidden')
+                                            UI.insurance.classList.add('hidden')
+                                        })
+                                })
+                        })
                     })
+
                 })
             })
         } else {
-            console.log('dealer doesnt have blackjack, play normal hand and lose insurance bet')
+            // lose insurance bet
+            UI.playAnimation(Dealer.secondCard, '1s 1.5s tilt-card').then(() => {
+                UI.playMessage('Insurance lost!', '1.5s forwards show-message').then(() => {
+                    UI.fadeOut(UI.insuranceAmount)
+
+                    let chips = Array.from(UI.insuranceChips.children)
+                    
+                    Game.discardChipsWithListener(chips).then(() => {
+                        UI.insuranceAmount.innerText = ''
+                        UI.insurance.classList.add('hidden')
+                        UI.showElement(UI.btn.doubleStandHit, true)
+                    })
+                })
+            })
         }
 
+    },
+    double: () => {
+        // hide double stand hit buttons
+        UI.showElement(UI.btn.doubleStandHit, false)
+
+        // grab current bet chips
+        let betChips = Array.from(Player.hands[Player.handIndex].ui.chips.children)
+
+        // count number of each type of chip
+        let numChip1 = 0,
+            numChip5 = 0,
+            numChip10 = 0,
+            numChip25 = 0,
+            numChip100 = 0
+
+        for (const chip of betChips) {
+            switch (chip.dataset.chipValue) {
+                case '1':
+                    numChip1++
+                    break;
+                case '5':
+                    numChip5++
+                    break;
+                case '10':
+                    numChip10++
+                    break;
+                case '25':
+                    numChip25++
+                    break;
+                case '100':
+                    numChip100++
+                    break;
+            }
+        }
+
+        // create chips and move to bet hand chips
+        UI.createAndMoveChips(numChip1, UI.chip1Discard, Player.hands[Player.handIndex].ui.chips, 1)
+        UI.createAndMoveChips(numChip5, UI.chip5Discard, Player.hands[Player.handIndex].ui.chips, 5)
+        UI.createAndMoveChips(numChip10, UI.chip10Discard, Player.hands[Player.handIndex].ui.chips, 10)
+        UI.createAndMoveChips(numChip25, UI.chip25Discard, Player.hands[Player.handIndex].ui.chips, 25)
+        UI.createAndMoveChips(numChip100, UI.chip100Discard, Player.hands[Player.handIndex].ui.chips, 100)
+
+        // update bank and double bet
+        UI.updateBank(-Player.hands[Player.handIndex].bet, 1000)
+        Player.hands[Player.handIndex].bet *= 2
+        Player.hands[Player.handIndex].ui.bet.innerText = '$' + Player.hands[Player.handIndex].bet
+
+        // Deal one card to player's hand
+        Game.deal(Player.hands[Player.handIndex]).then(() => {
+            // update count
+            Game.countHand(Player.hands[Player.handIndex])
+            console.log('reveal dealers second card')
+        })
     }
 }
 
@@ -1049,60 +1189,7 @@ document.body.addEventListener('click', (e) => {
         // show double stand hit buttons
         UI.showElement(UI.btn.doubleStandHit, true)
     } else if (e.target == UI.btn.double) {
-        // hide double stand hit buttons
-        UI.showElement(UI.btn.doubleStandHit, false)
-
-        // grab current bet chips
-        let betChips = Array.from(Player.hands[Player.handIndex].ui.chips.children)
-
-        // count number of each type of chip
-        let numChip1 = 0,
-            numChip5 = 0,
-            numChip10 = 0,
-            numChip25 = 0,
-            numChip100 = 0
-
-        for (const chip of betChips) {
-            switch (chip.dataset.chipValue) {
-                case '1':
-                    numChip1++
-                    break;
-                case '5':
-                    numChip5++
-                    break;
-                case '10':
-                    numChip10++
-                    break;
-                case '25':
-                    numChip25++
-                    break;
-                case '100':
-                    numChip100++
-                    break;
-
-            }
-        }
-
-        // create chips and move to bet hand chips
-        UI.createAndMoveChips(numChip1, UI.chip1Discard, Player.hands[Player.handIndex].ui.chips, 1)
-        UI.createAndMoveChips(numChip5, UI.chip5Discard, Player.hands[Player.handIndex].ui.chips, 5)
-        UI.createAndMoveChips(numChip10, UI.chip10Discard, Player.hands[Player.handIndex].ui.chips, 10)
-        UI.createAndMoveChips(numChip25, UI.chip25Discard, Player.hands[Player.handIndex].ui.chips, 25)
-        UI.createAndMoveChips(numChip100, UI.chip100Discard, Player.hands[Player.handIndex].ui.chips, 100)
-
-        // update bank and double bet
-        UI.updateBank(-Player.hands[Player.handIndex].bet, 1000)
-        Player.hands[Player.handIndex].bet *= 2
-        Player.hands[Player.handIndex].ui.bet.innerText = '$' + Player.hands[Player.handIndex].bet
-
-        // Deal one card to player's hand
-        Game.deal(Player.hands[Player.handIndex]).then(() => {
-            // update count
-            Game.countHand(Player.hands[Player.handIndex])
-        }).then(() => {
-
-        })
-
+        Game.double()
     } else if (e.target == UI.btn.chip1) {
         if (Player.bank >= 1) {
             UI.betChip(1, UI.chip1Wrapper, UI.chip1Discard)

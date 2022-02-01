@@ -1,6 +1,11 @@
 .bet-chip-animation {
     transition: transform .3s ease;
 }
+
+.bet-chip--moving-to-hand {
+    transition: transform .3s ease;
+}
+
 .transform-none {
     transform: none;
 }
@@ -124,6 +129,21 @@
     100% {
         transform: rotate(0);
         color: #000;
+    }
+}
+
+@keyframes tilt-card {
+    0% {
+        transform: rotateY(180deg);
+    }
+    40% {
+        transform: rotateY(180deg) rotateZ(-7deg);
+    }
+    60% {
+        transform: rotateY(180deg) rotateZ(-7deg);
+    }
+    100% {
+        transform: rotateY(180deg);
     }
 }
 

@@ -469,7 +469,7 @@ body {
     animation-duration: 2s;
     animation-timing-function: ease-in-out;
     animation-fill-mode: forwards;
-    animation-delay: 5s;
+    animation-delay: 1s;
 }
 
 .offscreen--deal {
@@ -482,8 +482,9 @@ body {
     transform: translateX(100vw) translateY(100vh);
 }
 
-.bet-chip--moving-to-hand {
-    transition: all .3s;
+.offscreen--discard-chip {
+    transition: transform 1s;
+    transform: translateX(50vw) translateY(-50vh);
 }
 
 .fading-out {
