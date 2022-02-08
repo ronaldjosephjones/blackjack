@@ -93,7 +93,21 @@
     color: #239c1f; }
   100% {
     transform: rotate(0);
-    color: #000; } }
+    color: #239c1f; } }
+
+@keyframes count-bust {
+  0% {
+    transform: rotate(0);
+    color: #000; }
+  40% {
+    transform: rotate(7deg);
+    color: #c93030; }
+  60% {
+    transform: rotate(7deg);
+    color: #c93030; }
+  100% {
+    transform: rotate(0);
+    color: #c93030; } }
 
 @keyframes tilt-card {
   0% {
@@ -443,15 +457,21 @@ body {
 
 .offscreen--discard {
   transition: all 1.5s;
-  transform: translateX(100vw) translateY(100vh); }
+  transform: translateX(-100vw) translateY(-100vh); }
 
 .offscreen--discard-chip {
-  transition: transform 1s;
-  transform: translateX(50vw) translateY(-50vh); }
+  transition: transform .75s;
+  transform: translateY(-100vh); }
 
 .fading-out {
   transition: opacity .5s ease;
   opacity: 0 !important; }
+
+.red-text {
+  color: #c93030 !important; }
+
+.green-text {
+  color: #239c1f !important; }
 
 .test-wrap-1,
 .test-wrap-2 {

@@ -128,7 +128,26 @@
     }
     100% {
         transform: rotate(0);
+        color: #239c1f;
+    }
+}
+
+@keyframes count-bust {
+    0% {
+        transform: rotate(0);
         color: #000;
+    }
+    40% {
+        transform: rotate(7deg);
+        color: #c93030;
+    }
+    60% {
+        transform: rotate(7deg);
+        color: #c93030;
+    }
+    100% {
+        transform: rotate(0);
+        color: #c93030;
     }
 }
 
