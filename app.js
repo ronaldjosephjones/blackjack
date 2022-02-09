@@ -4,7 +4,7 @@ const Player = {
     bank: 1000,
     handIndex: -1,
     hands: [],
-    handsDiv: document.getElementById('player-hands'),
+    handsDiv: document.getElementById('player-hands-track'),
     bet: 0,
     createHand: (bet) => {
         let hand = {
@@ -675,10 +675,15 @@ const Game = {
         // await Game.forceCard(Player.hands[0], false, { name: '10', suit: 'hearts', graphic: '', value: 10, value1: 10, value2: 10,  isAce: false })
         // await Game.deal(Dealer.hands[0], true)
         // push 17
-        await Game.forceCard(Player.hands[0], false, { name: '9', suit: 'spades', graphic: '', value: 9, value1: 9, value2: 9,  isAce: false })
-        await Game.forceCard(Dealer.hands[0], false, { name: '9', suit: 'hearts', graphic: '', value: 9, value1: 9, value2: 9,  isAce: false })
-        await Game.forceCard(Player.hands[0], false, { name: '8', suit: 'spades', graphic: '', value: 8, value1: 8, value2: 8,  isAce: false })
-        await Game.forceCard(Dealer.hands[0], true, { name: '8', suit: 'hearts', graphic: '', value: 8, value1: 8, value2: 8,  isAce: false })
+        // await Game.forceCard(Player.hands[0], false, { name: '9', suit: 'spades', graphic: '', value: 9, value1: 9, value2: 9,  isAce: false })
+        // await Game.forceCard(Dealer.hands[0], false, { name: '9', suit: 'hearts', graphic: '', value: 9, value1: 9, value2: 9,  isAce: false })
+        // await Game.forceCard(Player.hands[0], false, { name: '8', suit: 'spades', graphic: '', value: 8, value1: 8, value2: 8,  isAce: false })
+        // await Game.forceCard(Dealer.hands[0], true, { name: '8', suit: 'hearts', graphic: '', value: 8, value1: 8, value2: 8,  isAce: false })
+        // dealer random, player split
+        await Game.forceCard(Player.hands[0], false, { name: '10', suit: 'spades', graphic: '', value: 10, value1: 10, value2: 10,  isAce: false })
+        await Game.deal(Dealer.hands[0], false)
+        await Game.forceCard(Player.hands[0], false, { name: '10', suit: 'hearts', graphic: '', value: 10, value1: 10, value2: 10,  isAce: false })
+        await Game.deal(Dealer.hands[0], true)
 
         Dealer.secondCard = Dealer.hands[0].ui.cardsInner.lastElementChild
     },
@@ -986,20 +991,14 @@ const Game = {
 
         // SPLIT OPTION  
         } else if ((Player.hands[0].cards[0].name === Player.hands[0].cards[1].name) && (Player.hands[0].cards[0].isAce !== true)) {
-            console.log('split')
-
             // hide deal btn
             UI.showElement(UI.btn.deal, false)
-
             // show split buttons
             UI.showElement(UI.splitContainer, true)
-
         } else {
             console.log('not 21 or split')
-
             // hide deal btn
             UI.showElement(UI.btn.deal, false)
-
             // show double stand hit btns
             UI.showElement(UI.btn.doubleStandHit, true)
         }
@@ -1246,6 +1245,11 @@ const Game = {
                     })
             }
         })
+    },
+    split: () => {
+        console.log('split')
+
+        UI.showElement(UI.splitContainer, false)
     }
 }
 
@@ -1320,7 +1324,7 @@ document.body.addEventListener('click', (e) => {
         // play hand
         Game.playHand()
     } else if (e.target == UI.btn.splitYes) {
-        console.log('split yes')
+        Game.split()
     } else if (e.target == UI.btn.splitNo) {
         // hide split container
         UI.showElement(UI.splitContainer, false)
