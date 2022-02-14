@@ -4,7 +4,7 @@ const Player = {
     bank: 1000,
     handIndex: -1,
     hands: [],
-    handsDiv: document.getElementById('player-hands-track'),
+    handsTrack: document.getElementById('player-hands-track'),
     bet: 0,
     createHand: (bet) => {
         let hand = {
@@ -33,7 +33,9 @@ const Player = {
         hand.ui.cards.classList.add('hand-cards')
         hand.ui.cardsInner.classList.add('hand-cards-inner')
         hand.ui.count.classList.add('hand-card-count', 'hidden')
-        hand.ui.indicator.classList.add('hand-indicator')
+        hand.ui.indicator.classList.add('hand-indicator', 'opacity-0')
+
+        hand.ui.bet.textContent = '$' + hand.bet
 
         hand.ui.div.appendChild(hand.ui.bet)
         hand.ui.div.appendChild(hand.ui.chips)
@@ -41,7 +43,7 @@ const Player = {
         hand.ui.cards.appendChild(hand.ui.cardsInner)
         hand.ui.cards.appendChild(hand.ui.count)
         hand.ui.div.appendChild(hand.ui.indicator)
-        Player.handsDiv.appendChild(hand.ui.div)
+        Player.handsTrack.appendChild(hand.ui.div)
 
         Player.handIndex++
     }
@@ -397,8 +399,12 @@ const Game = {
         { name: 'K', suit: 'clubs', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
         { name: 'A', suit: 'hearts', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true },
         { name: 'A', suit: 'diamonds', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true },
+        { name: '3', suit: 'spades', graphic: '', value: 3, value1: 3, value2: 3, isAce: false },
+        { name: '3', suit: 'spades', graphic: '', value: 3, value1: 3, value2: 3, isAce: false },
+        { name: '10', suit: 'clubs', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
         { name: 'A', suit: 'spades', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true },
-        { name: 'A', suit: 'clubs', graphic: '', value: 11, value1: 1, value2: 11, isAce: true }
+        // { name: 'A', suit: 'clubs', graphic: '', value: 11, value1: 1, value2: 11, isAce: true },
+        { name: '3', suit: 'spades', graphic: '', value: 3, value1: 3, value2: 3, isAce: false },
     ],
     discardPile: [],
     deal: (hand, isCardFacedown) => {
@@ -913,7 +919,13 @@ const Game = {
         // BLACKJACK **********************************************************************************************
         if (Player.hands[Player.handIndex].count === 21) {
 
-            UI.playAnimation(Player.hands[Player.handIndex].ui.count, 'count-blackjack 1s .75s forwards')
+            // check if player has multiple hands
+            if (Player.hands.length > 1) {
+                console.log('multiple hands blackjack')
+                // move to the next hand
+                Game.moveToNextHand()
+            } else {
+                UI.playAnimation(Player.hands[Player.handIndex].ui.count, 'count-blackjack 1s .75s forwards')
                 .then(() => {
                     Player.hands[Player.handIndex].ui.count.classList.add('green-text')
                 })
@@ -987,10 +999,10 @@ const Game = {
                         Game.dealerDraws()
                     }
                 })
-                
+            }   
 
         // SPLIT OPTION  
-        } else if ((Player.hands[0].cards[0].name === Player.hands[0].cards[1].name) && (Player.hands[0].cards[0].isAce !== true)) {
+        } else if ((Player.hands[Player.handIndex].cards[0].value === Player.hands[Player.handIndex].cards[1].value) && (Player.hands[Player.handIndex].cards[0].isAce !== true)) {
             // hide deal btn
             UI.showElement(UI.btn.deal, false)
             // show split buttons
@@ -1002,6 +1014,20 @@ const Game = {
             // show double stand hit btns
             UI.showElement(UI.btn.doubleStandHit, true)
         }
+    },
+    moveToNextHand: () => {
+        console.log('move to next hand')
+        // hide current hand indicator
+        Player.hands[Player.handIndex].ui.indicator.classList.add('opacity-0')
+        // move to next hand
+        Player.handIndex--
+        // show indicator
+        Player.hands[Player.handIndex].ui.indicator.classList.remove('opacity-0')
+        // show double stand hit btns
+        UI.showElement(UI.btn.doubleStandHit, true)
+    },
+    stand: () => {
+
     },
     insure: () => {
         // insurance bet is half of current bet
@@ -1250,6 +1276,84 @@ const Game = {
         console.log('split')
 
         UI.showElement(UI.splitContainer, false)
+        UI.updateBank(-Player.hands[Player.handIndex].bet, 1000)
+
+        // player has one hand
+        if (Player.hands.length === 1) {
+            Player.handsTrack.classList.add('multiple-hands')
+        } else {
+            // hide current hand indicator
+            Player.hands[Player.handIndex].ui.indicator.classList.add('opacity-0')
+            // slide hands track because there are at least 3 hands
+            Player.handsTrack.style.transform = `translateX(${(Player.hands.length - 1) * -50}%)`
+        }
+
+        // make new hand
+        Player.createHand(Player.hands[Player.handIndex].bet)
+        // move card of hand being split to new hand
+        let newHand =  Player.hands[Player.handIndex]
+        let originalHand = Player.hands[Player.handIndex - 1]
+        let splitCard = originalHand.cards.pop()
+        Player.hands[Player.handIndex].cards.push(splitCard)
+
+        // count number of each chip from original hand
+        let numChip1 = 0,
+            numChip5 = 0,
+            numChip10 = 0,
+            numChip25 = 0,
+            numChip100 = 0
+
+        let originalChips = Array.from(originalHand.ui.chips.children)
+
+        for (const chip of originalChips) {
+            switch (chip.dataset.chipValue) {
+                case '1':
+                    numChip1++
+                    break
+                case '5':
+                    numChip5++
+                    break
+                case '10':
+                    numChip10++
+                    break
+                case '25':
+                    numChip25++
+                    break
+                case '100':
+                    numChip100++
+                    break
+            }
+        }
+
+        // reset card offset in original hand
+        originalHand.ui.cardsInner.firstElementChild.removeAttribute('style')
+
+        // update original hand count
+        Game.countHand(originalHand)
+
+        // create and move the chips to new hand
+        UI.createAndMoveChips(numChip1, UI.chip1Discard, newHand.ui.chips, 1)
+        UI.createAndMoveChips(numChip5, UI.chip5Discard, newHand.ui.chips, 5)
+        UI.createAndMoveChips(numChip10, UI.chip10Discard, newHand.ui.chips, 10)
+        UI.createAndMoveChips(numChip25, UI.chip25Discard, newHand.ui.chips, 25)
+        UI.createAndMoveChips(numChip100, UI.chip100Discard, newHand.ui.chips, 100)
+
+        // move card in DOM
+        UI.moveElement(originalHand.ui.cardsInner.lastElementChild, newHand.ui.cardsInner, 'splitting-card', () => {
+            // delay dealing card
+            setTimeout(() => {
+                // deal card
+                Game.deal(newHand, false).then(() => {
+                    // reveal indicator
+                    newHand.ui.indicator.classList.remove('opacity-0')
+                    // reveal count
+                    Game.countHand(newHand)
+                    newHand.ui.count.classList.toggle('hidden')
+                    Game.countHand(newHand)
+                    Game.playHand()
+                })
+            }, 750);
+        })
     }
 }
 
@@ -1278,9 +1382,6 @@ document.body.addEventListener('click', (e) => {
         betChips.forEach(chip => {
             UI.moveElement(chip, Player.hands[0].ui.chips, 'bet-chip--moving-to-hand', () => {})
         })
-
-        // display bet amount
-        Player.hands[0].ui.bet.innerText = `$${Player.hands[0].bet}`
 
         // deal initial cards
         Game.dealFirstCards().then(() => {          
@@ -1374,7 +1475,7 @@ document.body.addEventListener('click', (e) => {
 })
 
 // Shuffle deck at first load
-Game.deck = Game.shuffle(Game.deck)
+// Game.deck = Game.shuffle(Game.deck)
 
 // shuffle the deck array
 // function shuffleDeck(deck) {

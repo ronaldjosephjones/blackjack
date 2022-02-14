@@ -21,6 +21,10 @@ body {
     display: none !important;
 }
 
+.opacity-0 {
+    opacity: 0 !important;
+}
+
 .disable-clicks {
     pointer-events: none;
 }
@@ -163,7 +167,17 @@ body {
 
             #player-hands {
 
+                #player-hands-track {
+                    display: flex;
+                    justify-content: center;
+                }
+
+                #player-hands-track.multiple-hands {
+                    justify-content: unset;
+                }
+
                 .hand {
+                    min-width: 50%;
 
                     .hand-bet-amount {
                         text-align: center;
@@ -218,20 +232,18 @@ body {
 
                     }
 
-                    .hand-indicator {
-
-                    }
-
-                    .hand-indicator.active::before {
+                    .hand-indicator::before {
                         content: '';
                         display: block;
-                        width: 0; 
-                        height: 0; 
-                        border-left: 15px solid transparent;
-                        border-right: 15px solid transparent;
-                        border-bottom: 15px solid #a51111;
+                        width: 0;
+                        height: 0;
+                        border-left: 20px solid transparent;
+                        border-right: 20px solid transparent;
+                        border-bottom: 20px solid #d9e122;
                         margin: 0 auto;
+                        animation: indicator-hover 2s ease infinite;
                     }
+
                 }
 
             }
@@ -388,6 +400,7 @@ body {
     // animation-name: spin;
     animation-duration: 2s;
     animation-fill-mode: forwards;
+    background: #fff;
     border: 1px solid black;
     border-radius: 5px;
     box-shadow: 0 1px #FFFFFF inset, 0 1px 3px rgba(34, 25, 25, 0.4);
