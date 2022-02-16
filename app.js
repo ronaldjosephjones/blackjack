@@ -400,7 +400,7 @@ const Game = {
         { name: 'A', suit: 'hearts', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true },
         { name: 'A', suit: 'diamonds', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true },
         { name: '3', suit: 'spades', graphic: '', value: 3, value1: 3, value2: 3, isAce: false },
-        { name: '3', suit: 'spades', graphic: '', value: 3, value1: 3, value2: 3, isAce: false },
+        { name: 'A', suit: 'spades', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true },
         { name: '10', suit: 'clubs', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
         { name: 'A', suit: 'spades', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true },
         // { name: 'A', suit: 'clubs', graphic: '', value: 11, value1: 1, value2: 11, isAce: true },
@@ -864,6 +864,7 @@ const Game = {
         }
     },
     processHand: () => {
+        console.log('process hand')
         // set message
         let message = ''
         // check player's current hand count
@@ -876,9 +877,9 @@ const Game = {
         } else if (Player.hands[Player.handIndex].count === Dealer.hands[0].count) {
             console.log('Players hand equals dealers, push')
             message = 'Push!'
-        } else {
-            console.log('Players wins')
-            message = 'Win!'
+        } else if (Player.hands[Player.handIndex].count === 21) {
+            console.log('Player 21, win')
+            message = '21!'
         }
 
         UI.playMessage(message, 'show-message 1.5s forwards').then(() => {
@@ -911,11 +912,13 @@ const Game = {
                 })
             } else {
                 // player wins, make chips and send to player
+                console.log('make chips and send to player')
             }
         })
 
     },
     playHand: () => {
+        console.log('playHand')
         // BLACKJACK **********************************************************************************************
         if (Player.hands[Player.handIndex].count === 21) {
 
@@ -923,7 +926,11 @@ const Game = {
             if (Player.hands.length > 1) {
                 console.log('multiple hands blackjack')
                 // move to the next hand
-                Game.moveToNextHand()
+                UI.playAnimation(Player.hands[Player.handIndex].ui.count, 'count-blackjack 1s .75s forwards')
+                .then(() => {
+                    Player.hands[Player.handIndex].ui.count.classList.add('green-text')
+                    Game.stand()
+                })
             } else {
                 UI.playAnimation(Player.hands[Player.handIndex].ui.count, 'count-blackjack 1s .75s forwards')
                 .then(() => {
@@ -1015,19 +1022,47 @@ const Game = {
             UI.showElement(UI.btn.doubleStandHit, true)
         }
     },
-    moveToNextHand: () => {
-        console.log('move to next hand')
-        // hide current hand indicator
-        Player.hands[Player.handIndex].ui.indicator.classList.add('opacity-0')
-        // move to next hand
-        Player.handIndex--
-        // show indicator
-        Player.hands[Player.handIndex].ui.indicator.classList.remove('opacity-0')
-        // show double stand hit btns
-        UI.showElement(UI.btn.doubleStandHit, true)
-    },
     stand: () => {
+        console.log('stand')
+        // update count to single count in case of ace
+        Player.hands[Player.handIndex].ui.count.innerText =  Player.hands[Player.handIndex].count
+        UI.showElement(UI.btn.doubleStandHit, false)
 
+        // if current hand is not first hand
+        if (Player.handIndex !== 0) {
+            // player has multiple hands
+            if (Player.hands.length > 1) {
+                // slide hands over if not on first two hands
+                if (Player.handIndex > 1) {
+                    Player.hands[Player.handIndex].ui.indicator.classList.add('opacity-0')
+                    Player.handsTrack.style.transform = `translateX(${(Player.handIndex - 2) * -50}%)`
+                    // wait for slide transition
+                    setTimeout(() => {
+                        Player.handIndex--
+                        Player.hands[Player.handIndex].ui.indicator.classList.remove('opacity-0')
+                        Game.deal(Player.hands[Player.handIndex]).then(() => {
+                            Game.countHand(Player.hands[Player.handIndex])
+                            Game.playHand()
+                        })
+                    }, 500);
+                } else {
+                    Player.hands[Player.handIndex].ui.indicator.classList.add('opacity-0')
+                    Player.handIndex--
+                    Player.hands[Player.handIndex].ui.indicator.classList.remove('opacity-0')
+                    Game.deal(Player.hands[Player.handIndex]).then(() => {
+                        Game.countHand(Player.hands[Player.handIndex])
+                        Game.playHand()
+                    })
+                }
+            }
+        } else {
+            console.log('stand, no more hands left')
+            // reveal dealer card
+            UI.revealDealerCard(0).then(() => {
+                Game.countHand(Dealer.hands[0])
+                Game.dealerDraws()
+            })
+        }
     },
     insure: () => {
         // insurance bet is half of current bet
@@ -1434,13 +1469,7 @@ document.body.addEventListener('click', (e) => {
     } else if (e.target == UI.btn.double) {
         Game.double()
     } else if (e.target == UI.btn.stand) {
-        Player.hands[Player.handIndex].ui.count.innerText =  Player.hands[Player.handIndex].count
-        UI.showElement(UI.btn.doubleStandHit, false)
-        UI.revealDealerCard(0).then(() => {
-            console.log('poop after stand')
-            Game.countHand(Dealer.hands[0])
-            Game.dealerDraws()
-        })
+        Game.stand()
     } else if (e.target == UI.btn.chip1) {
         if (Player.bank >= 1) {
             UI.betChip(1, UI.chip1Wrapper, UI.chip1Discard)

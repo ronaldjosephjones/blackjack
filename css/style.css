@@ -261,7 +261,8 @@ body {
     display: flex;
     justify-content: center; }
   #table-container #player-footer-container #player-container #player-hands #player-hands-track.multiple-hands {
-    justify-content: unset; }
+    justify-content: unset;
+    transition: transform .5s ease; }
   #table-container #player-footer-container #player-container #player-hands .hand {
     min-width: 50%; }
     #table-container #player-footer-container #player-container #player-hands .hand .hand-bet-amount {
