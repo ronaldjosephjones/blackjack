@@ -104,6 +104,7 @@ const UI = {
     insurance: document.getElementById('insurance'),
     insuranceAmount: document.getElementById('insurance-amount'),
     insuranceChips: document.getElementById('insurance-chips'),
+    dealerChipSpawn: document.querySelector('#dealer-chip-spawn > div'),
     messageWrapper: document.getElementById('message-wrapper'),
     messageText: document.querySelector('#message-wrapper .message-text'),
     betChip: function(chipVal, chipWrapper, chipDiscard) {
@@ -703,7 +704,7 @@ const Game = {
             card.classList.add('offscreen--discard')
         }
 
-        for(var i = 0; i < hand.cards.length; i++) {
+        for(let i = 0; i < hand.cards.length; i++) {
             Game.discardPile.push(hand.cards[i])
             hand.cards.splice(i, 1)
             i--
@@ -730,6 +731,12 @@ const Game = {
                 })
                 card.classList.add('offscreen--discard') 
             }
+        }
+
+        for (let i = 0; i < hand.cards.length; i++) {
+            Game.discardPile.push(hand.cards[i])
+            hand.cards.splice(i, 1)
+            i--
         }
     },
     discardChips: (chips) => {
@@ -870,31 +877,31 @@ const Game = {
         // check player's current hand count
         if (Player.hands[Player.handIndex].count > 21) {
             console.log('Player hands busts, lose chips')
-            message = 'Bust!'
+            message = 'Bust'
         } else if (Player.hands[Player.handIndex].count < Dealer.hands[0].count && Dealer.hands[0].count <= 21) {
             console.log('Player hands less than dealers, lose')
-            message = 'Lose!'
+            message = 'Lose'
         } else if (Player.hands[Player.handIndex].count === Dealer.hands[0].count) {
             console.log('Players hand equals dealers, push')
-            message = 'Push!'
+            message = 'Push'
         } else if (Player.hands[Player.handIndex].count === 21) {
             console.log('Player 21, win')
-            message = '21!'
+            message = '21'
         }
 
-        UI.playMessage(message, 'show-message 1.5s forwards').then(() => {
+        UI.playMessage(message + '!', 'show-message 1.5s forwards').then(() => {
             // fade out bet and count
             UI.fadeOut(Player.hands[Player.handIndex].ui.bet)
             UI.fadeOut(Player.hands[Player.handIndex].ui.count)
             // move chips and cards
             let chips = Array.from(Player.hands[Player.handIndex].ui.chips.children)
 
-            if (message === 'Bust!' || message === 'Lose!') {
+            if (message === 'Bust' || message === 'Lose') {
                 Game.discardChips(chips)
                 Game.discardCardsWithListener(Player.hands[Player.handIndex]).then(() => {
                     console.log('cards discarded')
                 })
-            } else if (message == 'Push!') {
+            } else if (message === 'Push') {
                 // send chips back
                 let chipsArray = Array.from(Player.hands[Player.handIndex].ui.chips.children)
                                                                             
@@ -906,13 +913,40 @@ const Game = {
                 }
 
                 UI.updateBank(Player.hands[Player.handIndex].bet, 1000)
-
                 Game.discardCardsWithListener(Player.hands[Player.handIndex]).then(() => {
                     console.log('cards discarded')
                 })
             } else {
                 // player wins, make chips and send to player
                 console.log('make chips and send to player')
+
+                // create won chips
+                let chipsHTML  = Player.hands[Player.handIndex].ui.chips.innerHTML
+                UI.dealerChipSpawn.insertAdjacentHTML('afterbegin', chipsHTML)
+                
+                // send chips back
+                let wonChips = Array.from(UI.dealerChipSpawn.children)
+                for (const chip of wonChips) {
+                    // move to corresponding container then remove
+                    UI.moveElement(chip, document.querySelector(`#chip--${chip.dataset.chipValue}-discard`), 'bet-chip-animation', () => {
+                        chip.remove()
+                    })
+                }
+
+                let handChips = Array.from(Player.hands[Player.handIndex].ui.chips.children)           
+                for (const chip of handChips) {
+                    // move to corresponding container then remove
+                    UI.moveElement(chip, document.querySelector(`#chip--${chip.dataset.chipValue}-discard`), 'bet-chip-animation', () => {
+                        chip.remove()
+                    })
+                }
+
+                // hide indicator
+                Player.hands[Player.handIndex].ui.indicator.classList.add('opacity-0')
+                // discard cards
+                Game.discardCardsWithListener(Player.hands[Player.handIndex]).then(() => {
+                    console.log('poop')
+                })
             }
         })
 
@@ -1057,11 +1091,14 @@ const Game = {
             }
         } else {
             console.log('stand, no more hands left')
+
             // reveal dealer card
-            UI.revealDealerCard(0).then(() => {
-                Game.countHand(Dealer.hands[0])
-                Game.dealerDraws()
-            })
+            UI.playMessage('Dealer\'s turn!', 'show-message 1.5s forwards').then(() => {
+                UI.revealDealerCard(0).then(() => {
+                    Game.countHand(Dealer.hands[0])
+                    Game.dealerDraws()
+                })
+            }) 
         }
     },
     insure: () => {

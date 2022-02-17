@@ -221,6 +221,12 @@ body {
   height: 100vh; }
   #table-container #dealer-container {
     margin-top: 2rem; }
+    #table-container #dealer-container #dealer-chip-spawn {
+      display: flex;
+      justify-content: center;
+      position: absolute;
+      width: 100%;
+      top: -10rem; }
     #table-container #dealer-container #dealer-hand {
       margin-bottom: 2rem; }
       #table-container #dealer-container #dealer-hand .hand-cards {
