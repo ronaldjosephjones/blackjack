@@ -25,7 +25,13 @@ const Player = {
             }
         }
 
-        Player.hands.push(hand)
+        // Player.hands.push(hand)
+
+        if (Player.handIndex === Player.hands.length - 1) {
+            Player.hands.push(hand)
+        } else {
+            Player.hands.splice(Player.handIndex + 1, 0, hand)
+        }
 
         hand.ui.div.classList.add('hand')
         hand.ui.bet.classList.add('hand-bet-amount')
@@ -43,9 +49,15 @@ const Player = {
         hand.ui.cards.appendChild(hand.ui.cardsInner)
         hand.ui.cards.appendChild(hand.ui.count)
         hand.ui.div.appendChild(hand.ui.indicator)
-        Player.handsTrack.appendChild(hand.ui.div)
 
         Player.handIndex++
+
+        // append to the end if current hand is the last hand
+        if (Player.handIndex === Player.hands.length - 1) {
+            Player.handsTrack.appendChild(hand.ui.div)
+        } else {
+            console.log('current hand is NOT last hand, smush between')
+        }
     }
 }
 
@@ -184,6 +196,9 @@ const UI = {
         if (bool) {
             UI.chipsBet.classList.add('collapsed')
         } else {
+            for (const betChipWrap of document.querySelectorAll('.bet-chip-wrapper')) {
+                betChipWrap.remove()
+            }
             UI.chipsBet.classList.remove('collapsed')
         }
     },
@@ -398,16 +413,16 @@ const Game = {
         { name: 'K', suit: 'diamonds', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
         { name: 'K', suit: 'spades', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
         { name: 'K', suit: 'clubs', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
-        { name: 'A', suit: 'hearts', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true },
-        { name: 'A', suit: 'diamonds', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true },
-        { name: '3', suit: 'spades', graphic: '', value: 3, value1: 3, value2: 3, isAce: false },
-        { name: 'A', suit: 'spades', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true },
-        { name: '10', suit: 'clubs', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
-        { name: 'A', suit: 'spades', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true },
-        // { name: 'A', suit: 'clubs', graphic: '', value: 11, value1: 1, value2: 11, isAce: true },
-        { name: '3', suit: 'spades', graphic: '', value: 3, value1: 3, value2: 3, isAce: false },
+        // { name: 'A', suit: 'hearts', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true },
+        // { name: 'A', suit: 'diamonds', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true },
+        // { name: '3', suit: 'spades', graphic: '', value: 3, value1: 3, value2: 3, isAce: false },
+        // { name: 'A', suit: 'spades', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true },
+        // { name: '10', suit: 'clubs', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        // { name: 'A', suit: 'spades', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true },
+        // // { name: 'A', suit: 'clubs', graphic: '', value: 11, value1: 1, value2: 11, isAce: true },
+        // { name: '3', suit: 'spades', graphic: '', value: 3, value1: 3, value2: 3, isAce: false },
     ],
-    discardPile: [],
+    discardedPile: [],
     deal: (hand, isCardFacedown) => {
 
         // move card logic from dealer to hand
@@ -694,7 +709,17 @@ const Game = {
 
         Dealer.secondCard = Dealer.hands[0].ui.cardsInner.lastElementChild
     },
+    discardCardLogic: (hand) => {
+        // move cards to discard pile
+        for (let i = 0; i < hand.cards.length; i++) {
+            Game.discardedPile.push(hand.cards[i])
+            hand.cards.splice(i, 1)
+            i--
+        }
+    },
     discardCards: (hand) => {
+        Game.discardCardLogic(hand)
+
         const cards =  Array.from(hand.ui.cardsInner.children)
 
         for (const card of cards) {
@@ -703,14 +728,10 @@ const Game = {
             })
             card.classList.add('offscreen--discard')
         }
-
-        for(let i = 0; i < hand.cards.length; i++) {
-            Game.discardPile.push(hand.cards[i])
-            hand.cards.splice(i, 1)
-            i--
-        }
     },
     discardCardsWithListener: (hand) => {
+        Game.discardCardLogic(hand)
+
         const cards =  Array.from(hand.ui.cardsInner.children)
 
         for (const [i, card] of cards.entries()) {
@@ -731,12 +752,6 @@ const Game = {
                 })
                 card.classList.add('offscreen--discard') 
             }
-        }
-
-        for (let i = 0; i < hand.cards.length; i++) {
-            Game.discardPile.push(hand.cards[i])
-            hand.cards.splice(i, 1)
-            i--
         }
     },
     discardChips: (chips) => {
@@ -814,10 +829,21 @@ const Game = {
                 hand.ui.count.innerText = count
                 // return count
             } else {
-                // -10 = counting the ace as 1 instead of 11
-                let count2 = count - 10
-                hand.ui.count.innerText = `${count2} / ${count}`
-                // return `${count2} / ${count}`
+                if (hand == Dealer.hands[0] && count === 17) {
+                    console.log('dealer has soft 17')
+                    count -= 10
+                    hand.count = count
+                    hand.ui.count.innerText = count
+                } else {
+                    // -10 = counting the ace as 1 instead of 11
+                    let count2 = count - 10
+                    if (count > 21) {
+                        hand.ui.count.innerText = `${count2}`
+                    } else {
+                        hand.ui.count.innerText = `${count2} / ${count}`
+                        // return `${count2} / ${count}`
+                    }
+                }
             }
 
         } else {
@@ -849,6 +875,7 @@ const Game = {
             })
         } else {
             console.log('dealer count >= 17')
+            
 
             let animation = ''
             // set necessary animations
@@ -878,6 +905,9 @@ const Game = {
         if (Player.hands[Player.handIndex].count > 21) {
             console.log('Player hands busts, lose chips')
             message = 'Bust'
+        } else if (Dealer.hands[0].count > 21) {
+            console.log('Dealer busts')
+            message = 'Dealer busts'
         } else if (Player.hands[Player.handIndex].count < Dealer.hands[0].count && Dealer.hands[0].count <= 21) {
             console.log('Player hands less than dealers, lose')
             message = 'Lose'
@@ -887,6 +917,9 @@ const Game = {
         } else if (Player.hands[Player.handIndex].count === 21) {
             console.log('Player 21, win')
             message = '21'
+        } else {
+            console.log('Players hand > dealers')
+            message = 'Win'
         }
 
         UI.playMessage(message + '!', 'show-message 1.5s forwards').then(() => {
@@ -913,9 +946,9 @@ const Game = {
                 }
 
                 UI.updateBank(Player.hands[Player.handIndex].bet, 1000)
-                Game.discardCardsWithListener(Player.hands[Player.handIndex]).then(() => {
-                    console.log('cards discarded')
-                })
+                Player.hands[Player.handIndex].ui.indicator.classList.add('opacity-0')
+                Game.discardCards(Player.hands[Player.handIndex])
+                Game.discardHand()
             } else {
                 // player wins, make chips and send to player
                 console.log('make chips and send to player')
@@ -941,15 +974,99 @@ const Game = {
                     })
                 }
 
-                // hide indicator
+                UI.updateBank(Player.hands[Player.handIndex].bet * 2, 1000)
                 Player.hands[Player.handIndex].ui.indicator.classList.add('opacity-0')
-                // discard cards
-                Game.discardCardsWithListener(Player.hands[Player.handIndex]).then(() => {
-                    console.log('poop')
-                })
+                Game.discardCards(Player.hands[Player.handIndex])
+                Game.discardHand()
             }
         })
 
+    },
+    discardHand: () => {
+        // check for multiple hands
+        if (Player.hands.length > 1) {
+            // check if current hand is final hand
+            if (Player.hands.length - 1 === Player.handIndex) {
+                console.log('final hand processed')
+                // reset dealer
+                UI.playAnimation(Dealer.hands[0].ui.count, 'fading-out .5s forwards', false).then(() => {
+                    Game.discardCardsWithListener(Dealer.hands[0]).then(() => {
+                        // reset dealer
+                        Dealer.hands[0].ui.count.innerText = ''
+                        Dealer.hands[0].ui.cardsInner.removeAttribute('style')
+                        Dealer.hands[0].ui.count.removeAttribute('style')
+                        Dealer.hands[0].ui.count.classList.remove('fading-out')
+                        Dealer.hands[0].ui.count.classList.add('hidden')
+                        Dealer.hands[0].ui.cardsInner.innerHTML = ''
+                        Dealer.hands[0].cards = []
+                        Dealer.hands[0].count = 0
+                        // reset player
+                        for (const hand of Player.hands) {
+                            hand.ui.div.remove()
+                        }
+                        Player.handIndex = -1
+                        Player.hands = []
+                        Player.bet = 0
+                        Player.handsTrack.classList.remove('multiple-hands')
+                        Player.handsTrack.removeAttribute('style')
+
+                        UI.collapseChipsBet(false)
+                        // enable & show buttons
+                        UI.disableBtns(UI.chipBtns, false)  
+                        UI.showElement(UI.btn.deal, true)
+                    })
+                })
+
+            } else {
+                console.log('more hands to process')
+                
+                // if not second to last hand
+                if (Player.hands.length - 2 !== Player.handIndex) {
+                    console.log('not second to last hand, slide hands')
+                    Player.handsTrack.style.transform = `translateX(${(Player.hands.length - 2) * -50}%)`
+                    // wait for slide transition
+                    setTimeout(() => {
+                        Player.handIndex++
+                        Player.hands[Player.handIndex].ui.indicator.classList.remove('opacity-0')
+                        Game.processHand()
+                    }, 500);
+                } else {
+                    Player.handIndex++
+                    Game.processHand()
+                }
+                 
+            }
+        } else {
+            console.log('only 1 hand processed')
+            // reset dealer
+            UI.playAnimation(Dealer.hands[0].ui.count, 'fading-out .5s forwards', false).then(() => {
+                Game.discardCardsWithListener(Dealer.hands[0]).then(() => {
+                    // reset dealer
+                    Dealer.hands[0].ui.count.innerText = ''
+                    Dealer.hands[0].ui.cardsInner.removeAttribute('style')
+                    Dealer.hands[0].ui.count.removeAttribute('style')
+                    Dealer.hands[0].ui.count.classList.remove('fading-out')
+                    Dealer.hands[0].ui.count.classList.add('hidden')
+                    Dealer.hands[0].ui.cardsInner.innerHTML = ''
+                    Dealer.hands[0].cards = []
+                    Dealer.hands[0].count = 0
+                    // reset player
+                    for (const hand of Player.hands) {
+                        hand.ui.div.remove()
+                    }
+                    Player.handIndex = -1
+                    Player.hands = []
+                    Player.bet = 0
+                    Player.handsTrack.classList.remove('multiple-hands')
+                    Player.handsTrack.removeAttribute('style')
+
+                    UI.collapseChipsBet(false)
+                    // enable & show buttons
+                    UI.disableBtns(UI.chipBtns, false)  
+                    UI.showElement(UI.btn.deal, true)
+                })
+            })
+        }
     },
     playHand: () => {
         console.log('playHand')
@@ -1018,10 +1135,6 @@ const Game = {
                                                 // enable & show buttons
                                                 UI.disableBtns(UI.chipBtns, false)  
                                                 UI.showElement(UI.btn.deal, true)
-
-                                                for (const betChipWrap of document.querySelectorAll('.bet-chip-wrapper')) {
-                                                    betChipWrap.remove()
-                                                }
 
                                                 UI.collapseChipsBet(false)
 
@@ -1207,10 +1320,6 @@ const Game = {
                                                 // enable & show buttons
                                                 UI.disableBtns(UI.chipBtns, false)  
                                                 UI.showElement(UI.btn.deal, true)
-        
-                                                for (const betChipWrap of document.querySelectorAll('.bet-chip-wrapper')) {
-                                                    betChipWrap.remove()
-                                                }
         
                                                 UI.collapseChipsBet(false)
         
