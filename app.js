@@ -25,8 +25,7 @@ const Player = {
             }
         }
 
-        // Player.hands.push(hand)
-
+        // current hand is last hand
         if (Player.handIndex === Player.hands.length - 1) {
             Player.hands.push(hand)
         } else {
@@ -50,13 +49,28 @@ const Player = {
         hand.ui.cards.appendChild(hand.ui.count)
         hand.ui.div.appendChild(hand.ui.indicator)
 
+        // update current hand to new hand
         Player.handIndex++
 
-        // append to the end if current hand is the last hand
+        // append to the end if new hand is the last hand
         if (Player.handIndex === Player.hands.length - 1) {
             Player.handsTrack.appendChild(hand.ui.div)
         } else {
             console.log('current hand is NOT last hand, smush between')
+            // insert hand after previous
+            Player.hands[Player.handIndex - 1].ui.div.after(hand.ui.div)
+        }
+
+        // slide hands
+        if (Player.hands.length > 2) {
+            // new hand is last hand
+            if (Player.handIndex === Player.hands.length - 1) {
+                Player.handsTrack.style.transform = `translateX(${(Player.hands.length - 2) * -50}%)`
+                console.log('slid track')
+            } else {
+                // new hand is not last hand
+                Player.handsTrack.style.transform = `translateX(${(Player.handIndex - 1) * -50}%)`
+            }
         }
     }
 }
@@ -388,7 +402,7 @@ const Game = {
         { name: '7', suit: 'hearts', graphic: '', value: 7, value1: 7, value2: 7, isAce: false },
         { name: '7', suit: 'diamonds', graphic: '', value: 7, value1: 7, value2: 7, isAce: false },
         { name: '7', suit: 'spades', graphic: '', value: 7, value1: 7, value2: 7, isAce: false },
-        { name: '7', suit: 'clubs', graphic: '', value: 7, value1: 7, value2: 7, isAce: false },
+        { name: '4', suit: 'spades', graphic: '', value: 4, value1: 4, value2: 4, isAce: false },
         { name: '8', suit: 'hearts', graphic: '', value: 8, value1: 8, value2: 8, isAce: false },
         { name: '8', suit: 'diamonds', graphic: '', value: 8, value1: 8, value2: 8, isAce: false },
         { name: '8', suit: 'spades', graphic: '', value: 8, value1: 8, value2: 8, isAce: false },
@@ -403,16 +417,19 @@ const Game = {
         { name: '10', suit: 'clubs', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
         { name: 'J', suit: 'hearts', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
         { name: 'J', suit: 'diamonds', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
-        { name: 'J', suit: 'spades', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        { name: 'J', suit: 'spades', graphic: '', value: 10, value1: 10, value2: 10, isAce: false }, 
         { name: 'J', suit: 'clubs', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
         { name: 'Q', suit: 'hearts', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
         { name: 'Q', suit: 'diamonds', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
         { name: 'Q', suit: 'spades', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
         { name: 'Q', suit: 'clubs', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        { name: '7', suit: 'spades', graphic: '', value: 7, value1: 7, value2: 7, isAce: false },
         { name: 'K', suit: 'hearts', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        { name: '4', suit: 'spades', graphic: '', value: 4, value1: 4, value2: 4, isAce: false },
         { name: 'K', suit: 'diamonds', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
         { name: 'K', suit: 'spades', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
         { name: 'K', suit: 'clubs', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        { name: '4', suit: 'spades', graphic: '', value: 4, value1: 4, value2: 4, isAce: false }
         // { name: 'A', suit: 'hearts', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true },
         // { name: 'A', suit: 'diamonds', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true },
         // { name: '3', suit: 'spades', graphic: '', value: 3, value1: 3, value2: 3, isAce: false },
@@ -931,9 +948,9 @@ const Game = {
 
             if (message === 'Bust' || message === 'Lose') {
                 Game.discardChips(chips)
-                Game.discardCardsWithListener(Player.hands[Player.handIndex]).then(() => {
-                    console.log('cards discarded')
-                })
+                Player.hands[Player.handIndex].ui.indicator.classList.add('opacity-0')
+                Game.discardCards(Player.hands[Player.handIndex])
+                Game.discardHand()
             } else if (message === 'Push') {
                 // send chips back
                 let chipsArray = Array.from(Player.hands[Player.handIndex].ui.chips.children)
@@ -988,7 +1005,7 @@ const Game = {
             // check if current hand is final hand
             if (Player.hands.length - 1 === Player.handIndex) {
                 console.log('final hand processed')
-                // reset dealer
+                // reset table
                 UI.playAnimation(Dealer.hands[0].ui.count, 'fading-out .5s forwards', false).then(() => {
                     Game.discardCardsWithListener(Dealer.hands[0]).then(() => {
                         // reset dealer
@@ -1010,6 +1027,8 @@ const Game = {
                         Player.handsTrack.classList.remove('multiple-hands')
                         Player.handsTrack.removeAttribute('style')
 
+                        UI.betAmount.innerText = '0'
+                        UI.showElement(UI.bet, true)
                         UI.collapseChipsBet(false)
                         // enable & show buttons
                         UI.disableBtns(UI.chipBtns, false)  
@@ -1019,11 +1038,12 @@ const Game = {
 
             } else {
                 console.log('more hands to process')
-                
+        
                 // if not second to last hand
                 if (Player.hands.length - 2 !== Player.handIndex) {
                     console.log('not second to last hand, slide hands')
-                    Player.handsTrack.style.transform = `translateX(${(Player.hands.length - 2) * -50}%)`
+                    Player.handsTrack.style.transform = `translateX(${(Player.handIndex + 1) * -50}%)`
+
                     // wait for slide transition
                     setTimeout(() => {
                         Player.handIndex++
@@ -1183,6 +1203,7 @@ const Game = {
                 if (Player.handIndex > 1) {
                     Player.hands[Player.handIndex].ui.indicator.classList.add('opacity-0')
                     Player.handsTrack.style.transform = `translateX(${(Player.handIndex - 2) * -50}%)`
+                    console.log('slid track')
                     // wait for slide transition
                     setTimeout(() => {
                         Player.handIndex--
@@ -1213,6 +1234,9 @@ const Game = {
                 })
             }) 
         }
+    },
+    hit: () => {
+        
     },
     insure: () => {
         // insurance bet is half of current bet
@@ -1466,7 +1490,7 @@ const Game = {
             // hide current hand indicator
             Player.hands[Player.handIndex].ui.indicator.classList.add('opacity-0')
             // slide hands track because there are at least 3 hands
-            Player.handsTrack.style.transform = `translateX(${(Player.hands.length - 1) * -50}%)`
+            // Player.handsTrack.style.transform = `translateX(${(Player.hands.length - 1) * -50}%)`
         }
 
         // make new hand
@@ -1616,6 +1640,8 @@ document.body.addEventListener('click', (e) => {
         Game.double()
     } else if (e.target == UI.btn.stand) {
         Game.stand()
+    } else if (e.target == UI.btn.hit) {
+        Game.hit()
     } else if (e.target == UI.btn.chip1) {
         if (Player.bank >= 1) {
             UI.betChip(1, UI.chip1Wrapper, UI.chip1Discard)
