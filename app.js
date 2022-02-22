@@ -1236,7 +1236,13 @@ const Game = {
         }
     },
     hit: () => {
-        
+        console.log('hit that shit')
+
+        UI.showElement(UI.btn.doubleStandHit, false)
+
+        Game.deal(Player.hands[Player.handIndex], false).then(() => {
+            Game.countHand(Player.hands[Player.handIndex])
+        })
     },
     insure: () => {
         // insurance bet is half of current bet
