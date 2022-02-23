@@ -893,7 +893,6 @@ const Game = {
         } else {
             console.log('dealer count >= 17')
             
-
             let animation = ''
             // set necessary animations
             if (Dealer.hands[0].count === 21) {
@@ -907,35 +906,35 @@ const Game = {
                 UI.playAnimation(Dealer.hands[0].ui.count, animation).then(() => {
                     // check player's current hand count
                     console.log('dealer busts or 21')
-                    Game.processHand()
+                    Dealer.hands[0].ui.count.classList.add('red-text')
+                    Game.endHand()
                 })
             } else {
-                Game.processHand()
+                Game.endHand()
             }
         }
     },
-    processHand: () => {
-        console.log('process hand')
+    endHand: () => {
         // set message
         let message = ''
         // check player's current hand count
         if (Player.hands[Player.handIndex].count > 21) {
-            console.log('Player hands busts, lose chips')
+            console.log('endHand: Player hands busts, lose chips')
             message = 'Bust'
         } else if (Dealer.hands[0].count > 21) {
-            console.log('Dealer busts')
+            console.log('endHand: Dealer busts')
             message = 'Dealer busts'
         } else if (Player.hands[Player.handIndex].count < Dealer.hands[0].count && Dealer.hands[0].count <= 21) {
-            console.log('Player hands less than dealers, lose')
+            console.log('endHand: Player hands less than dealers, lose')
             message = 'Lose'
         } else if (Player.hands[Player.handIndex].count === Dealer.hands[0].count) {
-            console.log('Players hand equals dealers, push')
+            console.log('endHand: Players hand equals dealers, push')
             message = 'Push'
         } else if (Player.hands[Player.handIndex].count === 21) {
-            console.log('Player 21, win')
+            console.log('endHand: Player 21, win')
             message = '21'
         } else {
-            console.log('Players hand > dealers')
+            console.log('endHand: Players hand > dealers')
             message = 'Win'
         }
 
@@ -968,7 +967,7 @@ const Game = {
                 Game.discardHand()
             } else {
                 // player wins, make chips and send to player
-                console.log('make chips and send to player')
+                console.log('endHand: make chips and send to player')
 
                 // create won chips
                 let chipsHTML  = Player.hands[Player.handIndex].ui.chips.innerHTML
@@ -1013,6 +1012,7 @@ const Game = {
                         Dealer.hands[0].ui.cardsInner.removeAttribute('style')
                         Dealer.hands[0].ui.count.removeAttribute('style')
                         Dealer.hands[0].ui.count.classList.remove('fading-out')
+                        Dealer.hands[0].ui.count.classList.remove('red-text')
                         Dealer.hands[0].ui.count.classList.add('hidden')
                         Dealer.hands[0].ui.cardsInner.innerHTML = ''
                         Dealer.hands[0].cards = []
@@ -1031,7 +1031,8 @@ const Game = {
                         UI.showElement(UI.bet, true)
                         UI.collapseChipsBet(false)
                         // enable & show buttons
-                        UI.disableBtns(UI.chipBtns, false)  
+                        UI.disableBtns(UI.chipBtns, false)
+                        UI.showElement(UI.btn.double, true)  
                         UI.showElement(UI.btn.deal, true)
                     })
                 })
@@ -1048,11 +1049,11 @@ const Game = {
                     setTimeout(() => {
                         Player.handIndex++
                         Player.hands[Player.handIndex].ui.indicator.classList.remove('opacity-0')
-                        Game.processHand()
+                        Game.endHand()
                     }, 500);
                 } else {
                     Player.handIndex++
-                    Game.processHand()
+                    Game.endHand()
                 }
                  
             }
@@ -1088,14 +1089,13 @@ const Game = {
             })
         }
     },
-    playHand: () => {
-        console.log('playHand')
+    reassessHand: () => {
         // BLACKJACK **********************************************************************************************
         if (Player.hands[Player.handIndex].count === 21) {
 
             // check if player has multiple hands
             if (Player.hands.length > 1) {
-                console.log('multiple hands blackjack')
+                console.log('reassessHand: multiple hands blackjack')
                 // move to the next hand
                 UI.playAnimation(Player.hands[Player.handIndex].ui.count, 'count-blackjack 1s .75s forwards')
                 .then(() => {
@@ -1174,15 +1174,20 @@ const Game = {
                     }
                 })
             }   
-
-        // SPLIT OPTION  
-        } else if ((Player.hands[Player.handIndex].cards[0].value === Player.hands[Player.handIndex].cards[1].value) && (Player.hands[Player.handIndex].cards[0].isAce !== true)) {
+        } else if ((Player.hands[Player.handIndex].cards[0].value === Player.hands[Player.handIndex].cards[1].value) && (Player.hands[Player.handIndex].cards[0].isAce !== true && Player.hands[Player.handIndex].cards.length === 2)) {
+            console.log('reassessHand: split')
             // hide deal btn
             UI.showElement(UI.btn.deal, false)
             // show split buttons
             UI.showElement(UI.splitContainer, true)
+        } else if (Player.hands[Player.handIndex].count > 21) {
+            console.log('reassessHand: bust')
+            UI.playAnimation(Player.hands[Player.handIndex].ui.count, 'count-bust 1s .75s forwards').then(() => {
+                Player.hands[Player.handIndex].ui.count.classList.add('red-text')
+                Game.stand()
+            })
         } else {
-            console.log('not 21 or split')
+            console.log('reassessHand: live hand')
             // hide deal btn
             UI.showElement(UI.btn.deal, false)
             // show double stand hit btns
@@ -1210,7 +1215,7 @@ const Game = {
                         Player.hands[Player.handIndex].ui.indicator.classList.remove('opacity-0')
                         Game.deal(Player.hands[Player.handIndex]).then(() => {
                             Game.countHand(Player.hands[Player.handIndex])
-                            Game.playHand()
+                            Game.reassessHand()
                         })
                     }, 500);
                 } else {
@@ -1219,7 +1224,7 @@ const Game = {
                     Player.hands[Player.handIndex].ui.indicator.classList.remove('opacity-0')
                     Game.deal(Player.hands[Player.handIndex]).then(() => {
                         Game.countHand(Player.hands[Player.handIndex])
-                        Game.playHand()
+                        Game.reassessHand()
                     })
                 }
             }
@@ -1242,6 +1247,7 @@ const Game = {
 
         Game.deal(Player.hands[Player.handIndex], false).then(() => {
             Game.countHand(Player.hands[Player.handIndex])
+            Game.reassessHand()
         })
     },
     insure: () => {
@@ -1489,6 +1495,9 @@ const Game = {
         UI.showElement(UI.splitContainer, false)
         UI.updateBank(-Player.hands[Player.handIndex].bet, 1000)
 
+        // hide double button
+        UI.showElement(UI.btn.double, false)
+
         // player has one hand
         if (Player.hands.length === 1) {
             Player.handsTrack.classList.add('multiple-hands')
@@ -1561,7 +1570,7 @@ const Game = {
                     Game.countHand(newHand)
                     newHand.ui.count.classList.toggle('hidden')
                     Game.countHand(newHand)
-                    Game.playHand()
+                    Game.reassessHand()
                 })
             }, 750);
         })
@@ -1624,7 +1633,7 @@ document.body.addEventListener('click', (e) => {
                 UI.showElement(UI.insuranceContainer, true)
             } else {
                 // Play player's first hand
-                Game.playHand()
+                Game.reassessHand()
             }
         })
 
@@ -1634,7 +1643,7 @@ document.body.addEventListener('click', (e) => {
         // hide insurance container
         UI.showElement(UI.insuranceContainer, false)
         // play hand
-        Game.playHand()
+        Game.reassessHand()
     } else if (e.target == UI.btn.splitYes) {
         Game.split()
     } else if (e.target == UI.btn.splitNo) {
