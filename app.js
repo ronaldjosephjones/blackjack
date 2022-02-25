@@ -139,23 +139,23 @@ const UI = {
         UI.disableDealBtn(true)
 
         Player.bet += chipVal
-        this.updateBank(-chipVal, 1000)
-        this.updateBet()
+        UI.updateBank(-chipVal, 1000)
+        UI.updateBet()
 
         // create HTML for bet chip
         chipWrapper.insertAdjacentHTML('afterbegin', `<div class="chip-bet chip-bet--${chipVal}" data-chip-value="${chipVal}">${chipVal}</div>`)
         let chip = chipWrapper.firstElementChild
 
         // make container if this type of chip hasn't been bet yet
-        if (this.chipsBet.querySelector(`#bet-chip--${chipVal}-wrapper`) == null) {
-            this.chipsBet.insertAdjacentHTML('beforeend', `<div id="bet-chip--${chipVal}-wrapper" class="bet-chip-wrapper bet-chip-wrapper-expanding"></div>`)
+        if (UI.chipsBet.querySelector(`#bet-chip--${chipVal}-wrapper`) == null) {
+            UI.chipsBet.insertAdjacentHTML('beforeend', `<div id="bet-chip--${chipVal}-wrapper" class="bet-chip-wrapper bet-chip-wrapper-expanding"></div>`)
         }
 
         // animate bet chip wrappers
         // document.querySelector(`#bet-chip--${chipVal}-wrapper`).classList.add('bet-chip-wrapper-expanding')
 
         // move the chip and callback
-        this.moveElement(chip, this.chipsBet.querySelector(`#bet-chip--${chipVal}-wrapper`), 'bet-chip-animation', () => {
+        UI.moveElement(chip, UI.chipsBet.querySelector(`#bet-chip--${chipVal}-wrapper`), 'bet-chip-animation', () => {
             if (document.querySelector('.bet-chip-wrapper-expanding')) {
                 document.querySelector('.bet-chip-wrapper-expanding').classList.remove('bet-chip-wrapper-expanding')
             }
@@ -164,6 +164,8 @@ const UI = {
             if (Player.bet > 0) {
                 UI.disableDealBtn(false)
             }
+
+            UI.enableAffordableChips()
         })
 
         // when bet chip is clicked
@@ -202,9 +204,21 @@ const UI = {
                 }
                 // remove chip
                 chip.remove()
+                UI.enableAffordableChips()
             })
         })
 
+    },
+    enableAffordableChips: () => {
+        const chips = Array.from(document.querySelectorAll('.chip-wrapper > button.chip'))
+        for (const chipBtn of chips) {
+            const chipNum = parseInt(chipBtn.dataset.chipNum)
+            if (Player.bank >= chipNum) {
+                chipBtn.disabled = false
+            } else {
+                chipBtn.disabled = true
+            }
+        }
     },
     collapseChipsBet: (bool) => {
         if (bool) {
@@ -1174,7 +1188,7 @@ const Game = {
                     }
                 })
             }   
-        } else if ((Player.hands[Player.handIndex].cards[0].value === Player.hands[Player.handIndex].cards[1].value) && (Player.hands[Player.handIndex].cards[0].isAce !== true && Player.hands[Player.handIndex].cards.length === 2)) {
+        } else if ((Player.hands[Player.handIndex].cards[0].value === Player.hands[Player.handIndex].cards[1].value) && (Player.hands[Player.handIndex].cards[0].isAce !== true && Player.hands[Player.handIndex].cards.length === 2) && Player.bank >= Player.hands[Player.handIndex].bet) {
             console.log('reassessHand: split')
             // hide deal btn
             UI.showElement(UI.btn.deal, false)
