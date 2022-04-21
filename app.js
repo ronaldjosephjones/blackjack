@@ -1044,10 +1044,11 @@ const Game = {
                         UI.betAmount.innerText = '0'
                         UI.showElement(UI.bet, true)
                         UI.collapseChipsBet(false)
-                        // enable & show buttons
                         UI.disableBtns(UI.chipBtns, false)
                         UI.showElement(UI.btn.double, true)  
                         UI.showElement(UI.btn.deal, true)
+                        console.log('enable affordable chips')
+                        UI.enableAffordableChips()
                     })
                 })
 
@@ -1096,9 +1097,10 @@ const Game = {
                     Player.handsTrack.removeAttribute('style')
 
                     UI.collapseChipsBet(false)
-                    // enable & show buttons
                     UI.disableBtns(UI.chipBtns, false)  
                     UI.showElement(UI.btn.deal, true)
+                    console.log('enable affordable chips')
+                    UI.enableAffordableChips()
                 })
             })
         }
