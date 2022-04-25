@@ -15,6 +15,22 @@
     </head>
     <body>
 
+        <button id="info-btn" aria-label="Click to open a popup with information about the project"></button>
+
+        <div id="info-box-wrap">
+            <div id="info-box">
+                <div class="info-x-btn">
+                    <button aria-label="Close popup"></button>
+                </div>
+                <div class="info-content">
+                    <p class="info-header">Blackjack <span>JS</span></p>
+                    <p>Hi, my name is R.J. Jones. What you've stumbled upon is recreation of the classic card game blackjack.</p>
+                    <p>I built this project to demonstrate what's possible with some clever HTML, CSS, and JavaScript.</p>
+                    <p>Unfortunately, building this did not make me a better blackjack player.</p>
+                </div>
+            </div>
+        </div>
+
         <div id="table-container">
 
             <div id="dealer-container">
@@ -96,7 +112,7 @@
                         </div>
                     </div>
         
-                    <p id="bank">$<span id="bank-amount">1000</span></p>
+                    <p id="bank">$<span id="bank-amount">0</span></p>
                     
                     <div id="bottom-bar">
                         <div id="chips-container">

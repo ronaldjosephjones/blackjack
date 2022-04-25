@@ -1,97 +1,5 @@
 'use strict';
 
-const Player = {
-    bank: 1000,
-    handIndex: -1,
-    hands: [],
-    handsTrack: document.getElementById('player-hands-track'),
-    bet: 0,
-    createHand: (bet) => {
-        let hand = {
-            ui: {
-                div: document.createElement('div'),
-                bet: document.createElement('p'),
-                chips: document.createElement('div'),
-                cards: document.createElement('div'),
-                cardsInner: document.createElement('div'),
-                count: document.createElement('p'),
-                indicator: document.createElement('div')
-            },
-            bet,
-            cards: [],
-            count: {
-                acesAreOne: 0,
-                acesAreEleven: 0
-            }
-        }
-
-        // current hand is last hand
-        if (Player.handIndex === Player.hands.length - 1) {
-            Player.hands.push(hand)
-        } else {
-            Player.hands.splice(Player.handIndex + 1, 0, hand)
-        }
-
-        hand.ui.div.classList.add('hand')
-        hand.ui.bet.classList.add('hand-bet-amount')
-        hand.ui.chips.classList.add('hand-chips')
-        hand.ui.cards.classList.add('hand-cards')
-        hand.ui.cardsInner.classList.add('hand-cards-inner')
-        hand.ui.count.classList.add('hand-card-count', 'hidden')
-        hand.ui.indicator.classList.add('hand-indicator', 'opacity-0')
-
-        hand.ui.bet.textContent = '$' + hand.bet
-
-        hand.ui.div.appendChild(hand.ui.bet)
-        hand.ui.div.appendChild(hand.ui.chips)
-        hand.ui.div.appendChild(hand.ui.cards)
-        hand.ui.cards.appendChild(hand.ui.cardsInner)
-        hand.ui.cards.appendChild(hand.ui.count)
-        hand.ui.div.appendChild(hand.ui.indicator)
-
-        // update current hand to new hand
-        Player.handIndex++
-
-        // append to the end if new hand is the last hand
-        if (Player.handIndex === Player.hands.length - 1) {
-            Player.handsTrack.appendChild(hand.ui.div)
-        } else {
-            console.log('current hand is NOT last hand, smush between')
-            // insert hand after previous
-            Player.hands[Player.handIndex - 1].ui.div.after(hand.ui.div)
-        }
-
-        // slide hands
-        if (Player.hands.length > 2) {
-            // new hand is last hand
-            if (Player.handIndex === Player.hands.length - 1) {
-                Player.handsTrack.style.transform = `translateX(${(Player.hands.length - 2) * -50}%)`
-                console.log('slid track')
-            } else {
-                // new hand is not last hand
-                Player.handsTrack.style.transform = `translateX(${(Player.handIndex - 1) * -50}%)`
-            }
-        }
-    }
-}
-
-const Dealer = {
-    container: document.getElementById('dealer-hand'),
-    hands: [
-        {
-            ui: {
-                div: document.querySelector('#dealer-hand .hand'),
-                cards: document.querySelector('#dealer-hand .hand-cards'),
-                cardsInner: document.querySelector('#dealer-hand .hand-cards-inner'),
-                count: document.querySelector('#dealer-hand .hand-card-count'),
-            },
-            cards: [],
-            count: 0
-        }
-    ],
-    secondCard: null
-}
-
 const UI = {
     bank: document.getElementById('bank'),
     bankAmount: document.getElementById('bank-amount'),
@@ -387,6 +295,113 @@ const UI = {
         this.betAmount.innerText = `${Player.bet}`
     }
 }
+
+// grab previous bank if exists
+let bank = 0
+
+if (localStorage.getItem('playerBank') === null) {
+    bank = 1000
+    UI.bankAmount.innerText = bank
+    console.log('previous bank not found')
+} else {
+    bank = parseInt(localStorage.getItem('playerBank'), 10)
+    UI.bankAmount.innerText = bank
+    console.log('previous bank found')
+}
+
+const Player = {
+    bank: bank,
+    handIndex: -1,
+    hands: [],
+    handsTrack: document.getElementById('player-hands-track'),
+    bet: 0,
+    createHand: (bet) => {
+        let hand = {
+            ui: {
+                div: document.createElement('div'),
+                bet: document.createElement('p'),
+                chips: document.createElement('div'),
+                cards: document.createElement('div'),
+                cardsInner: document.createElement('div'),
+                count: document.createElement('p'),
+                indicator: document.createElement('div')
+            },
+            bet,
+            cards: [],
+            count: {
+                acesAreOne: 0,
+                acesAreEleven: 0
+            }
+        }
+
+        // current hand is last hand
+        if (Player.handIndex === Player.hands.length - 1) {
+            Player.hands.push(hand)
+        } else {
+            Player.hands.splice(Player.handIndex + 1, 0, hand)
+        }
+
+        hand.ui.div.classList.add('hand')
+        hand.ui.bet.classList.add('hand-bet-amount')
+        hand.ui.chips.classList.add('hand-chips')
+        hand.ui.cards.classList.add('hand-cards')
+        hand.ui.cardsInner.classList.add('hand-cards-inner')
+        hand.ui.count.classList.add('hand-card-count', 'hidden')
+        hand.ui.indicator.classList.add('hand-indicator', 'opacity-0')
+
+        hand.ui.bet.textContent = '$' + hand.bet
+
+        hand.ui.div.appendChild(hand.ui.bet)
+        hand.ui.div.appendChild(hand.ui.chips)
+        hand.ui.div.appendChild(hand.ui.cards)
+        hand.ui.cards.appendChild(hand.ui.cardsInner)
+        hand.ui.cards.appendChild(hand.ui.count)
+        hand.ui.div.appendChild(hand.ui.indicator)
+
+        // update current hand to new hand
+        Player.handIndex++
+
+        // append to the end if new hand is the last hand
+        if (Player.handIndex === Player.hands.length - 1) {
+            Player.handsTrack.appendChild(hand.ui.div)
+        } else {
+            console.log('current hand is NOT last hand, smush between')
+            // insert hand after previous
+            Player.hands[Player.handIndex - 1].ui.div.after(hand.ui.div)
+        }
+
+        // slide hands
+        if (Player.hands.length > 2) {
+            // new hand is last hand
+            if (Player.handIndex === Player.hands.length - 1) {
+                Player.handsTrack.style.transform = `translateX(${(Player.hands.length - 2) * -50}%)`
+                console.log('slid track')
+            } else {
+                // new hand is not last hand
+                Player.handsTrack.style.transform = `translateX(${(Player.handIndex - 1) * -50}%)`
+            }
+        }
+    }
+}
+
+const Dealer = {
+    container: document.getElementById('dealer-hand'),
+    hands: [
+        {
+            ui: {
+                div: document.querySelector('#dealer-hand .hand'),
+                cards: document.querySelector('#dealer-hand .hand-cards'),
+                cardsInner: document.querySelector('#dealer-hand .hand-cards-inner'),
+                count: document.querySelector('#dealer-hand .hand-card-count'),
+            },
+            cards: [],
+            count: 0
+        }
+    ],
+    secondCard: null
+}
+
+
 
 // let btns = [UI.btn.chip1, UI.btn.chip5, UI.btn.chip10, UI.btn.chip25, UI.btn.chip100]
 // UI.disableBtns(btns, true)
@@ -708,10 +723,10 @@ const Game = {
         // await Game.deal(Player.hands[0], false)
         // await Game.forceCard(Dealer.hands[0], true, { name: '5', suit: 'spades', graphic: '', value: 5, value1: 5, value2: 5,  isAce: false })
         // dealer ace first card, player 21
-        // await Game.forceCard(Player.hands[0], false, { name: 'A', suit: 'hearts', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true })
-        // await Game.forceCard(Dealer.hands[0], false, { name: 'A', suit: 'spades', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true })
-        // await Game.forceCard(Player.hands[0], false, { name: '10', suit: 'hearts', graphic: '', value: 10, value1: 10, value2: 10,  isAce: false })
-        // await Game.deal(Dealer.hands[0], true)
+        await Game.forceCard(Player.hands[0], false, { name: 'A', suit: 'hearts', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true })
+        await Game.forceCard(Dealer.hands[0], false, { name: 'A', suit: 'spades', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true })
+        await Game.forceCard(Player.hands[0], false, { name: '10', suit: 'hearts', graphic: '', value: 10, value1: 10, value2: 10,  isAce: false })
+        await Game.deal(Dealer.hands[0], true)
         // dealer 21, player random
         // await Game.deal(Player.hands[0], false)
         // await Game.forceCard(Dealer.hands[0], false, { name: 'A', suit: 'spades', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true })
@@ -733,10 +748,10 @@ const Game = {
         // await Game.forceCard(Player.hands[0], false, { name: '8', suit: 'spades', graphic: '', value: 8, value1: 8, value2: 8,  isAce: false })
         // await Game.forceCard(Dealer.hands[0], true, { name: '8', suit: 'hearts', graphic: '', value: 8, value1: 8, value2: 8,  isAce: false })
         // dealer random, player split
-        await Game.forceCard(Player.hands[0], false, { name: '10', suit: 'spades', graphic: '', value: 10, value1: 10, value2: 10,  isAce: false })
-        await Game.deal(Dealer.hands[0], false)
-        await Game.forceCard(Player.hands[0], false, { name: '10', suit: 'hearts', graphic: '', value: 10, value1: 10, value2: 10,  isAce: false })
-        await Game.deal(Dealer.hands[0], true)
+        // await Game.forceCard(Player.hands[0], false, { name: '10', suit: 'spades', graphic: '', value: 10, value1: 10, value2: 10,  isAce: false })
+        // await Game.deal(Dealer.hands[0], false)
+        // await Game.forceCard(Player.hands[0], false, { name: '10', suit: 'hearts', graphic: '', value: 10, value1: 10, value2: 10,  isAce: false })
+        // await Game.deal(Dealer.hands[0], true)
 
         Dealer.secondCard = Dealer.hands[0].ui.cardsInner.lastElementChild
     },
@@ -1003,8 +1018,14 @@ const Game = {
                         chip.remove()
                     })
                 }
+                // pay blackjack odds if necessary
+                if (Player.hands[Player.handIndex].count === 21) {
+                    console.log('pay blackjack odds')
+                    UI.updateBank(Player.hands[Player.handIndex].bet * 2.5, 1000)
+                } else {
+                    UI.updateBank(Player.hands[Player.handIndex].bet * 2, 1000)
+                }
 
-                UI.updateBank(Player.hands[Player.handIndex].bet * 2, 1000)
                 Player.hands[Player.handIndex].ui.indicator.classList.add('opacity-0')
                 Game.discardCards(Player.hands[Player.handIndex])
                 Game.discardHand()
@@ -1049,6 +1070,27 @@ const Game = {
                         UI.showElement(UI.btn.deal, true)
                         console.log('enable affordable chips')
                         UI.enableAffordableChips()
+
+                        // add money to bank if 0
+                        if (Player.bank === 0) {
+                            UI.playMessage('You\'re broke! Here\'s $1000!', 'show-message 1.5s forwards').then(() => {
+                                console.log('no $$$')
+                                UI.updateBank(1000, 1000)
+                                localStorage.setItem('playerBank', Player.bank)
+                                UI.collapseChipsBet(false)
+                                UI.disableBtns(UI.chipBtns, false)  
+                                UI.showElement(UI.btn.deal, true)
+                                console.log('enable affordable chips')
+                                UI.enableAffordableChips()
+                            })
+                        } else {
+                            localStorage.setItem('playerBank', Player.bank)
+                            UI.collapseChipsBet(false)
+                            UI.disableBtns(UI.chipBtns, false)  
+                            UI.showElement(UI.btn.deal, true)
+                            console.log('enable affordable chips')
+                            UI.enableAffordableChips()
+                        }
                     })
                 })
 
@@ -1082,6 +1124,7 @@ const Game = {
                     Dealer.hands[0].ui.cardsInner.removeAttribute('style')
                     Dealer.hands[0].ui.count.removeAttribute('style')
                     Dealer.hands[0].ui.count.classList.remove('fading-out')
+                    Dealer.hands[0].ui.count.classList.remove('red-text')
                     Dealer.hands[0].ui.count.classList.add('hidden')
                     Dealer.hands[0].ui.cardsInner.innerHTML = ''
                     Dealer.hands[0].cards = []
@@ -1096,11 +1139,26 @@ const Game = {
                     Player.handsTrack.classList.remove('multiple-hands')
                     Player.handsTrack.removeAttribute('style')
 
-                    UI.collapseChipsBet(false)
-                    UI.disableBtns(UI.chipBtns, false)  
-                    UI.showElement(UI.btn.deal, true)
-                    console.log('enable affordable chips')
-                    UI.enableAffordableChips()
+                    // add money to bank if 0
+                    if (Player.bank === 0) {
+                        UI.playMessage('You\'re broke! Here\'s $1000!', 'show-message 1.5s forwards').then(() => {
+                            console.log('no $$$')
+                            UI.updateBank(1000, 1000)
+                            localStorage.setItem('playerBank', Player.bank)
+                            UI.collapseChipsBet(false)
+                            UI.disableBtns(UI.chipBtns, false)  
+                            UI.showElement(UI.btn.deal, true)
+                            console.log('enable affordable chips')
+                            UI.enableAffordableChips()
+                        })
+                    } else {
+                        localStorage.setItem('playerBank', Player.bank)
+                        UI.collapseChipsBet(false)
+                        UI.disableBtns(UI.chipBtns, false)  
+                        UI.showElement(UI.btn.deal, true)
+                        console.log('enable affordable chips')
+                        UI.enableAffordableChips()
+                    }
                 })
             })
         }
@@ -1179,7 +1237,7 @@ const Game = {
                                                 Dealer.hands[0].ui.cardsInner.removeAttribute('style')
                                                 Dealer.hands[0].ui.count.removeAttribute('style')
                                                 Dealer.hands[0].ui.count.classList.remove('fading-out')
-                                                Dealer.hands[0].ui.count.classList.add('hidden')
+                                                Dealer.hands[0].ui.count.classList.add('hidden') 
                                                 
                                             })                                      
                                     })
@@ -1257,7 +1315,7 @@ const Game = {
         }
     },
     hit: () => {
-        console.log('hit that shit')
+        console.log('hit')
 
         UI.showElement(UI.btn.doubleStandHit, false)
 

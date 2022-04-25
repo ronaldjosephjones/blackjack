@@ -465,6 +465,94 @@ body {
     }
 }
 
+#info-btn {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+    width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+    border: none;
+    box-shadow: inset 0 1px 3px rgba(34, 25, 25, 0.4);
+}
+
+#info-box-wrap {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,.4);
+    z-index: 99;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#info-box {
+    background: #fff;
+    box-shadow: inset 0 1px 3px rgba(34, 25, 25, 0.4);
+    padding: 3rem 2rem;
+    max-width: 500px;
+    border-radius: 3px;
+}
+
+.info-x-btn {
+    display: flex;
+    justify-content: end;
+}
+
+.info-x-btn button {
+    height: 3.5rem;
+    width: 3.5rem;
+    margin: 0;
+    padding: 0;
+    background: #cdcdcd;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.info-x-btn button:hover {
+    background: #afafaf;
+}
+
+.info-x-btn button::before, .info-x-btn button::after {
+    display: block;
+    height: 2.5rem;
+    width: 2px;
+    background: #fff;
+    content: "";
+    position: absolute;
+}
+
+.info-x-btn button::before {
+    transform: rotate(45deg);
+}
+
+.info-x-btn button::after {
+    transform: rotate(-45deg);
+}
+
+.info-content p:not(:first-child) {
+    font-size: 1.6rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+.info-header {
+    text-align: center;
+    font-size: 3rem;
+    font-weight: bold;
+    margin-bottom: 2rem;
+}
+
+.info-header span {
+    color: #d11a1a;
+    font-weight: bold;
+}
+
 .card--facedown {
     transform: rotateY(180deg);
     z-index: -1;
