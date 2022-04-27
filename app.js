@@ -19,6 +19,7 @@ const UI = {
         splitYes: document.getElementById('btn--split-yes'),
         splitNo: document.getElementById('btn--split-no'),
         infoBoxClose: document.querySelector('.info-x-btn button'),
+        infoBoxOpen: document.getElementById('info-btn'),
         insuranceYes: document.getElementById('btn--insurance-yes'),
         insuranceNo: document.getElementById('btn--insurance-no')
     },
@@ -45,6 +46,10 @@ const UI = {
     messageText: document.querySelector('#message-wrapper .message-text'),
     tableContainer: document.getElementById('table-container'),
     betChip: function(chipVal, chipWrapper, chipDiscard) {
+
+        if (UI.bet.classList.contains('flash')) {
+            UI.bet.classList.remove('flash')
+        }
 
         UI.disableBtns(UI.chipBtns, true)
         UI.disableDealBtn(true)
@@ -91,12 +96,17 @@ const UI = {
             UI.updateBank(chipVal, 1000)
             UI.updateBet()
 
+            if (Player.bet === 0) {
+                UI.bet.classList.add('flash')
+            }
+
             // if only 1 of this chip remains animate wrapper closed
             if (document.querySelector(`#bet-chip--${chipVal}-wrapper`).children.length == 1) {
                 document.querySelector(`#bet-chip--${chipVal}-wrapper`).addEventListener('transitionend', () => {
                     document.querySelector(`#bet-chip--${chipVal}-wrapper`).remove()
                     UI.disableBtns(UI.chipBtns, false)
                     UI.enableBetChips()
+
                     if (Player.bet > 0) {
                         UI.disableDealBtn(false)
                     }
@@ -312,6 +322,16 @@ if (localStorage.getItem('playerBank') === null) {
     console.log('previous bank found')
 }
 
+
+// set info box open status if necessary
+if (localStorage.getItem('isInfoOpen') === null) {
+    localStorage.setItem('isInfoOpen', true)
+}
+// check if info box was open
+if (localStorage.getItem('isInfoOpen') !== 'true') {
+    UI.showElement(UI.infoBoxWrap, false)
+}
+
 const Player = {
     bank: bank,
     handIndex: -1,
@@ -461,20 +481,29 @@ const Game = {
         { name: 'K', suit: 'diamonds', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
         { name: 'K', suit: 'spades', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
         { name: 'K', suit: 'clubs', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
-        { name: '4', suit: 'spades', graphic: '', value: 4, value1: 4, value2: 4, isAce: false }
-        // { name: 'A', suit: 'hearts', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true },
-        // { name: 'A', suit: 'diamonds', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true },
-        // { name: '3', suit: 'spades', graphic: '', value: 3, value1: 3, value2: 3, isAce: false },
-        // { name: 'A', suit: 'spades', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true },
-        // { name: '10', suit: 'clubs', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
-        // { name: 'A', suit: 'spades', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true },
-        // // { name: 'A', suit: 'clubs', graphic: '', value: 11, value1: 1, value2: 11, isAce: true },
-        // { name: '3', suit: 'spades', graphic: '', value: 3, value1: 3, value2: 3, isAce: false },
+        { name: '4', suit: 'spades', graphic: '', value: 4, value1: 4, value2: 4, isAce: false },
+        { name: 'A', suit: 'hearts', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true },
+        { name: 'A', suit: 'diamonds', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true },
+        { name: '3', suit: 'spades', graphic: '', value: 3, value1: 3, value2: 3, isAce: false },
+        { name: 'A', suit: 'spades', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true },
+        { name: '10', suit: 'clubs', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        { name: 'A', suit: 'spades', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true },
+        { name: 'A', suit: 'clubs', graphic: '', value: 11, value1: 1, value2: 11, isAce: true },
+        { name: '3', suit: 'spades', graphic: '', value: 3, value1: 3, value2: 3, isAce: false },
     ],
     discardedPile: [],
     deal: (hand, isCardFacedown) => {
+        // add cards and shuffle deck if 0 cards left
+        if (Game.deck.length === 0) {
+            console.log('DECK RAN OUT')
+            for (let i of Game.discardedPile) {
+                Game.deck.push(i)
+            }
+            Game.discardedPile = []
 
-        // move card logic from dealer to hand
+        }
+
+        // move card logic from game to hand
         let dealtCard = Game.deck.pop()
         hand.cards.push(dealtCard)
 
@@ -726,10 +755,10 @@ const Game = {
         // await Game.deal(Player.hands[0], false)
         // await Game.forceCard(Dealer.hands[0], true, { name: '5', suit: 'spades', graphic: '', value: 5, value1: 5, value2: 5,  isAce: false })
         // dealer ace first card, player 21
-        await Game.forceCard(Player.hands[0], false, { name: 'A', suit: 'hearts', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true })
-        await Game.forceCard(Dealer.hands[0], false, { name: 'A', suit: 'spades', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true })
-        await Game.forceCard(Player.hands[0], false, { name: '10', suit: 'hearts', graphic: '', value: 10, value1: 10, value2: 10,  isAce: false })
-        await Game.deal(Dealer.hands[0], true)
+        // await Game.forceCard(Player.hands[0], false, { name: 'A', suit: 'hearts', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true })
+        // await Game.forceCard(Dealer.hands[0], false, { name: 'A', suit: 'spades', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true })
+        // await Game.forceCard(Player.hands[0], false, { name: '10', suit: 'hearts', graphic: '', value: 10, value1: 10, value2: 10,  isAce: false })
+        // await Game.deal(Dealer.hands[0], true)
         // dealer 21, player random
         // await Game.deal(Player.hands[0], false)
         // await Game.forceCard(Dealer.hands[0], false, { name: 'A', suit: 'spades', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true })
@@ -751,10 +780,10 @@ const Game = {
         // await Game.forceCard(Player.hands[0], false, { name: '8', suit: 'spades', graphic: '', value: 8, value1: 8, value2: 8,  isAce: false })
         // await Game.forceCard(Dealer.hands[0], true, { name: '8', suit: 'hearts', graphic: '', value: 8, value1: 8, value2: 8,  isAce: false })
         // dealer random, player split
-        // await Game.forceCard(Player.hands[0], false, { name: '10', suit: 'spades', graphic: '', value: 10, value1: 10, value2: 10,  isAce: false })
-        // await Game.deal(Dealer.hands[0], false)
-        // await Game.forceCard(Player.hands[0], false, { name: '10', suit: 'hearts', graphic: '', value: 10, value1: 10, value2: 10,  isAce: false })
-        // await Game.deal(Dealer.hands[0], true)
+        await Game.forceCard(Player.hands[0], false, { name: '10', suit: 'spades', graphic: '', value: 10, value1: 10, value2: 10,  isAce: false })
+        await Game.deal(Dealer.hands[0], false)
+        await Game.forceCard(Player.hands[0], false, { name: '10', suit: 'hearts', graphic: '', value: 10, value1: 10, value2: 10,  isAce: false })
+        await Game.deal(Dealer.hands[0], true)
 
         Dealer.secondCard = Dealer.hands[0].ui.cardsInner.lastElementChild
     },
@@ -1051,6 +1080,7 @@ const Game = {
                         Dealer.hands[0].ui.count.removeAttribute('style')
                         Dealer.hands[0].ui.count.classList.remove('fading-out')
                         Dealer.hands[0].ui.count.classList.remove('red-text')
+                        Dealer.hands[0].ui.count.classList.remove('green-text')
                         Dealer.hands[0].ui.count.classList.add('hidden')
                         Dealer.hands[0].ui.cardsInner.innerHTML = ''
                         Dealer.hands[0].cards = []
@@ -1062,10 +1092,10 @@ const Game = {
                         Player.handIndex = -1
                         Player.hands = []
                         Player.bet = 0
+                        UI.bet.classList.add('flash')
                         Player.handsTrack.classList.remove('multiple-hands')
                         Player.handsTrack.removeAttribute('style')
 
-                        UI.betAmount.innerText = '0'
                         UI.showElement(UI.bet, true)
                         UI.collapseChipsBet(false)
                         UI.disableBtns(UI.chipBtns, false)
@@ -1080,7 +1110,6 @@ const Game = {
                                 console.log('no $$$')
                                 UI.updateBank(1000, 1000)
                                 localStorage.setItem('playerBank', Player.bank)
-                                UI.collapseChipsBet(false)
                                 UI.disableBtns(UI.chipBtns, false)  
                                 UI.showElement(UI.btn.deal, true)
                                 console.log('enable affordable chips')
@@ -1088,7 +1117,6 @@ const Game = {
                             })
                         } else {
                             localStorage.setItem('playerBank', Player.bank)
-                            UI.collapseChipsBet(false)
                             UI.disableBtns(UI.chipBtns, false)  
                             UI.showElement(UI.btn.deal, true)
                             console.log('enable affordable chips')
@@ -1139,6 +1167,7 @@ const Game = {
                     Player.handIndex = -1
                     Player.hands = []
                     Player.bet = 0
+                    UI.bet.classList.add('flash')
                     Player.handsTrack.classList.remove('multiple-hands')
                     Player.handsTrack.removeAttribute('style')
 
@@ -1148,14 +1177,16 @@ const Game = {
                             console.log('no $$$')
                             UI.updateBank(1000, 1000)
                             localStorage.setItem('playerBank', Player.bank)
+                            UI.showElement(UI.bet, true)
                             UI.collapseChipsBet(false)
-                            UI.disableBtns(UI.chipBtns, false)  
+                            UI.disableBtns(UI.chipBtns, false)
                             UI.showElement(UI.btn.deal, true)
                             console.log('enable affordable chips')
                             UI.enableAffordableChips()
                         })
                     } else {
                         localStorage.setItem('playerBank', Player.bank)
+                        UI.showElement(UI.bet, true)
                         UI.collapseChipsBet(false)
                         UI.disableBtns(UI.chipBtns, false)  
                         UI.showElement(UI.btn.deal, true)
@@ -1227,12 +1258,13 @@ const Game = {
                                                 Player.hands.pop()
                                                 Player.handIndex -= 1
                                                 Player.bet = 0
+                                                UI.bet.classList.add('flash')
                                                 UI.updateBet()
 
                                                 // enable & show buttons
                                                 UI.disableBtns(UI.chipBtns, false)  
                                                 UI.showElement(UI.btn.deal, true)
-
+                                                UI.showElement(UI.bet, true)
                                                 UI.collapseChipsBet(false)
 
                                                 // reset dealer
@@ -1240,6 +1272,7 @@ const Game = {
                                                 Dealer.hands[0].ui.cardsInner.removeAttribute('style')
                                                 Dealer.hands[0].ui.count.removeAttribute('style')
                                                 Dealer.hands[0].ui.count.classList.remove('fading-out')
+                                                Dealer.hands[0].ui.count.classList.remove('green-text')
                                                 Dealer.hands[0].ui.count.classList.add('hidden') 
                                                 
                                             })                                      
@@ -1428,6 +1461,7 @@ const Game = {
                                                 Player.hands.pop()
                                                 Player.handIndex -= 1
                                                 Player.bet = 0
+                                                UI.bet.classList.add('flash')
                                                 UI.updateBet()
         
                                                 // enable & show buttons
@@ -1463,7 +1497,7 @@ const Game = {
                     Game.discardChipsWithListener(chips).then(() => {
                         UI.insuranceAmount.innerText = ''
                         UI.insurance.classList.add('hidden')
-                        UI.showElement(UI.btn.doubleStandHit, true)
+                        Game.reassessHand()
                     })
                 })
             })
@@ -1654,7 +1688,8 @@ const Game = {
     }
 }
 
-
+// Shuffle deck at first load
+Game.deck = Game.shuffle(Game.deck)
 
 document.body.addEventListener('click', (e) => {
 
@@ -1671,6 +1706,7 @@ document.body.addEventListener('click', (e) => {
 
         // hide bet amount
         UI.showElement(UI.bet, false)
+        UI.betAmount.innerText = '0'
 
         // create hand
         Player.createHand(Player.bet)
@@ -1767,11 +1803,23 @@ document.body.addEventListener('click', (e) => {
         }
     } else if (e.target == UI.btn.infoBoxClose) {
         UI.showElement(UI.infoBoxWrap, false)
+        localStorage.setItem('isInfoOpen', 'false')
+    } else if (e.target == UI.btn.infoBoxOpen) {
+        UI.showElement(UI.infoBoxWrap, true)
+        localStorage.setItem('isInfoOpen', 'true')
     }
 })
 
-// Shuffle deck at first load
-// Game.deck = Game.shuffle(Game.deck)
+// open / close info pop up with keys
+document.body.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !UI.infoBoxWrap.classList.contains('hidden')) {
+        UI.showElement(UI.infoBoxWrap, false)
+        localStorage.setItem('isInfoOpen', 'false')
+    } else if (e.key === 'i' && UI.infoBoxWrap.classList.contains('hidden')) {
+        UI.showElement(UI.infoBoxWrap, true)
+        localStorage.setItem('isInfoOpen', 'true')
+    }
+})
 
 // shuffle the deck array
 // function shuffleDeck(deck) {

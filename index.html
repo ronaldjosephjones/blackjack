@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Blackjack</title>
+        <title>Blackjack JS - R.J. Jones</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="css/style.css">
@@ -15,7 +15,9 @@
     </head>
     <body>
 
-        <button id="info-btn" aria-label="Click to open a popup with information about the project"></button>
+        <button id="info-btn" title="Information" aria-label="Click to open a popup with information about the project">
+            <svg fill="#ffffff" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 24 24" width="48px" height="48px"><path d="M 12 2 C 6.4889971 2 2 6.4889971 2 12 C 2 17.511003 6.4889971 22 12 22 C 17.511003 22 22 17.511003 22 12 C 22 6.4889971 17.511003 2 12 2 z M 12 4 C 16.430123 4 20 7.5698774 20 12 C 20 16.430123 16.430123 20 12 20 C 7.5698774 20 4 16.430123 4 12 C 4 7.5698774 7.5698774 4 12 4 z M 11 7 L 11 9 L 13 9 L 13 7 L 11 7 z M 11 11 L 11 17 L 13 17 L 13 11 L 11 11 z"/></svg>
+        </button>
 
         <div id="info-box-wrap">
             <div id="info-box">
@@ -26,7 +28,7 @@
                     <p>Blackjack <span>JS</span></p>
                 </div>
                 <div class="info-content">
-                    <p>Hi, my name is R.J. Jones. What you've stumbled upon is my recreation of the classic card game blackjack.</p>
+                    <p>Hi, I'm R.J. Jones. What you've stumbled upon is my recreation of the classic card game blackjack.</p>
                     <p>I built this project to demonstrate what's possible with some clever HTML, CSS, and JavaScript.</p>
                     <p>Unfortunately, building this did not make me a better blackjack player.</p>
                 </div>
@@ -111,7 +113,7 @@
         
                 <div id="footer">
                     <div id="bet-container">
-                        <p id="bet">Your bet: $<span id="bet-amount">0</span></p>
+                        <p id="bet" class="flash" title="Your bet">Your bet: $<span id="bet-amount">0</span></p>
                         <div id="bet-chips">
                             <!-- <div class="chip-bet chip-bet--1">1</div> -->
                             <!-- <div class="bet-chip-wrapper" id="bet-chip--1-wrapper"></div>
@@ -122,7 +124,7 @@
                         </div>
                     </div>
         
-                    <p id="bank">$<span id="bank-amount">0</span></p>
+                    <p id="bank" title="Your bank">$<span id="bank-amount">0</span></p>
                     
                     <div id="bottom-bar">
                         <div id="chips-container">

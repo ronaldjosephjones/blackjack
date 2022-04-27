@@ -142,6 +142,14 @@
   100% {
     width: 0; } }
 
+@keyframes flash {
+  0% {
+    opacity: 1; }
+  50% {
+    opacity: 0; }
+  100% {
+    opacity: 1; } }
+
 html {
   font-size: 62.5%; }
 
@@ -175,7 +183,7 @@ body {
   align-items: center; }
   #message-wrapper .message {
     position: relative;
-    top: -10rem; }
+    top: -18rem; }
     #message-wrapper .message .message-text {
       font-weight: bold;
       color: #fff;
@@ -213,7 +221,10 @@ body {
       .prompt-container .prompt-content .prompt-btns .btn {
         height: 5rem;
         max-width: 30rem;
-        width: 100%; }
+        width: 100%;
+        font-size: 2rem;
+        text-transform: uppercase;
+        font-weight: bold; }
 
 #table-container {
   display: flex;
@@ -282,7 +293,8 @@ body {
       max-width: 7rem;
       border-radius: .75rem;
       padding: .5rem 1rem;
-      opacity: 1; }
+      opacity: 1;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); }
     #table-container #player-footer-container #player-container #player-hands .hand .hand-chips {
       position: relative;
       height: 5rem;
@@ -307,7 +319,8 @@ body {
         background: #fff;
         color: #000;
         border-radius: .75rem;
-        font-weight: bold; }
+        font-weight: bold;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); }
     #table-container #player-footer-container #player-container #player-hands .hand .hand-indicator::before {
       content: '';
       display: block;
@@ -321,43 +334,57 @@ body {
   #table-container #player-footer-container #footer {
     text-align: center;
     width: 100%; }
-    #table-container #player-footer-container #footer #bet-container #bet-chips {
-      display: flex;
-      height: 5rem;
-      justify-content: center; }
-      #table-container #player-footer-container #footer #bet-container #bet-chips .bet-chip-wrapper {
-        max-width: 5rem;
-        width: 100%;
-        transition: all .3s ease; }
-      #table-container #player-footer-container #footer #bet-container #bet-chips .bet-chip-wrapper-expanding {
-        animation-name: bet-chip-wrapper-expanding;
-        animation-duration: .3s;
-        animation-timing-function: ease; }
-      #table-container #player-footer-container #footer #bet-container #bet-chips .bet-chip-wrapper-shrinking {
-        animation-name: bet-chip-wrapper-shrinking;
-        animation-duration: .3s;
-        animation-timing-function: ease; }
-    #table-container #player-footer-container #footer #bet-container #bet-chips.collapsed {
-      height: 0; }
-    #table-container #player-footer-container #footer #bet-container #bet {
-      color: #fff;
-      font-size: 2rem;
-      user-select: none;
-      margin-bottom: 1rem; }
+    #table-container #player-footer-container #footer #bet-container {
+      margin-bottom: 3rem; }
+      #table-container #player-footer-container #footer #bet-container #bet-chips {
+        display: flex;
+        height: 5rem;
+        justify-content: center; }
+        #table-container #player-footer-container #footer #bet-container #bet-chips .bet-chip-wrapper {
+          max-width: 5rem;
+          width: 100%;
+          transition: all .3s ease; }
+        #table-container #player-footer-container #footer #bet-container #bet-chips .bet-chip-wrapper-expanding {
+          animation-name: bet-chip-wrapper-expanding;
+          animation-duration: .3s;
+          animation-timing-function: ease; }
+        #table-container #player-footer-container #footer #bet-container #bet-chips .bet-chip-wrapper-shrinking {
+          animation-name: bet-chip-wrapper-shrinking;
+          animation-duration: .3s;
+          animation-timing-function: ease; }
+      #table-container #player-footer-container #footer #bet-container #bet-chips.collapsed {
+        height: 0; }
+      #table-container #player-footer-container #footer #bet-container #bet {
+        color: #fff;
+        font-size: 2rem;
+        user-select: none;
+        margin-bottom: 1rem;
+        text-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); }
     #table-container #player-footer-container #footer #bank {
-      color: #fff;
-      font-size: 5rem;
-      user-select: none; }
+      color: #1de739;
+      font-size: 3rem;
+      user-select: none;
+      display: inline-block;
+      background: #000000;
+      background: repeating-linear-gradient(0deg, #222, #222 10px, #333 10px, #333 20px);
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      border: 3px solid #c8c8c8;
+      margin-bottom: 1rem;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); }
+      #table-container #player-footer-container #footer #bank #bank-amount {
+        color: #fefefe; }
     #table-container #player-footer-container #footer #bottom-bar {
-      background: #6b4141;
+      background: #242424;
       padding: 2rem 0; }
       #table-container #player-footer-container #footer #bottom-bar #chips-container {
-        background: #583636;
-        width: 90%;
+        background: #4a4a4a;
         margin: 0 auto 1rem;
         padding: 1rem;
         border-radius: 50px;
-        user-select: none; }
+        user-select: none;
+        display: inline-flex;
+        justify-content: center; }
         #table-container #player-footer-container #footer #bottom-bar #chips-container .chip-wrapper {
           display: inline-block;
           position: relative; }
@@ -366,7 +393,8 @@ body {
             color: #212121;
             height: 5rem;
             width: 5rem;
-            user-select: none; }
+            user-select: none;
+            cursor: pointer; }
           #table-container #player-footer-container #footer #bottom-bar #chips-container .chip-wrapper .chip:focus {
             outline: none; }
           #table-container #player-footer-container #footer #bottom-bar #chips-container .chip-wrapper .chip-discard {
@@ -384,7 +412,11 @@ body {
             height: 5rem;
             max-width: 30rem;
             width: 100%;
-            user-select: none; }
+            user-select: none;
+            font-size: 2rem;
+            text-transform: uppercase;
+            font-weight: bold;
+            cursor: pointer; }
 
 .chip-bet {
   align-items: center;
@@ -396,7 +428,9 @@ body {
   justify-content: center;
   position: absolute;
   user-select: none;
-  width: 5rem; }
+  width: 5rem;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  cursor: pointer; }
 
 #chip--1, .chip-bet--1 {
   border: .6rem dashed #b0b0b0; }
@@ -419,7 +453,7 @@ body {
   background: #fff;
   border: 1px solid black;
   border-radius: 5px;
-  box-shadow: 0 1px #FFFFFF inset, 0 1px 3px rgba(34, 25, 25, 0.4);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
   height: 14rem;
   position: absolute;
   transform-origin: center;
@@ -454,18 +488,24 @@ body {
     .card .card__face--front .card-info--bottom {
       transform: rotate(180deg); }
   .card .card__face--back {
-    background-color: red;
+    background-color: #c62020;
     transform: rotateY(180deg); }
 
 #info-btn {
   position: absolute;
   right: 1rem;
   top: 1rem;
-  width: 4rem;
-  height: 4rem;
-  border-radius: 50%;
   border: none;
-  box-shadow: inset 0 1px 3px rgba(34, 25, 25, 0.4); }
+  background: none;
+  cursor: pointer; }
+
+#info-btn:hover svg {
+  opacity: .7;
+  pointer-events: none; }
+
+#info-btn svg {
+  display: block;
+  opacity: .4; }
 
 #info-box-wrap {
   position: absolute;
@@ -480,7 +520,7 @@ body {
 
 #info-box {
   background: #fff;
-  box-shadow: inset 0 1px 3px rgba(34, 25, 25, 0.4);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
   max-width: 500px;
   border-radius: 5px; }
 
@@ -588,6 +628,9 @@ body {
   animation-timing-function: ease-in-out;
   animation-fill-mode: forwards;
   animation-delay: 1s; }
+
+.flash {
+  animation: flash 3s ease infinite; }
 
 .offscreen--deal {
   transition: all 2s;
