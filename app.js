@@ -18,6 +18,7 @@ const UI = {
         stand: document.getElementById('btn--stand'),
         splitYes: document.getElementById('btn--split-yes'),
         splitNo: document.getElementById('btn--split-no'),
+        infoBoxClose: document.querySelector('.info-x-btn button'),
         insuranceYes: document.getElementById('btn--insurance-yes'),
         insuranceNo: document.getElementById('btn--insurance-no')
     },
@@ -34,6 +35,7 @@ const UI = {
     chip100Wrapper: document.getElementById('chip--100-wrapper'),
     chip100Discard: document.getElementById('chip--100-discard'),
     splitContainer: document.getElementById('split-container'),
+    infoBoxWrap: document.getElementById('info-box-wrap'),
     insuranceContainer: document.getElementById('insurance-container'),
     insurance: document.getElementById('insurance'),
     insuranceAmount: document.getElementById('insurance-amount'),
@@ -41,6 +43,7 @@ const UI = {
     dealerChipSpawn: document.querySelector('#dealer-chip-spawn > div'),
     messageWrapper: document.getElementById('message-wrapper'),
     messageText: document.querySelector('#message-wrapper .message-text'),
+    tableContainer: document.getElementById('table-container'),
     betChip: function(chipVal, chipWrapper, chipDiscard) {
 
         UI.disableBtns(UI.chipBtns, true)
@@ -1651,8 +1654,9 @@ const Game = {
     }
 }
 
+
+
 document.body.addEventListener('click', (e) => {
-    e.preventDefault()
 
     // initial deal
     if (e.target == UI.btn.deal) {
@@ -1761,6 +1765,8 @@ document.body.addEventListener('click', (e) => {
         } else {
             console.log('You dont have $100!')
         }
+    } else if (e.target == UI.btn.infoBoxClose) {
+        UI.showElement(UI.infoBoxWrap, false)
     }
 })
 
