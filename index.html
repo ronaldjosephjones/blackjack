@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html class="no-js">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Blackjack JS - R.J. Jones</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet"> 
+    </head>
+    <body>
+
+        <div id="table-text">
+            <svg id="a4235327-3f5c-4377-ae5c-cc564901db23" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 492.69 168.24"><defs><style>.be8337f5-22d9-43c1-9519-f87424edc796{font-size:40px;}.be8337f5-22d9-43c1-9519-f87424edc796,.f9cc8a0e-2886-4790-82c0-5b7715d002a3{font-family:TimesNewRomanPS-BoldMT, Times New Roman;font-weight:700;}.f9cc8a0e-2886-4790-82c0-5b7715d002a3{font-size:22px;fill:#fff;}</style></defs><text class="be8337f5-22d9-43c1-9519-f87424edc796" transform="translate(11.17 29.31) rotate(38.03)">B</text><text class="be8337f5-22d9-43c1-9519-f87424edc796" transform="matrix(0.85, 0.53, -0.53, 0.85, 33.72, 46.78)">L</text><text class="be8337f5-22d9-43c1-9519-f87424edc796" transform="translate(57.87 61.68) rotate(26.04)">A</text><text class="be8337f5-22d9-43c1-9519-f87424edc796" transform="matrix(0.94, 0.35, -0.35, 0.94, 85.27, 74.96)">C</text><text class="be8337f5-22d9-43c1-9519-f87424edc796" transform="translate(113.66 85.68) rotate(15.8)">K</text><text class="be8337f5-22d9-43c1-9519-f87424edc796" transform="translate(144.73 94.22) rotate(11.93)">J</text><text class="be8337f5-22d9-43c1-9519-f87424edc796" transform="translate(165.29 98.66) rotate(8.44)">A</text><text class="be8337f5-22d9-43c1-9519-f87424edc796" transform="translate(195 103.02) rotate(4.5)">C</text><text class="be8337f5-22d9-43c1-9519-f87424edc796" transform="matrix(1, 0.01, -0.01, 1, 224.97, 105.38)">K</text><text class="be8337f5-22d9-43c1-9519-f87424edc796" transform="translate(256.86 105.4) rotate(-2.19)"> </text><text class="be8337f5-22d9-43c1-9519-f87424edc796" transform="translate(267.53 105.12) rotate(-4.48)">P</text><text class="be8337f5-22d9-43c1-9519-f87424edc796" transform="translate(289.87 103.49) rotate(-7.68)">A</text><text class="be8337f5-22d9-43c1-9519-f87424edc796" transform="translate(315.92 100.07) rotate(-11.21)">Y</text><text class="be8337f5-22d9-43c1-9519-f87424edc796" transform="matrix(0.97, -0.26, 0.26, 0.97, 345.31, 94.1)">S</text><text class="be8337f5-22d9-43c1-9519-f87424edc796" transform="translate(367.48 88.01) rotate(-17.53)"> </text><text class="be8337f5-22d9-43c1-9519-f87424edc796" transform="matrix(0.94, -0.34, 0.34, 0.94, 377.73, 84.87)">3</text><text class="be8337f5-22d9-43c1-9519-f87424edc796" transform="translate(397.19 77.65) rotate(-22.62)"> </text><text class="be8337f5-22d9-43c1-9519-f87424edc796" transform="matrix(0.9, -0.44, 0.44, 0.9, 406.72, 73.93)">T</text><text class="be8337f5-22d9-43c1-9519-f87424edc796" transform="translate(431.65 61.93) rotate(-31.69)">O</text><text class="be8337f5-22d9-43c1-9519-f87424edc796" transform="matrix(0.8, -0.59, 0.59, 0.8, 459.04, 44.46)"> </text><text class="be8337f5-22d9-43c1-9519-f87424edc796" transform="translate(468.07 37.96) rotate(-40.21)">2</text><text class="f9cc8a0e-2886-4790-82c0-5b7715d002a3" transform="translate(15.12 88.13) rotate(38.03)">D</text><text class="f9cc8a0e-2886-4790-82c0-5b7715d002a3" transform="matrix(0.82, 0.57, -0.57, 0.82, 28.11, 98.23)">E</text><text class="f9cc8a0e-2886-4790-82c0-5b7715d002a3" transform="translate(40.66 106.85) rotate(31.14)">A</text><text class="f9cc8a0e-2886-4790-82c0-5b7715d002a3" transform="translate(54.7 115.29) rotate(28.02)">L</text><text class="f9cc8a0e-2886-4790-82c0-5b7715d002a3" transform="matrix(0.9, 0.43, -0.43, 0.9, 68.06, 122.39)">E</text><text class="f9cc8a0e-2886-4790-82c0-5b7715d002a3" transform="translate(81.72 128.81) rotate(22.44)">R</text><text class="f9cc8a0e-2886-4790-82c0-5b7715d002a3" transform="matrix(0.94, 0.35, -0.35, 0.94, 96.73, 134.92)"> </text><text class="f9cc8a0e-2886-4790-82c0-5b7715d002a3" transform="matrix(0.95, 0.32, -0.32, 0.95, 102.09, 137.08)">M</text><text class="f9cc8a0e-2886-4790-82c0-5b7715d002a3" transform="translate(121.68 143.55) rotate(15.64)">U</text><text class="f9cc8a0e-2886-4790-82c0-5b7715d002a3" transform="matrix(0.97, 0.24, -0.24, 0.97, 136.84, 147.76)">S</text><text class="f9cc8a0e-2886-4790-82c0-5b7715d002a3" transform="translate(148.63 150.63) rotate(11.7)">T</text><text class="f9cc8a0e-2886-4790-82c0-5b7715d002a3" transform="matrix(0.98, 0.18, -0.18, 0.98, 162.54, 153.46)"> </text><text class="f9cc8a0e-2886-4790-82c0-5b7715d002a3" transform="matrix(0.99, 0.16, -0.16, 0.99, 167.85, 154.47)">S</text><text class="f9cc8a0e-2886-4790-82c0-5b7715d002a3" transform="translate(179.83 156.42) rotate(7.38)">T</text><text class="f9cc8a0e-2886-4790-82c0-5b7715d002a3" transform="translate(192.66 158.12) rotate(5.61)">A</text><text class="f9cc8a0e-2886-4790-82c0-5b7715d002a3" transform="translate(208.36 159.67) rotate(3.57)">N</text><text class="f9cc8a0e-2886-4790-82c0-5b7715d002a3" transform="translate(224.08 160.65) rotate(1.56)">D</text><text class="f9cc8a0e-2886-4790-82c0-5b7715d002a3" transform="matrix(1, 0, 0, 1, 239.91, 161.02)"> </text><text class="f9cc8a0e-2886-4790-82c0-5b7715d002a3" transform="translate(245.32 161.11) rotate(-1.21)">O</text><text class="f9cc8a0e-2886-4790-82c0-5b7715d002a3" transform="matrix(1, -0.06, 0.06, 1, 262.29, 160.74)">N</text><text class="f9cc8a0e-2886-4790-82c0-5b7715d002a3" transform="matrix(1, -0.08, 0.08, 1, 278.07, 159.77)"> </text><text class="f9cc8a0e-2886-4790-82c0-5b7715d002a3" transform="translate(283.48 159.36) rotate(-5.71)">1</text><text class="f9cc8a0e-2886-4790-82c0-5b7715d002a3" transform="translate(294.35 158.27) rotate(-7.14)">7</text><text class="f9cc8a0e-2886-4790-82c0-5b7715d002a3" transform="translate(305.2 156.89) rotate(-8.22)"> </text><text class="f9cc8a0e-2886-4790-82c0-5b7715d002a3" transform="translate(309.37 156.36) rotate(-9.47)">A</text><text class="f9cc8a0e-2886-4790-82c0-5b7715d002a3" transform="translate(324.9 153.77) rotate(-11.62)">N</text><text class="f9cc8a0e-2886-4790-82c0-5b7715d002a3" transform="matrix(0.97, -0.24, 0.24, 0.97, 340.36, 150.6)">D</text><text class="f9cc8a0e-2886-4790-82c0-5b7715d002a3" transform="matrix(0.96, -0.27, 0.27, 0.96, 355.67, 146.75)"> </text><text class="f9cc8a0e-2886-4790-82c0-5b7715d002a3" transform="translate(360.9 145.39) rotate(-16.98)">D</text><text class="f9cc8a0e-2886-4790-82c0-5b7715d002a3" transform="translate(375.97 140.79) rotate(-19.43)">R</text><text class="f9cc8a0e-2886-4790-82c0-5b7715d002a3" transform="translate(391.33 135.37) rotate(-22.11)">A</text><text class="f9cc8a0e-2886-4790-82c0-5b7715d002a3" transform="translate(404.27 130.25) rotate(-25.06)">W</text><text class="f9cc8a0e-2886-4790-82c0-5b7715d002a3" transform="translate(424.15 120.76) rotate(-27.59)"> </text><text class="f9cc8a0e-2886-4790-82c0-5b7715d002a3" transform="translate(428.96 118.34) rotate(-29.52)">T</text><text class="f9cc8a0e-2886-4790-82c0-5b7715d002a3" transform="translate(441.87 111.07) rotate(-32.79)">O</text><text class="f9cc8a0e-2886-4790-82c0-5b7715d002a3" transform="translate(456.51 101.47) rotate(-35.33)"> </text><text class="f9cc8a0e-2886-4790-82c0-5b7715d002a3" transform="matrix(0.8, -0.61, 0.61, 0.8, 461.29, 98.14)">1</text><text class="f9cc8a0e-2886-4790-82c0-5b7715d002a3" transform="matrix(0.77, -0.64, 0.64, 0.77, 470.39, 91.21)">6</text></svg>
+        </div>
+
+        <button id="info-btn" title="Information" aria-label="Click to open a popup with information about the project">
+            <svg fill="#ffffff" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 24 24" width="48px" height="48px"><path d="M 12 2 C 6.4889971 2 2 6.4889971 2 12 C 2 17.511003 6.4889971 22 12 22 C 17.511003 22 22 17.511003 22 12 C 22 6.4889971 17.511003 2 12 2 z M 12 4 C 16.430123 4 20 7.5698774 20 12 C 20 16.430123 16.430123 20 12 20 C 7.5698774 20 4 16.430123 4 12 C 4 7.5698774 7.5698774 4 12 4 z M 11 7 L 11 9 L 13 9 L 13 7 L 11 7 z M 11 11 L 11 17 L 13 17 L 13 11 L 11 11 z"/></svg>
+        </button>
+
+        <div id="info-box-wrap">
+            <div id="info-box">
+                <div class="info-header">
+                    <div class="info-x-btn">
+                        <button aria-label="Close popup"></button>
+                    </div>
+                    <p>Blackjack <span>JS</span></p>
+                </div>
+                <div class="info-content">
+                    <p>Hi, I'm R.J. Jones. What you've stumbled upon is my recreation of the classic card game blackjack.</p>
+                    <p>I built this project to demonstrate what's possible with some clever HTML, CSS, and JavaScript.</p>
+                    <p>Unfortunately, building this did not make me a better blackjack player.</p>
+                </div>
+                <div class="info-footer">
+                    <a href="https://www.github.com/ronaldjosephjones" target="_blank">
+                        <svg fill="#ffffff" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 24 24" width="48px" height="48px"><path d="M10.9,2.1c-4.6,0.5-8.3,4.2-8.8,8.7c-0.5,4.7,2.2,8.9,6.3,10.5C8.7,21.4,9,21.2,9,20.8v-1.6c0,0-0.4,0.1-0.9,0.1 c-1.4,0-2-1.2-2.1-1.9c-0.1-0.4-0.3-0.7-0.6-1C5.1,16.3,5,16.3,5,16.2C5,16,5.3,16,5.4,16c0.6,0,1.1,0.7,1.3,1c0.5,0.8,1.1,1,1.4,1 c0.4,0,0.7-0.1,0.9-0.2c0.1-0.7,0.4-1.4,1-1.8c-2.3-0.5-4-1.8-4-4c0-1.1,0.5-2.2,1.2-3C7.1,8.8,7,8.3,7,7.6C7,7.2,7,6.6,7.3,6 c0,0,1.4,0,2.8,1.3C10.6,7.1,11.3,7,12,7s1.4,0.1,2,0.3C15.3,6,16.8,6,16.8,6C17,6.6,17,7.2,17,7.6c0,0.8-0.1,1.2-0.2,1.4 c0.7,0.8,1.2,1.8,1.2,3c0,2.2-1.7,3.5-4,4c0.6,0.5,1,1.4,1,2.3v2.6c0,0.3,0.3,0.6,0.7,0.5c3.7-1.5,6.3-5.1,6.3-9.3 C22,6.1,16.9,1.4,10.9,2.1z"/></svg>
+                    </a>
+                    <a href="https://www.linkedin.com/in/r-j-j-o-n-e-s" target="_blank">
+                        <svg fill="#ffffff" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 30 30" width="48px" height="48px">    <path d="M15,3C8.373,3,3,8.373,3,15c0,6.627,5.373,12,12,12s12-5.373,12-12C27,8.373,21.627,3,15,3z M10.496,8.403 c0.842,0,1.403,0.561,1.403,1.309c0,0.748-0.561,1.309-1.496,1.309C9.561,11.022,9,10.46,9,9.712C9,8.964,9.561,8.403,10.496,8.403z M12,20H9v-8h3V20z M22,20h-2.824v-4.372c0-1.209-0.753-1.488-1.035-1.488s-1.224,0.186-1.224,1.488c0,0.186,0,4.372,0,4.372H14v-8 h2.918v1.116C17.294,12.465,18.047,12,19.459,12C20.871,12,22,13.116,22,15.628V20z"/></svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="table-container">
+
+            <div id="dealer-container">
+                <div id="dealer-chip-spawn">
+                    <div></div>
+                </div>
+                <div id="dealer-hand">
+                    <div class="hand">
+                        <div class="hand-cards">
+                            <div class="hand-cards-inner"></div>
+                            <p class="hand-card-count hidden"></p>
+                        </div>
+                    </div>
+                </div>
+                <div id="insurance" class="hidden">
+                    <div id="insurance-inner">
+                        <p id="insurance-amount"></p>
+                        <div id="insurance-chips"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="player-footer-container">
+        
+                <div id="split-container" class="hidden prompt-container">
+                    <div class="prompt-content">
+                        <p>Split hand?</p>
+                        <div class="prompt-btns">
+                            <button class="btn" id="btn--split-no">No</button>
+                            <button class="btn" id="btn--split-yes">Yes</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="insurance-container" class="hidden prompt-container">
+                    <div class="prompt-content">
+                        <p>Buy insurance?</p>
+                        <div class="prompt-btns">
+                            <button class="btn" id="btn--insurance-no">No</button>
+                            <button class="btn" id="btn--insurance-yes">Yes</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="player-container">
+                    <div id="player-hands">
+                        <div id="player-hands-track"></div>
+                    </div>
+                </div>
+        
+                <div id="footer">
+                    <div id="bet-container">
+                        <p id="bet" class="flash" title="Your bet">Your bet: $<span id="bet-amount">0</span></p>
+                        <div id="bet-chips"></div>
+                    </div>
+        
+                    <p id="bank" title="Your bank">$<span id="bank-amount">0</span></p>
+                    
+                    <div id="bottom-bar">
+                        <div id="chips-container">
+                            <div class="chip-wrapper" id="chip--1-wrapper">
+                                <button class="chip" id="chip--1" data-chip-num="1">1</button>
+                                <div class="chip-discard" id="chip--1-discard"></div>
+                            </div>
+                            <div class="chip-wrapper" id="chip--5-wrapper">
+                                <button class="chip" id="chip--5" data-chip-num="5">5</button>
+                                <div class="chip-discard" id="chip--5-discard"></div>
+                            </div>
+                            <div class="chip-wrapper" id="chip--10-wrapper">
+                                <button class="chip" id="chip--10" data-chip-num="10">10</button>
+                                <div class="chip-discard" id="chip--10-discard"></div>
+                            </div>
+                            <div class="chip-wrapper" id="chip--25-wrapper">
+                                <button class="chip" id="chip--25" data-chip-num="25">25</button>
+                                <div class="chip-discard" id="chip--25-discard"></div>
+                            </div>
+                            <div class="chip-wrapper" id="chip--100-wrapper">
+                                <button class="chip" id="chip--100" data-chip-num="100">100</button>
+                                <div class="chip-discard" id="chip--100-discard"></div>
+                            </div>
+                        </div>
+                        <div id="btns-container">
+                            <div id="deal">
+                                <div class="btn-wrapper" id="deal-wrapper">
+                                    <button class="btn" id="btn--deal" disabled>Deal</button>
+                                </div>
+                            </div>
+                            <div id="dbl-stand-hit" class="hidden">
+                                <div class="btn-wrapper" id="dbl-wrapper">
+                                    <button class="btn" id="btn--dbl">Double</button>
+                                </div>
+                                <div class="btn-wrapper" id="stand-wrapper">
+                                    <button class="btn" id="btn--stand">Stand</button>
+                                </div>
+                                <div class="btn-wrapper" id="hit-wrapper">
+                                    <button class="btn" id="btn--hit">Hit</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div> <!-- end bottom-bar -->
+                </div> <!-- end footer -->
+            </div> <!-- end player-footer container -->
+        </div> <!-- end table -->
+
+        <div id="message-wrapper" class="hidden">
+            <div class="message">
+                <p class="message-text"></p>
+            </div>
+        </div>
+
+        <script src="app.js"></script>
+    </body>
+</html>
