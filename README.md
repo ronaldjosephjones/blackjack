@@ -1,2 +1,2 @@
-# blackjack
-Simple recreation of the card game blackjack.
+# Blackjack JS
+A recreation of the card game blackjack.
