@@ -225,7 +225,9 @@ body {
         width: 100%;
         font-size: 2rem;
         text-transform: uppercase;
-        font-weight: bold; }
+        font-weight: bold;
+        background: #fff;
+        border: 3px solid #c7c7c7; }
 
 #table-container {
   display: flex;
@@ -250,6 +252,10 @@ body {
           min-width: 10rem;
           position: relative;
           height: 14rem; }
+          @media screen and (max-width: 640px) {
+            #table-container #dealer-container #dealer-hand .hand-cards .hand-cards-inner {
+              width: 5rem;
+              height: 7rem; } }
         #table-container #dealer-container #dealer-hand .hand-cards .hand-card-count {
           font-size: 2rem;
           margin: 0 0 0 4rem;
@@ -258,6 +264,9 @@ body {
           color: #000;
           border-radius: .75rem;
           font-weight: bold; }
+          @media screen and (max-width: 640px) {
+            #table-container #dealer-container #dealer-hand .hand-cards .hand-card-count {
+              font-size: 1.5rem; } }
     #table-container #dealer-container #insurance #insurance-inner {
       display: flex;
       flex-direction: column;
@@ -296,6 +305,9 @@ body {
       padding: .5rem 1rem;
       opacity: 1;
       box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); }
+      @media screen and (max-width: 640px) {
+        #table-container #player-footer-container #player-container #player-hands .hand .hand-bet-amount {
+          font-size: 1.1rem; } }
     #table-container #player-footer-container #player-container #player-hands .hand .hand-chips {
       position: relative;
       height: 5rem;
@@ -310,6 +322,10 @@ body {
         min-width: 10rem;
         position: relative;
         height: 14rem; }
+        @media screen and (max-width: 640px) {
+          #table-container #player-footer-container #player-container #player-hands .hand .hand-cards .hand-cards-inner {
+            min-width: 5rem;
+            height: 7rem; } }
         #table-container #player-footer-container #player-container #player-hands .hand .hand-cards .hand-cards-inner .card {
           position: absolute; }
       #table-container #player-footer-container #player-container #player-hands .hand .hand-cards .hand-card-count {
@@ -322,6 +338,9 @@ body {
         border-radius: .75rem;
         font-weight: bold;
         box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); }
+        @media screen and (max-width: 640px) {
+          #table-container #player-footer-container #player-container #player-hands .hand .hand-cards .hand-card-count {
+            font-size: 1.5rem; } }
     #table-container #player-footer-container #player-container #player-hands .hand .hand-indicator::before {
       content: '';
       display: block;
@@ -373,6 +392,9 @@ body {
       border: 3px solid #c8c8c8;
       margin-bottom: 1rem;
       box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); }
+      @media screen and (max-width: 640px) {
+        #table-container #player-footer-container #footer #bank {
+          font-size: 2rem; } }
       #table-container #player-footer-container #footer #bank #bank-amount {
         color: #fefefe; }
     #table-container #player-footer-container #footer #bottom-bar {
@@ -417,7 +439,9 @@ body {
             font-size: 2rem;
             text-transform: uppercase;
             font-weight: bold;
-            cursor: pointer; }
+            cursor: pointer;
+            background: #fff;
+            border: 3px solid #c7c7c7; }
 
 .chip-bet {
   align-items: center;
@@ -460,6 +484,10 @@ body {
   transform-origin: center;
   transform-style: preserve-3d;
   width: 10rem; }
+  @media screen and (max-width: 640px) {
+    .card {
+      width: 5rem;
+      height: 7rem; } }
   .card .card__face {
     backface-visibility: hidden;
     border-radius: 5px;
@@ -486,6 +514,18 @@ body {
         .card .card__face--front .card-info--top .card-name-suit .card-name,
         .card .card__face--front .card-info--bottom .card-name-suit .card-name {
           font-size: 1.6rem; }
+          @media screen and (max-width: 640px) {
+            .card .card__face--front .card-info--top .card-name-suit .card-name,
+            .card .card__face--front .card-info--bottom .card-name-suit .card-name {
+              font-size: 1rem; } }
+        @media screen and (max-width: 640px) {
+          .card .card__face--front .card-info--top .card-name-suit svg,
+          .card .card__face--front .card-info--bottom .card-name-suit svg {
+            width: 8px;
+            height: 8px; } }
+    @media screen and (max-width: 640px) {
+      .card .card__face--front .card-graphic {
+        display: none; } }
     .card .card__face--front .card-info--bottom {
       transform: rotate(180deg); }
   .card .card__face--back {
@@ -507,6 +547,10 @@ body {
 #info-btn svg {
   display: block;
   opacity: .4; }
+  @media screen and (max-width: 640px) {
+    #info-btn svg {
+      width: 32px;
+      height: 32px; } }
 
 #info-box-wrap {
   position: absolute;
@@ -517,7 +561,8 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  backdrop-filter: blur(2px); }
+  backdrop-filter: blur(2px);
+  padding: 1rem; }
 
 #info-box {
   background: #fff;
@@ -604,6 +649,21 @@ body {
 
 .info-footer svg:hover {
   opacity: .7; }
+
+#table-text {
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: -1; }
+
+#table-text svg {
+  max-width: 600px;
+  width: 90%;
+  opacity: .85;
+  position: relative;
+  bottom: 10rem; }
 
 .card--facedown {
   transform: rotateY(180deg);

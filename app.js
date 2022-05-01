@@ -475,21 +475,222 @@ const Game = {
         { name: 'Q', suit: 'diamonds', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
         { name: 'Q', suit: 'spades', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
         { name: 'Q', suit: 'clubs', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
-        { name: '7', suit: 'spades', graphic: '', value: 7, value1: 7, value2: 7, isAce: false },
         { name: 'K', suit: 'hearts', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
-        { name: '4', suit: 'spades', graphic: '', value: 4, value1: 4, value2: 4, isAce: false },
         { name: 'K', suit: 'diamonds', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
         { name: 'K', suit: 'spades', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
         { name: 'K', suit: 'clubs', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
-        { name: '4', suit: 'spades', graphic: '', value: 4, value1: 4, value2: 4, isAce: false },
         { name: 'A', suit: 'hearts', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true },
         { name: 'A', suit: 'diamonds', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true },
-        { name: '3', suit: 'spades', graphic: '', value: 3, value1: 3, value2: 3, isAce: false },
-        { name: 'A', suit: 'spades', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true },
-        { name: '10', suit: 'clubs', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
         { name: 'A', suit: 'spades', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true },
         { name: 'A', suit: 'clubs', graphic: '', value: 11, value1: 1, value2: 11, isAce: true },
+        { name: '2', suit: 'hearts', graphic: '', value: 2, value1: 2, value2: 2, isAce: false },
+        { name: '2', suit: 'diamonds', graphic: '', value: 2, value1: 2, value2: 2, isAce: false },
+        { name: '2', suit: 'spades', graphic: '', value: 2, value1: 2, value2: 2, isAce: false },
+        { name: '2', suit: 'clubs', graphic: '', value: 2, value1: 2, value2: 2, isAce: false },
+        { name: '3', suit: 'hearts', graphic: '', value: 3, value1: 3, value2: 3, isAce: false },
+        { name: '3', suit: 'diamonds', graphic: '', value: 3, value1: 3, value2: 3, isAce: false },
         { name: '3', suit: 'spades', graphic: '', value: 3, value1: 3, value2: 3, isAce: false },
+        { name: '3', suit: 'clubs', graphic: '', value: 3, value1: 3, value2: 3, isAce: false },
+        { name: '4', suit: 'hearts', graphic: '', value: 4, value1: 4, value2: 4, isAce: false },
+        { name: '4', suit: 'diamonds', graphic: '', value: 4, value1: 4, value2: 4, isAce: false },
+        { name: '4', suit: 'spades', graphic: '', value: 4, value1: 4, value2: 4, isAce: false },
+        { name: '4', suit: 'clubs', graphic: '', value: 4, value1: 4, value2: 4, isAce: false },
+        { name: '5', suit: 'hearts', graphic: '', value: 5, value1: 5, value2: 5, isAce: false },
+        { name: '5', suit: 'diamonds', graphic: '', value: 5, value1: 5, value2: 5, isAce: false },
+        { name: '5', suit: 'spades', graphic: '', value: 5, value1: 5, value2: 5, isAce: false },
+        { name: '5', suit: 'clubs', graphic: '', value: 5, value1: 5, value2: 5, isAce: false },
+        { name: '6', suit: 'hearts', graphic: '', value: 6, value1: 6, value2: 6, isAce: false },
+        { name: '6', suit: 'diamonds', graphic: '', value: 6, value1: 6, value2: 6, isAce: false },
+        { name: '6', suit: 'spades', graphic: '', value: 6, value1: 6, value2: 6, isAce: false },
+        { name: '6', suit: 'clubs', graphic: '', value: 6, value1: 6, value2: 6, isAce: false },
+        { name: '7', suit: 'hearts', graphic: '', value: 7, value1: 7, value2: 7, isAce: false },
+        { name: '7', suit: 'diamonds', graphic: '', value: 7, value1: 7, value2: 7, isAce: false },
+        { name: '7', suit: 'spades', graphic: '', value: 7, value1: 7, value2: 7, isAce: false },
+        { name: '4', suit: 'spades', graphic: '', value: 4, value1: 4, value2: 4, isAce: false },
+        { name: '8', suit: 'hearts', graphic: '', value: 8, value1: 8, value2: 8, isAce: false },
+        { name: '8', suit: 'diamonds', graphic: '', value: 8, value1: 8, value2: 8, isAce: false },
+        { name: '8', suit: 'spades', graphic: '', value: 8, value1: 8, value2: 8, isAce: false },
+        { name: '8', suit: 'clubs', graphic: '', value: 8, value1: 8, value2: 8, isAce: false },
+        { name: '9', suit: 'hearts', graphic: '', value: 9, value1: 9, value2: 9, isAce: false },
+        { name: '9', suit: 'diamonds', graphic: '', value: 9, value1: 9, value2: 9, isAce: false },
+        { name: '9', suit: 'spades', graphic: '', value: 9, value1: 9, value2: 9, isAce: false },
+        { name: '9', suit: 'clubs', graphic: '', value: 9, value1: 9, value2: 9, isAce: false },
+        { name: '10', suit: 'hearts', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        { name: '10', suit: 'diamonds', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        { name: '10', suit: 'spades', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        { name: '10', suit: 'clubs', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        { name: 'J', suit: 'hearts', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        { name: 'J', suit: 'diamonds', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        { name: 'J', suit: 'spades', graphic: '', value: 10, value1: 10, value2: 10, isAce: false }, 
+        { name: 'J', suit: 'clubs', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        { name: 'Q', suit: 'hearts', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        { name: 'Q', suit: 'diamonds', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        { name: 'Q', suit: 'spades', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        { name: 'Q', suit: 'clubs', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        { name: 'K', suit: 'hearts', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        { name: 'K', suit: 'diamonds', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        { name: 'K', suit: 'spades', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        { name: 'K', suit: 'clubs', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        { name: 'A', suit: 'hearts', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true },
+        { name: 'A', suit: 'diamonds', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true },
+        { name: 'A', suit: 'spades', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true },
+        { name: 'A', suit: 'clubs', graphic: '', value: 11, value1: 1, value2: 11, isAce: true },
+        { name: '2', suit: 'hearts', graphic: '', value: 2, value1: 2, value2: 2, isAce: false },
+        { name: '2', suit: 'diamonds', graphic: '', value: 2, value1: 2, value2: 2, isAce: false },
+        { name: '2', suit: 'spades', graphic: '', value: 2, value1: 2, value2: 2, isAce: false },
+        { name: '2', suit: 'clubs', graphic: '', value: 2, value1: 2, value2: 2, isAce: false },
+        { name: '3', suit: 'hearts', graphic: '', value: 3, value1: 3, value2: 3, isAce: false },
+        { name: '3', suit: 'diamonds', graphic: '', value: 3, value1: 3, value2: 3, isAce: false },
+        { name: '3', suit: 'spades', graphic: '', value: 3, value1: 3, value2: 3, isAce: false },
+        { name: '3', suit: 'clubs', graphic: '', value: 3, value1: 3, value2: 3, isAce: false },
+        { name: '4', suit: 'hearts', graphic: '', value: 4, value1: 4, value2: 4, isAce: false },
+        { name: '4', suit: 'diamonds', graphic: '', value: 4, value1: 4, value2: 4, isAce: false },
+        { name: '4', suit: 'spades', graphic: '', value: 4, value1: 4, value2: 4, isAce: false },
+        { name: '4', suit: 'clubs', graphic: '', value: 4, value1: 4, value2: 4, isAce: false },
+        { name: '5', suit: 'hearts', graphic: '', value: 5, value1: 5, value2: 5, isAce: false },
+        { name: '5', suit: 'diamonds', graphic: '', value: 5, value1: 5, value2: 5, isAce: false },
+        { name: '5', suit: 'spades', graphic: '', value: 5, value1: 5, value2: 5, isAce: false },
+        { name: '5', suit: 'clubs', graphic: '', value: 5, value1: 5, value2: 5, isAce: false },
+        { name: '6', suit: 'hearts', graphic: '', value: 6, value1: 6, value2: 6, isAce: false },
+        { name: '6', suit: 'diamonds', graphic: '', value: 6, value1: 6, value2: 6, isAce: false },
+        { name: '6', suit: 'spades', graphic: '', value: 6, value1: 6, value2: 6, isAce: false },
+        { name: '6', suit: 'clubs', graphic: '', value: 6, value1: 6, value2: 6, isAce: false },
+        { name: '7', suit: 'hearts', graphic: '', value: 7, value1: 7, value2: 7, isAce: false },
+        { name: '7', suit: 'diamonds', graphic: '', value: 7, value1: 7, value2: 7, isAce: false },
+        { name: '7', suit: 'spades', graphic: '', value: 7, value1: 7, value2: 7, isAce: false },
+        { name: '4', suit: 'spades', graphic: '', value: 4, value1: 4, value2: 4, isAce: false },
+        { name: '8', suit: 'hearts', graphic: '', value: 8, value1: 8, value2: 8, isAce: false },
+        { name: '8', suit: 'diamonds', graphic: '', value: 8, value1: 8, value2: 8, isAce: false },
+        { name: '8', suit: 'spades', graphic: '', value: 8, value1: 8, value2: 8, isAce: false },
+        { name: '8', suit: 'clubs', graphic: '', value: 8, value1: 8, value2: 8, isAce: false },
+        { name: '9', suit: 'hearts', graphic: '', value: 9, value1: 9, value2: 9, isAce: false },
+        { name: '9', suit: 'diamonds', graphic: '', value: 9, value1: 9, value2: 9, isAce: false },
+        { name: '9', suit: 'spades', graphic: '', value: 9, value1: 9, value2: 9, isAce: false },
+        { name: '9', suit: 'clubs', graphic: '', value: 9, value1: 9, value2: 9, isAce: false },
+        { name: '10', suit: 'hearts', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        { name: '10', suit: 'diamonds', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        { name: '10', suit: 'spades', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        { name: '10', suit: 'clubs', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        { name: 'J', suit: 'hearts', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        { name: 'J', suit: 'diamonds', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        { name: 'J', suit: 'spades', graphic: '', value: 10, value1: 10, value2: 10, isAce: false }, 
+        { name: 'J', suit: 'clubs', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        { name: 'Q', suit: 'hearts', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        { name: 'Q', suit: 'diamonds', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        { name: 'Q', suit: 'spades', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        { name: 'Q', suit: 'clubs', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        { name: 'K', suit: 'hearts', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        { name: 'K', suit: 'diamonds', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        { name: 'K', suit: 'spades', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        { name: 'K', suit: 'clubs', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        { name: 'A', suit: 'hearts', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true },
+        { name: 'A', suit: 'diamonds', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true },
+        { name: 'A', suit: 'spades', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true },
+        { name: 'A', suit: 'clubs', graphic: '', value: 11, value1: 1, value2: 11, isAce: true },
+        { name: '2', suit: 'hearts', graphic: '', value: 2, value1: 2, value2: 2, isAce: false },
+        { name: '2', suit: 'diamonds', graphic: '', value: 2, value1: 2, value2: 2, isAce: false },
+        { name: '2', suit: 'spades', graphic: '', value: 2, value1: 2, value2: 2, isAce: false },
+        { name: '2', suit: 'clubs', graphic: '', value: 2, value1: 2, value2: 2, isAce: false },
+        { name: '3', suit: 'hearts', graphic: '', value: 3, value1: 3, value2: 3, isAce: false },
+        { name: '3', suit: 'diamonds', graphic: '', value: 3, value1: 3, value2: 3, isAce: false },
+        { name: '3', suit: 'spades', graphic: '', value: 3, value1: 3, value2: 3, isAce: false },
+        { name: '3', suit: 'clubs', graphic: '', value: 3, value1: 3, value2: 3, isAce: false },
+        { name: '4', suit: 'hearts', graphic: '', value: 4, value1: 4, value2: 4, isAce: false },
+        { name: '4', suit: 'diamonds', graphic: '', value: 4, value1: 4, value2: 4, isAce: false },
+        { name: '4', suit: 'spades', graphic: '', value: 4, value1: 4, value2: 4, isAce: false },
+        { name: '4', suit: 'clubs', graphic: '', value: 4, value1: 4, value2: 4, isAce: false },
+        { name: '5', suit: 'hearts', graphic: '', value: 5, value1: 5, value2: 5, isAce: false },
+        { name: '5', suit: 'diamonds', graphic: '', value: 5, value1: 5, value2: 5, isAce: false },
+        { name: '5', suit: 'spades', graphic: '', value: 5, value1: 5, value2: 5, isAce: false },
+        { name: '5', suit: 'clubs', graphic: '', value: 5, value1: 5, value2: 5, isAce: false },
+        { name: '6', suit: 'hearts', graphic: '', value: 6, value1: 6, value2: 6, isAce: false },
+        { name: '6', suit: 'diamonds', graphic: '', value: 6, value1: 6, value2: 6, isAce: false },
+        { name: '6', suit: 'spades', graphic: '', value: 6, value1: 6, value2: 6, isAce: false },
+        { name: '6', suit: 'clubs', graphic: '', value: 6, value1: 6, value2: 6, isAce: false },
+        { name: '7', suit: 'hearts', graphic: '', value: 7, value1: 7, value2: 7, isAce: false },
+        { name: '7', suit: 'diamonds', graphic: '', value: 7, value1: 7, value2: 7, isAce: false },
+        { name: '7', suit: 'spades', graphic: '', value: 7, value1: 7, value2: 7, isAce: false },
+        { name: '4', suit: 'spades', graphic: '', value: 4, value1: 4, value2: 4, isAce: false },
+        { name: '8', suit: 'hearts', graphic: '', value: 8, value1: 8, value2: 8, isAce: false },
+        { name: '8', suit: 'diamonds', graphic: '', value: 8, value1: 8, value2: 8, isAce: false },
+        { name: '8', suit: 'spades', graphic: '', value: 8, value1: 8, value2: 8, isAce: false },
+        { name: '8', suit: 'clubs', graphic: '', value: 8, value1: 8, value2: 8, isAce: false },
+        { name: '9', suit: 'hearts', graphic: '', value: 9, value1: 9, value2: 9, isAce: false },
+        { name: '9', suit: 'diamonds', graphic: '', value: 9, value1: 9, value2: 9, isAce: false },
+        { name: '9', suit: 'spades', graphic: '', value: 9, value1: 9, value2: 9, isAce: false },
+        { name: '9', suit: 'clubs', graphic: '', value: 9, value1: 9, value2: 9, isAce: false },
+        { name: '10', suit: 'hearts', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        { name: '10', suit: 'diamonds', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        { name: '10', suit: 'spades', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        { name: '10', suit: 'clubs', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        { name: 'J', suit: 'hearts', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        { name: 'J', suit: 'diamonds', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        { name: 'J', suit: 'spades', graphic: '', value: 10, value1: 10, value2: 10, isAce: false }, 
+        { name: 'J', suit: 'clubs', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        { name: 'Q', suit: 'hearts', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        { name: 'Q', suit: 'diamonds', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        { name: 'Q', suit: 'spades', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        { name: 'Q', suit: 'clubs', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        { name: 'K', suit: 'hearts', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        { name: 'K', suit: 'diamonds', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        { name: 'K', suit: 'spades', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        { name: 'K', suit: 'clubs', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        { name: 'A', suit: 'hearts', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true },
+        { name: 'A', suit: 'diamonds', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true },
+        { name: 'A', suit: 'spades', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true },
+        { name: 'A', suit: 'clubs', graphic: '', value: 11, value1: 1, value2: 11, isAce: true },
+        { name: '2', suit: 'hearts', graphic: '', value: 2, value1: 2, value2: 2, isAce: false },
+        { name: '2', suit: 'diamonds', graphic: '', value: 2, value1: 2, value2: 2, isAce: false },
+        { name: '2', suit: 'spades', graphic: '', value: 2, value1: 2, value2: 2, isAce: false },
+        { name: '2', suit: 'clubs', graphic: '', value: 2, value1: 2, value2: 2, isAce: false },
+        { name: '3', suit: 'hearts', graphic: '', value: 3, value1: 3, value2: 3, isAce: false },
+        { name: '3', suit: 'diamonds', graphic: '', value: 3, value1: 3, value2: 3, isAce: false },
+        { name: '3', suit: 'spades', graphic: '', value: 3, value1: 3, value2: 3, isAce: false },
+        { name: '3', suit: 'clubs', graphic: '', value: 3, value1: 3, value2: 3, isAce: false },
+        { name: '4', suit: 'hearts', graphic: '', value: 4, value1: 4, value2: 4, isAce: false },
+        { name: '4', suit: 'diamonds', graphic: '', value: 4, value1: 4, value2: 4, isAce: false },
+        { name: '4', suit: 'spades', graphic: '', value: 4, value1: 4, value2: 4, isAce: false },
+        { name: '4', suit: 'clubs', graphic: '', value: 4, value1: 4, value2: 4, isAce: false },
+        { name: '5', suit: 'hearts', graphic: '', value: 5, value1: 5, value2: 5, isAce: false },
+        { name: '5', suit: 'diamonds', graphic: '', value: 5, value1: 5, value2: 5, isAce: false },
+        { name: '5', suit: 'spades', graphic: '', value: 5, value1: 5, value2: 5, isAce: false },
+        { name: '5', suit: 'clubs', graphic: '', value: 5, value1: 5, value2: 5, isAce: false },
+        { name: '6', suit: 'hearts', graphic: '', value: 6, value1: 6, value2: 6, isAce: false },
+        { name: '6', suit: 'diamonds', graphic: '', value: 6, value1: 6, value2: 6, isAce: false },
+        { name: '6', suit: 'spades', graphic: '', value: 6, value1: 6, value2: 6, isAce: false },
+        { name: '6', suit: 'clubs', graphic: '', value: 6, value1: 6, value2: 6, isAce: false },
+        { name: '7', suit: 'hearts', graphic: '', value: 7, value1: 7, value2: 7, isAce: false },
+        { name: '7', suit: 'diamonds', graphic: '', value: 7, value1: 7, value2: 7, isAce: false },
+        { name: '7', suit: 'spades', graphic: '', value: 7, value1: 7, value2: 7, isAce: false },
+        { name: '4', suit: 'spades', graphic: '', value: 4, value1: 4, value2: 4, isAce: false },
+        { name: '8', suit: 'hearts', graphic: '', value: 8, value1: 8, value2: 8, isAce: false },
+        { name: '8', suit: 'diamonds', graphic: '', value: 8, value1: 8, value2: 8, isAce: false },
+        { name: '8', suit: 'spades', graphic: '', value: 8, value1: 8, value2: 8, isAce: false },
+        { name: '8', suit: 'clubs', graphic: '', value: 8, value1: 8, value2: 8, isAce: false },
+        { name: '9', suit: 'hearts', graphic: '', value: 9, value1: 9, value2: 9, isAce: false },
+        { name: '9', suit: 'diamonds', graphic: '', value: 9, value1: 9, value2: 9, isAce: false },
+        { name: '9', suit: 'spades', graphic: '', value: 9, value1: 9, value2: 9, isAce: false },
+        { name: '9', suit: 'clubs', graphic: '', value: 9, value1: 9, value2: 9, isAce: false },
+        { name: '10', suit: 'hearts', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        { name: '10', suit: 'diamonds', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        { name: '10', suit: 'spades', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        { name: '10', suit: 'clubs', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        { name: 'J', suit: 'hearts', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        { name: 'J', suit: 'diamonds', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        { name: 'J', suit: 'spades', graphic: '', value: 10, value1: 10, value2: 10, isAce: false }, 
+        { name: 'J', suit: 'clubs', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        { name: 'Q', suit: 'hearts', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        { name: 'Q', suit: 'diamonds', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        { name: 'Q', suit: 'spades', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        { name: 'Q', suit: 'clubs', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        { name: 'K', suit: 'hearts', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        { name: 'K', suit: 'diamonds', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        { name: 'K', suit: 'spades', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        { name: 'K', suit: 'clubs', graphic: '', value: 10, value1: 10, value2: 10, isAce: false },
+        { name: 'A', suit: 'hearts', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true },
+        { name: 'A', suit: 'diamonds', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true },
+        { name: 'A', suit: 'spades', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true },
+        { name: 'A', suit: 'clubs', graphic: '', value: 11, value1: 1, value2: 11, isAce: true }
     ],
     discardedPile: [],
     deal: (hand, isCardFacedown) => {
@@ -744,11 +945,6 @@ const Game = {
         // await Game.deal(Dealer.hands[0], false)
         // await Game.forceCard(Player.hands[0], false, { name: 'A', suit: 'hearts', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true })
         // await Game.deal(Dealer.hands[0], true)
-        // random + random
-        // await Game.deal(Player.hands[0], false)
-        // await Game.deal(Dealer.hands[0], false)
-        // await Game.deal(Player.hands[0], false)
-        // await Game.deal(Dealer.hands[0], true)
         // dealer ace first card
         // await Game.deal(Player.hands[0], false)
         // await Game.forceCard(Dealer.hands[0], false, { name: 'A', suit: 'spades', graphic: '', value: 11, value1: 1, value2: 11,  isAce: true })
@@ -780,9 +976,14 @@ const Game = {
         // await Game.forceCard(Player.hands[0], false, { name: '8', suit: 'spades', graphic: '', value: 8, value1: 8, value2: 8,  isAce: false })
         // await Game.forceCard(Dealer.hands[0], true, { name: '8', suit: 'hearts', graphic: '', value: 8, value1: 8, value2: 8,  isAce: false })
         // dealer random, player split
-        await Game.forceCard(Player.hands[0], false, { name: '10', suit: 'spades', graphic: '', value: 10, value1: 10, value2: 10,  isAce: false })
+        // await Game.forceCard(Player.hands[0], false, { name: '10', suit: 'spades', graphic: '', value: 10, value1: 10, value2: 10,  isAce: false })
+        // await Game.deal(Dealer.hands[0], false)
+        // await Game.forceCard(Player.hands[0], false, { name: '10', suit: 'hearts', graphic: '', value: 10, value1: 10, value2: 10,  isAce: false })
+        // await Game.deal(Dealer.hands[0], true)
+        // random + random
+        await Game.deal(Player.hands[0], false)
         await Game.deal(Dealer.hands[0], false)
-        await Game.forceCard(Player.hands[0], false, { name: '10', suit: 'hearts', graphic: '', value: 10, value1: 10, value2: 10,  isAce: false })
+        await Game.deal(Player.hands[0], false)
         await Game.deal(Dealer.hands[0], true)
 
         Dealer.secondCard = Dealer.hands[0].ui.cardsInner.lastElementChild
@@ -1820,86 +2021,3 @@ document.body.addEventListener('keydown', (e) => {
         localStorage.setItem('isInfoOpen', 'true')
     }
 })
-
-// shuffle the deck array
-// function shuffleDeck(deck) {
-//     let newPos
-//     let card
-//     for (let i = deck.length -1; i > 0; i--) {
-//         newPos = Math.floor(Math.random() * (i + 1))
-//         card = deck[i]
-//         deck[i] = deck[newPos]
-//         deck[newPos] = card
-//     }
-//     return deck;
-// }
-
-// calculates sum of an array of cards point values
-// function calccount1(cardsArray) {
-//     return cardsArray.reduce((total, card) => total + card.points, 0)
-// }
-
-// const testBtn = document.querySelector('.test-btn')
-// const testWrap1 = document.querySelector('.test-wrap-1')
-// const testWrap2 = document.querySelector('.test-wrap-2')
-// const test = document.querySelector('.test')
-
-// testBtn.addEventListener('click', () => {
-//     UI.moveElement(test, testWrap2, 'bet-chip-animation', () => {
-//         console.log('moved element')
-//     })
-// })
-
-
-// let onceTransitionEnd = (el, transition) => {
-//     return new Promise(resolve => {
-//       const onTransitionEndCb = () => {
-//         el.removeEventListener('transitionend', onTransitionEndCb);
-//         resolve();
-//       }
-//       el.addEventListener('transitionend', onTransitionEndCb)
-//       el.style.transition = transition;
-//     });
-//   }
-  
-//   let move_box_one = async () => {
-//     const el = document.getElementById('div_one');
-//     await onceTransitionEnd(el, 'move 3s forwards');
-//   }
-//   let move_box_two = async () => {
-//     const el = document.getElementById('div_two');
-//     await onceTransitionEnd(el, 'move 3s forwards');
-//   }
-  
-//   let move_boxes = async () => {
-//     await move_box_one();
-//     await move_box_two();
-//   }
-//   move_boxes().then(() => console.log('boxes moved'));
-
-// // We can declare a generic helper method for one-time animationend listening
-// let onceAnimationEnd = (el, animation) => {
-//     return new Promise(resolve => {
-//       const onAnimationEndCb = () => {
-//         el.removeEventListener('animationend', onAnimationEndCb);
-//         resolve();
-//       }
-//       el.addEventListener('animationend', onAnimationEndCb)
-//       el.style.animation = animation;
-//     });
-//   }
-  
-//   let move_box_one = async () => {
-//     const el = document.getElementById('div_one');
-//     await onceAnimationEnd(el, 'move 3s forwards');
-//   }
-//   let move_box_two = async () => {
-//     const el = document.getElementById('div_two');
-//     await onceAnimationEnd(el, 'move 3s forwards');
-//   }
-  
-//   let move_boxes = async () => {
-//     await move_box_one();
-//     await move_box_two();
-//   }
-//   move_boxes().then(() => console.log('boxes moved'));
