@@ -157,7 +157,8 @@ html {
   box-sizing: border-box;
   font-family: 'Open Sans', sans-serif;
   margin: 0;
-  padding: 0; }
+  padding: 0;
+  user-select: none; }
 
 body {
   background: #4ca2ab;
@@ -233,7 +234,8 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 100vh; }
+  height: 100%;
+  overflow: hidden; }
   #table-container #dealer-container {
     margin-top: 2rem; }
     #table-container #dealer-container #dealer-chip-spawn {
@@ -417,7 +419,8 @@ body {
             height: 5rem;
             width: 5rem;
             user-select: none;
-            cursor: pointer; }
+            cursor: pointer;
+            background: #ffffff; }
           #table-container #player-footer-container #footer #bottom-bar #chips-container .chip-wrapper .chip:focus {
             outline: none; }
           #table-container #player-footer-container #footer #bottom-bar #chips-container .chip-wrapper .chip-discard {
@@ -588,7 +591,7 @@ body {
 
 .info-x-btn {
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
   margin-bottom: 3rem; }
 
 .info-x-btn button {
